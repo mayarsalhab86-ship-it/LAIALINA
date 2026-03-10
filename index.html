@@ -1,244 +1,199 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محلل المقامات الشرقية - النسخة الكاملة</title>
+    <title>محلل المقامات الشرقية - النسخة المصلحة</title>
     <style>
-        /* (تم الإبقاء على التنسيقات الأصلية الخاصة بك لضمان المظهر الرائع) */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
         body { background: linear-gradient(135deg, #1a1e2b 0%, #2d3349 100%); color: #fff; padding: 20px; min-height: 100vh; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        .main-header { background: rgba(255,215,0,0.1); border-radius: 30px; padding: 30px; margin-bottom: 25px; text-align: center; border: 2px solid #ffd700; }
-        .main-header h1 { font-size: 48px; background: linear-gradient(135deg, #ffd700, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
-        .mic-section { background: rgba(0,0,0,0.3); padding: 25px; border-radius: 30px; margin-bottom: 25px; display: flex; align-items: center; gap: 30px; flex-wrap: wrap; border: 2px solid #ffd700; }
-        .mic-button { width: 120px; height: 120px; border-radius: 60px; border: none; font-size: 60px; cursor: pointer; transition: 0.3s; }
-        .mic-on { background: #4caf50; color: white; animation: pulse 1.5s infinite; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .main-header { background: rgba(255,215,0,0.1); border-radius: 20px; padding: 20px; margin-bottom: 20px; text-align: center; border: 2px solid #ffd700; }
+        .mic-section { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; border: 2px solid #ffd700; }
+        .mic-button { width: 80px; height: 80px; border-radius: 50%; border: none; font-size: 40px; cursor: pointer; transition: 0.3s; }
         .mic-off { background: #f44336; color: white; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 #4caf50; } 70% { box-shadow: 0 0 30px 10px #4caf50; } 100% { box-shadow: 0 0 0 0 #4caf50; } }
-        .volume-meter { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px; min-width: 250px; flex: 1; }
-        .volume-bar-bg { height: 30px; background: #444; border-radius: 15px; overflow: hidden; }
-        .volume-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #ffd700, #f44336); transition: width 0.1s; }
-        .volume-wave { display: flex; gap: 3px; height: 50px; margin-top: 15px; align-items: flex-end; }
-        .wave-bar { flex: 1; background: #ffd700; height: 5%; border-radius: 3px 3px 0 0; transition: height 0.1s; }
-        .control-panel { background: rgba(0,0,0,0.3); padding: 25px; border-radius: 30px; margin-bottom: 25px; border: 2px solid #ffd700; }
-        .control-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
-        .control-btn { padding: 20px; border: none; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-green { background: #4caf50; color: white; } .btn-red { background: #f44336; color: white; }
-        .btn-gold { background: #ffd700; color: black; } .btn-orange { background: #ff8c00; color: white; }
-        .note-display { background: linear-gradient(135deg, #2d3349, #1a1e2b); padding: 30px; border-radius: 30px; text-align: center; margin-bottom: 25px; border: 2px solid #ffd700; }
-        .note-big { font-size: 120px; font-weight: bold; color: #ffd700; text-shadow: 0 0 30px #ffd700; }
-        .stability-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #f44336, #ffd700, #4caf50); transition: width 0.3s; }
-        .solfa-box { background: linear-gradient(90deg, #2d3349, #1a1e2b); padding: 20px; border-radius: 50px; margin-bottom: 25px; overflow-x: auto; white-space: nowrap; border: 2px solid #ffd700; text-align: center; }
-        .solfa-item { display: inline-block; padding: 15px 25px; margin: 0 5px; border-radius: 30px; font-size: 24px; font-weight: bold; transition: 0.3s; color: #555; }
-        .solfa-item.active { background: #ffd700; color: black; transform: scale(1.1); box-shadow: 0 0 30px #ffd700; }
-        .history-box { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; margin-bottom: 25px; max-height: 150px; overflow-y: auto; }
-        .history-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #444; }
-        .status-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 30px; border: 2px solid #ffd700; }
-        .guide-box { background: rgba(255,215,0,0.05); padding: 30px; border-radius: 40px; border: 3px solid #ffd700; margin-top: 30px; }
-        .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .guide-card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px; border-right: 5px solid #ffd700; }
+        .mic-on { background: #4caf50; color: white; box-shadow: 0 0 20px #4caf50; }
+        .volume-meter { flex: 1; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; }
+        .volume-bar-bg { height: 20px; background: #444; border-radius: 10px; overflow: hidden; margin-top: 10px; }
+        .volume-bar-fill { height: 100%; width: 0%; background: #4caf50; transition: width 0.1s; }
+        .control-panel { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; margin-bottom: 20px; border: 2px solid #ffd700; }
+        .control-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+        .control-btn { padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; opacity: 0.5; }
+        .control-btn:enabled { opacity: 1; }
+        .btn-green { background: #4caf50; color: white; }
+        .btn-red { background: #f44336; color: white; }
+        .btn-gold { background: #ffd700; color: black; }
+        .note-display { background: #2d3349; padding: 40px; border-radius: 20px; text-align: center; border: 2px solid #ffd700; margin-bottom: 20px; }
+        #noteName { font-size: 80px; color: #ffd700; font-weight: bold; }
+        .history-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; max-height: 100px; overflow-y: auto; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="main-header">
-            <h1>🎵 محلل المقامات الشرقية</h1>
-            <p>النسخة الكاملة - ميكروفون وتحليل حي</p>
-        </div>
 
-        <div class="mic-section">
-            <button id="micBtn" class="mic-button mic-off">🎤</button>
-            <div class="mic-info">
-                <div id="micStatus" class="mic-status">الميكروفون مغلق</div>
-                <div id="micPerm" class="mic-permission">اضغط على الزر الأحمر لفتح الميكروفون</div>
-            </div>
-            <div class="volume-meter">
-                <div style="display:flex; justify-content: space-between; margin-bottom: 5px;">
-                    <span style="color:#ffd700">🔊 الصوت</span>
-                    <span id="volumePercent">0%</span>
-                </div>
-                <div class="volume-bar-bg"><div class="volume-bar-fill" id="volumeFill"></div></div>
-                <div class="volume-wave" id="waveContainer">
-                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                </div>
-            </div>
-        </div>
+<div class="container">
+    <div class="main-header">
+        <h1>🎵 محلل النغمات الذكي</h1>
+        <p>قم بفتح الميكروفون أولاً ثم ابدأ التحليل</p>
+    </div>
 
-        <div class="control-panel">
-            <div class="control-buttons">
-                <button class="control-btn btn-green" id="startBtn" disabled>▶️ بدء التحليل</button>
-                <button class="control-btn btn-red" id="stopBtn" disabled>⏹️ إيقاف</button>
-                <button class="control-btn btn-gold" id="reportBtn" disabled>🔊 التقرير</button>
-                <button class="control-btn btn-orange" id="errorsBtn" disabled>⚠️ الأخطاء</button>
-            </div>
-        </div>
-
-        <div class="note-display">
-            <div class="note-big" id="noteName">--</div>
-            <div style="display: flex; justify-content: center; gap: 30px; margin-top: 15px;">
-                <span id="noteFreq" style="color:#4caf50">0 Hz</span>
-                <span id="noteCents" style="color:#ff8c00">0 سنت</span>
-            </div>
-        </div>
-
-        <div class="solfa-box" id="solfaContainer">
-            <span class="solfa-item" data-note="دو">دو</span>
-            <span class="solfa-item" data-note="ري">ري</span>
-            <span class="solfa-item" data-note="مي">مي</span>
-            <span class="solfa-item" data-note="فا">فا</span>
-            <span class="solfa-item" data-note="صول">صول</span>
-            <span class="solfa-item" data-note="لا">لا</span>
-            <span class="solfa-item" data-note="سي">سي</span>
-        </div>
-
-        <div class="history-box" id="historyContainer"></div>
-
-        <div class="status-bar">
-            <div class="status-item"> الحالة: <span id="statusState">⚪ متوقف</span></div>
-            <div class="status-item"> المقام: <span id="statusMaqam">راست</span></div>
-            <div class="status-item"> النوتة: <span id="statusNote">--</span></div>
-        </div>
-
-        <div class="guide-box">
-            <h2 style="color:#ffd700; margin-bottom:20px;">📋 كيف تبدأ؟</h2>
-            <div class="guide-grid">
-                <div class="guide-card">1. افتح الميكروفون بالضغط على الزر الدائري الأحمر.</div>
-                <div class="guide-card">2. اضغط "بدء التحليل" ليبدأ النظام بالاستماع.</div>
-                <div class="guide-card">3. اعزف أو غنِّ وستظهر النوتات فوراً.</div>
-            </div>
+    <div class="mic-section">
+        <button id="micBtn" class="mic-button mic-off">🎤</button>
+        <div class="volume-meter">
+            <span>مستوى الصوت: <span id="volNum">0%</span></span>
+            <div class="volume-bar-bg"><div id="volFill" class="volume-bar-fill"></div></div>
         </div>
     </div>
 
-    <script>
-        let audioCtx, analyser, micStream, animationId;
-        let isAnalyzing = false;
+    <div class="control-panel">
+        <div class="control-buttons">
+            <button id="startBtn" class="control-btn btn-green" disabled>▶️ بدء التحليل</button>
+            <button id="stopBtn" class="control-btn btn-red" disabled>⏹️ إيقاف</button>
+            <button id="reportBtn" class="control-btn btn-gold" disabled>🔊 التقرير</button>
+        </div>
+    </div>
+
+    <div class="note-display">
+        <div id="noteName">--</div>
+        <div id="noteFreq">0 Hz</div>
+    </div>
+
+    <div class="history-box" id="history">
+        <div>سجل النوتات سيظهر هنا...</div>
+    </div>
+</div>
+
+<script>
+    let audioCtx, analyser, source, animationId;
+    let isAnalyzing = false;
+    let detectedNotes = [];
+
+    const micBtn = document.getElementById('micBtn');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const reportBtn = document.getElementById('reportBtn');
+    const noteNameDiv = document.getElementById('noteName');
+    const noteFreqDiv = document.getElementById('noteFreq');
+
+    // 1. تشغيل الميكروفون (الخطوة الأساسية)
+    micBtn.onclick = async () => {
+        if (!audioCtx) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                // إنشاء السياق الصوتي بعد ضغط المستخدم مباشرة
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 2048;
+                source = audioCtx.createMediaStreamSource(stream);
+                source.connect(analyser);
+
+                micBtn.classList.replace('mic-off', 'mic-on');
+                startBtn.disabled = false;
+                updateVolume(); // البدء بمراقبة مستوى الصوت
+                console.log("تم تفعيل الميكروفون");
+            } catch (err) {
+                alert("خطأ: يرجى السماح للمتصفح بالوصول للميكروفون.");
+            }
+        } else {
+            location.reload(); // إعادة التحميل لإغلاق الميكروفون
+        }
+    };
+
+    // 2. تحديث مستوى الصوت
+    function updateVolume() {
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(data);
+        let sum = 0;
+        for(let i=0; i<data.length; i++) sum += data[i];
+        let avg = Math.round((sum / data.length) * 2);
         
-        const micBtn = document.getElementById('micBtn');
-        const startBtn = document.getElementById('startBtn');
-        const stopBtn = document.getElementById('stopBtn');
-        const solfaItems = document.querySelectorAll('.solfa-item');
+        document.getElementById('volFill').style.width = avg + "%";
+        document.getElementById('volNum').innerText = avg + "%";
+        requestAnimationFrame(updateVolume);
+    }
 
-        // 1. إدارة الميكروفون
-        micBtn.onclick = async () => {
-            if (!audioCtx) {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    analyser = audioCtx.createAnalyser();
-                    micStream = audioCtx.createMediaStreamSource(stream);
-                    micStream.connect(analyser);
-                    
-                    micBtn.classList.replace('mic-off', 'mic-on');
-                    document.getElementById('micStatus').innerText = "الميكروفون متصل ✅";
-                    startBtn.disabled = false;
-                    updateVisuals();
-                } catch (e) { alert("يرجى السماح بالوصول للميكروفون"); }
-            } else { location.reload(); }
-        };
+    // 3. بدء التحليل
+    startBtn.onclick = () => {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        isAnalyzing = true;
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        reportBtn.disabled = false;
+        detectPitch();
+    };
 
-        // 2. تحديث مرئي لمستوى الصوت
-        function updateVisuals() {
-            const dataArray = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(dataArray);
-            let sum = dataArray.reduce((a, b) => a + b, 0);
-            let avg = sum / dataArray.length;
-            let vol = Math.min(100, Math.round(avg * 2));
-            
-            document.getElementById('volumeFill').style.width = vol + "%";
-            document.getElementById('volumePercent').innerText = vol + "%";
-            
-            document.querySelectorAll('.wave-bar').forEach(bar => {
-                bar.style.height = (vol * Math.random() + 5) + "%";
-            });
-            requestAnimationFrame(updateVisuals);
+    // 4. إيقاف التحليل
+    stopBtn.onclick = () => {
+        isAnalyzing = false;
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        noteNameDiv.innerText = "--";
+    };
+
+    // 5. خوارزمية كشف النغمة
+    function detectPitch() {
+        if (!isAnalyzing) return;
+
+        const buffer = new Float32Array(analyser.fftSize);
+        analyser.getFloatTimeDomainData(buffer);
+
+        let pitch = getPitch(buffer, audioCtx.sampleRate);
+        
+        if (pitch !== -1 && pitch > 50 && pitch < 1000) {
+            let note = freqToNote(pitch);
+            noteNameDiv.innerText = note;
+            noteFreqDiv.innerText = Math.round(pitch) + " Hz";
+            if (!detectedNotes.includes(note)) detectedNotes.push(note);
+            addToHistory(note);
         }
 
-        // 3. تحليل التردد (Pitch Detection)
-        startBtn.onclick = () => {
-            isAnalyzing = true;
-            startBtn.disabled = true;
-            stopBtn.disabled = false;
-            document.getElementById('reportBtn').disabled = false;
-            document.getElementById('errorsBtn').disabled = false;
-            document.getElementById('statusState').innerText = "🟢 يعمل";
-            detectPitch();
-        };
+        requestAnimationFrame(detectPitch);
+    }
 
-        stopBtn.onclick = () => {
-            isAnalyzing = false;
-            startBtn.disabled = false;
-            stopBtn.disabled = true;
-            document.getElementById('statusState').innerText = "⚪ متوقف";
-        };
+    function getPitch(buffer, sampleRate) {
+        let sum = 0;
+        for (let i = 0; i < buffer.length; i++) sum += buffer[i] * buffer[i];
+        if (Math.sqrt(sum / buffer.length) < 0.02) return -1;
 
-        function detectPitch() {
-            if (!isAnalyzing) return;
-            const buffer = new Float32Array(analyser.fftSize);
-            analyser.getFloatTimeDomainData(buffer);
-            let pitch = autoCorrelate(buffer, audioCtx.sampleRate);
-
-            if (pitch !== -1) {
-                let note = getNote(pitch);
-                document.getElementById('noteName').innerText = note.name;
-                document.getElementById('noteFreq').innerText = Math.round(pitch) + " Hz";
-                document.getElementById('noteCents').innerText = note.cents + " سنت";
-                highlightSolfa(note.name);
-                addHistory(note.name);
+        let bestOffset = -1;
+        let bestCorrelation = 0;
+        for (let offset = 0; offset < buffer.length / 2; offset++) {
+            let correlation = 0;
+            for (let i = 0; i < buffer.length / 2; i++) {
+                correlation += Math.abs(buffer[i] - buffer[i + offset]);
             }
-            requestAnimationFrame(detectPitch);
-        }
-
-        function getNote(freq) {
-            const notes = ["دو", "دو#", "ري", "ري#", "مي", "فا", "فا#", "صول", "صول#", "لا", "لا#", "سي"];
-            let semitone = 12 * (Math.log(freq / 440) / Math.log(2));
-            let idx = (Math.round(semitone) + 69) % 12;
-            return { name: notes[idx], cents: Math.floor((semitone - Math.round(semitone)) * 100) };
-        }
-
-        function autoCorrelate(buf, sampleRate) {
-            let rms = 0;
-            for (let i=0; i<buf.length; i++) rms += buf[i]*buf[i];
-            if (Math.sqrt(rms/buf.length) < 0.01) return -1;
-            
-            let best_offset = -1, best_correlation = 0;
-            for (let offset = 0; offset < buf.length/2; offset++) {
-                let correlation = 0;
-                for (let i=0; i<buf.length/2; i++) correlation += Math.abs(buf[i]-buf[i+offset]);
-                correlation = 1 - (correlation/(buf.length/2));
-                if (correlation > best_correlation) {
-                    best_correlation = correlation;
-                    best_offset = offset;
-                }
+            correlation = 1 - (correlation / (buffer.length / 2));
+            if (correlation > bestCorrelation) {
+                bestCorrelation = correlation;
+                bestOffset = offset;
             }
-            return (best_correlation > 0.9) ? sampleRate/best_offset : -1;
         }
+        return (bestCorrelation > 0.8) ? (sampleRate / bestOffset) : -1;
+    }
 
-        function highlightSolfa(name) {
-            solfaItems.forEach(item => {
-                item.classList.toggle('active', item.dataset.note === name);
-            });
-        }
+    function freqToNote(f) {
+        const notes = ["دو", "دو#", "ري", "ري#", "مي", "فا", "فا#", "صول", "صول#", "لا", "لا#", "سي"];
+        let i = Math.round(12 * (Math.log(f / 440) / Math.log(2))) + 69;
+        return notes[i % 12];
+    }
 
-        function addHistory(note) {
-            const container = document.getElementById('historyContainer');
-            const div = document.createElement('div');
-            div.className = 'history-item';
-            div.innerHTML = `<span>نوتة مكتشفة:</span> <strong>${note}</strong>`;
-            container.prepend(div);
-            if (container.children.length > 5) container.lastChild.remove();
-        }
+    function addToHistory(n) {
+        const h = document.getElementById('history');
+        if (h.children.length > 5) h.lastChild.remove();
+        let div = document.createElement('div');
+        div.innerText = "تم رصد: " + n;
+        h.prepend(div);
+    }
 
-        // 4. تقارير صوتية بسيطة
-        document.getElementById('reportBtn').onclick = () => {
-            let speech = new SpeechSynthesisUtterance("أداؤك ممتاز، استقرار النغمات بلغ تسعين بالمئة");
-            speech.lang = 'ar-SA';
-            window.speechSynthesis.speak(speech);
-        };
-    </script>
+    // 6. قراءة التقرير بالصوت
+    reportBtn.onclick = () => {
+        let text = "التقرير جاهز. تم رصد النوتات التالية خلال عزفك: " + detectedNotes.join(" و ");
+        if (detectedNotes.length === 0) text = "لم يتم رصد نوتات واضحة، حاول العزف بقوة أكبر.";
+        
+        let speech = new SpeechSynthesisUtterance(text);
+        speech.lang = 'ar-SA';
+        window.speechSynthesis.speak(speech);
+    };
+</script>
+
 </body>
 </html>
