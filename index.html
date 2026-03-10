@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محلل الانتقال المقامي - الذكاء الاصطناعي الموسيقي</title>
+    <title>محلل الانتقال المقامي - النسخة الكاملة</title>
     <style>
         * {
             margin: 0;
@@ -16,15 +16,14 @@
             background: linear-gradient(135deg, #1a1e2b 0%, #2d3349 100%);
             min-height: 100vh;
             color: #fff;
-            padding: 20px;
         }
 
         .app-container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 20px;
         }
 
-        /* الشريط العلوي */
         .main-header {
             display: flex;
             justify-content: space-between;
@@ -80,7 +79,6 @@
             background: #2d3349;
         }
 
-        /* لوحة المعلومات الرئيسية */
         .dashboard {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -97,7 +95,6 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
-        /* قسم الرادار */
         .radar-section h3 {
             display: flex;
             justify-content: space-between;
@@ -110,7 +107,7 @@
         .live-indicator {
             width: 10px;
             height: 10px;
-            background: #4caf50;
+            background: #ff4757;
             border-radius: 50%;
             display: inline-block;
             animation: pulse 2s infinite;
@@ -175,7 +172,6 @@
             color: #a0a8c0;
         }
 
-        /* قسم المعلومات */
         .stability-meter {
             margin-bottom: 25px;
         }
@@ -262,7 +258,6 @@
             transform: translateX(-5px);
         }
 
-        /* قسم التحكم */
         .control-buttons {
             display: flex;
             gap: 10px;
@@ -352,7 +347,6 @@
             cursor: pointer;
         }
 
-        /* شريط الحالة */
         .status-bar {
             display: flex;
             justify-content: space-between;
@@ -378,7 +372,6 @@
             font-weight: 500;
         }
 
-        /* التجاوب مع الشاشات الصغيرة */
         @media (max-width: 1024px) {
             .dashboard {
                 grid-template-columns: 1fr;
@@ -405,7 +398,6 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- الشريط العلوي -->
         <header class="main-header">
             <div class="logo">
                 <h1>🎵 محلل المقامات <span class="badge">Beta</span></h1>
@@ -421,9 +413,7 @@
             </div>
         </header>
 
-        <!-- المنطقة الرئيسية -->
         <main class="dashboard">
-            <!-- العمود الأيمن - رادار المقامات -->
             <div class="radar-section card">
                 <h3>رادار المقامات <span class="live-indicator" id="liveIndicator"></span></h3>
                 <div class="radar-container">
@@ -434,14 +424,12 @@
                     </div>
                 </div>
                 
-                <!-- النوتة الحالية -->
                 <div class="current-note" id="currentNote">
                     <div class="note-name">--</div>
                     <div class="note-frequency">-- Hz</div>
                 </div>
             </div>
 
-            <!-- العمود الأوسط - المعلومات التفصيلية -->
             <div class="info-section card">
                 <div class="stability-meter">
                     <h4>مؤشر الاستقرار</h4>
@@ -477,7 +465,6 @@
                 </div>
             </div>
 
-            <!-- العمود الأيسر - سجل المسار والتحكم -->
             <div class="control-section card">
                 <div class="control-buttons">
                     <button id="startBtn" class="btn-primary">
@@ -513,7 +500,6 @@
             </div>
         </main>
 
-        <!-- شريط الحالة السفلي -->
         <footer class="status-bar">
             <div class="status-item">
                 <span class="status-label">الحالة:</span>
@@ -531,7 +517,7 @@
     </div>
 
     <script>
-        // ==================== قاعدة بيانات المقامات ====================
+        // ==================== قاعدة بيانات المقامات الكاملة ====================
         const MaqamData = {
             maqamat: {
                 rast: {
@@ -563,6 +549,16 @@
                     intervals: [3, 6, 3, 4, 4, 3, 4],
                     notes: ['D', 'E_half', 'F#', 'G', 'A', 'B_half', 'C', 'D'],
                     transitions: ['nahawand', 'rast', 'saba']
+                },
+                saba: {
+                    name: 'صبا',
+                    color: '#9C27B0',
+                    description: 'مقام حزين مؤثر',
+                    root: 'D',
+                    jins: ['saba', 'iraq', 'nahawand'],
+                    intervals: [3, 4, 4, 4, 3, 4, 4],
+                    notes: ['D', 'E_half', 'F', 'G#', 'A', 'B_half', 'C', 'D'],
+                    transitions: ['bayat', 'hijaz', 'kurd']
                 },
                 nahawand: {
                     name: 'نهاوند',
@@ -601,14 +597,17 @@
                 bayat: { name: 'جنس بيات', pattern: [4, 3, 4], notes: ['D', 'E_half', 'F'] },
                 hijaz: { name: 'جنس حجاز', pattern: [3, 6, 3], notes: ['D', 'E_half', 'F#'] },
                 nahawand: { name: 'جنس نهاوند', pattern: [4, 4, 3], notes: ['C', 'D', 'E_flat'] },
-                kurd: { name: 'جنس كرد', pattern: [3, 4, 4], notes: ['D', 'E_flat', 'F'] }
+                kurd: { name: 'جنس كرد', pattern: [3, 4, 4], notes: ['D', 'E_flat', 'F'] },
+                saba: { name: 'جنس صبا', pattern: [3, 4, 4], notes: ['D', 'E_half', 'F'] }
             },
 
             cadences: {
                 rast: ['C-D-E_half-F', 'G-F-E_half-D-C', 'C-B_half-C'],
                 bayat: ['D-E_half-F-G', 'A-G-F-E_half-D', 'D-C-B_half-A-G-F-E_half-D'],
                 hijaz: ['D-E_half-F#-G', 'A-G-F#-E_half-D', 'D-C-B_half-A-G-F#-E_half-D'],
-                nahawand: ['C-D-E_flat-F', 'G-F-E_flat-D-C', 'C-B_flat-A-G-F-E_flat-D-C']
+                nahawand: ['C-D-E_flat-F', 'G-F-E_flat-D-C', 'C-B_flat-A-G-F-E_flat-D-C'],
+                kurd: ['D-E_flat-F-G', 'A-G-F-E_flat-D', 'D-C-B_flat-A-G-F-E_flat-D'],
+                saba: ['D-E_half-F-G#', 'A-G#-F-E_half-D', 'D-C-B_half-A-G#-F-E_half-D']
             },
 
             frequencies: {
@@ -643,7 +642,7 @@
             }
         };
 
-        // ==================== كاشف الترددات ====================
+        // ==================== كاشف الترددات المتقدم ====================
         class PitchDetector {
             constructor(audioContext, onPitchDetected) {
                 this.audioContext = audioContext;
@@ -657,30 +656,49 @@
 
             async start() {
                 try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    const stream = await navigator.mediaDevices.getUserMedia({ 
+                        audio: {
+                            echoCancellation: false,
+                            noiseSuppression: false,
+                            autoGainControl: false
+                        } 
+                    });
+                    
                     this.microphone = this.audioContext.createMediaStreamSource(stream);
                     this.analyser = this.audioContext.createAnalyser();
                     this.analyser.fftSize = this.bufferSize;
+                    this.analyser.smoothingTimeConstant = 0.2;
+                    
                     this.microphone.connect(this.analyser);
                     this.isListening = true;
                     this.detectPitch();
+                    
+                    return true;
                 } catch (error) {
-                    console.error('خطأ في الوصول إلى الميكروفون:', error);
+                    console.error('خطأ في الميكروفون:', error);
                     throw error;
                 }
             }
 
             stop() {
                 this.isListening = false;
-                if (this.microphone) this.microphone.disconnect();
+                if (this.microphone) {
+                    this.microphone.disconnect();
+                }
             }
 
             detectPitch() {
                 if (!this.isListening) return;
+
                 const buffer = new Float32Array(this.analyser.fftSize);
                 this.analyser.getFloatTimeDomainData(buffer);
+
                 const pitch = this.yinPitchDetection(buffer);
-                if (pitch > 0) this.onPitchDetected(pitch);
+                
+                if (pitch > 80 && pitch < 1000) {  // نطاق الترددات الموسيقية
+                    this.onPitchDetected(pitch);
+                }
+
                 requestAnimationFrame(() => this.detectPitch());
             }
 
@@ -688,29 +706,39 @@
                 const threshold = 0.1;
                 const sampleRate = this.sampleRate;
                 const bufferSize = buffer.length;
+                
                 let tauEstimate = -1;
                 let previousDifference = Infinity;
-
-                for (let tau = 4; tau < bufferSize / 4; tau++) {
+                
+                for (let tau = 5; tau < bufferSize / 4; tau++) {
                     let difference = 0;
+                    
                     for (let i = 0; i < bufferSize / 4; i++) {
                         if (i + tau < bufferSize) {
                             const delta = buffer[i] - buffer[i + tau];
                             difference += delta * delta;
                         }
                     }
-                    difference /= tau;
-                    if (tau > 4 && difference < threshold && previousDifference > difference) {
+                    
+                    difference = difference / tau;
+                    
+                    if (tau > 5 && difference < threshold && previousDifference > difference) {
                         tauEstimate = tau;
                         break;
                     }
+                    
                     previousDifference = difference;
                 }
-                return tauEstimate > 0 ? sampleRate / tauEstimate : -1;
+                
+                if (tauEstimate > 0) {
+                    return sampleRate / tauEstimate;
+                }
+                
+                return -1;
             }
 
             frequencyToNote(frequency, referenceA4 = 440) {
-                if (frequency <= 0) return { note: '---', cents: 0, octave: 0, maqamNote: '---' };
+                if (frequency <= 0) return { note: '---', cents: 0, octave: 0, maqamNote: '---', frequency: 0 };
                 
                 const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
                 const halfStepsFromA4 = 12 * Math.log2(frequency / referenceA4);
@@ -722,9 +750,16 @@
                 if (noteIndex < 0) noteIndex += 12;
                 
                 let octave = 4 + Math.floor((a4Index + roundedHalfSteps) / 12);
-                let maqamNote = this.convertToMaqamNote(noteNames[noteIndex], cents);
                 
-                return { note: noteNames[noteIndex], maqamNote, cents, octave, frequency };
+                const maqamNote = this.convertToMaqamNote(noteNames[noteIndex], cents);
+                
+                return {
+                    note: noteNames[noteIndex],
+                    maqamNote: maqamNote,
+                    cents: cents,
+                    octave: octave,
+                    frequency: frequency
+                };
             }
 
             convertToMaqamNote(note, cents) {
@@ -733,14 +768,20 @@
                     'F': 'فا', 'F#': 'فا دييز', 'G': 'صول', 'G#': 'صول دييز',
                     'A': 'لا', 'A#': 'لا دييز', 'B': 'سي'
                 };
+                
                 let baseNote = maqamNotes[note] || note;
-                if (cents < -30 && (note === 'E' || note === 'B')) return baseNote + ' (نصف بيمول)';
-                if (cents > 30 && (note === 'F' || note === 'C')) return baseNote + ' (نصف دييز)';
+                
+                if (cents < -30 && (note === 'E' || note === 'B' || note === 'A')) {
+                    return baseNote + ' (نصف بيمول)';
+                } else if (cents > 30 && (note === 'F' || note === 'C' || note === 'G')) {
+                    return baseNote + ' (نصف دييز)';
+                }
+                
                 return baseNote;
             }
         }
 
-        // ==================== محرك المقامات ====================
+        // ==================== محرك المقامات المتكامل ====================
         class MaqamEngine {
             constructor() {
                 this.currentMaqam = 'rast';
@@ -749,88 +790,188 @@
                 this.transitions = [];
                 this.stabilityHistory = [];
                 this.maqamDurations = {};
-                this.initializeMaqams();
-            }
-
-            initializeMaqams() {
-                for (const maqam in MaqamData.maqamat) this.maqamDurations[maqam] = 0;
+                this.lastTransitionTime = Date.now();
+                
+                for (const maqam in MaqamData.maqamat) {
+                    this.maqamDurations[maqam] = 0;
+                }
             }
 
             analyzeNote(frequency, referenceA4 = 440) {
                 const pitchDetector = new PitchDetector(null, null);
                 const noteData = pitchDetector.frequencyToNote(frequency, referenceA4);
                 
-                this.notesHistory.push({ note: noteData.maqamNote, frequency, timestamp: Date.now() });
-                if (this.notesHistory.length > 10) this.notesHistory.shift();
+                const now = Date.now();
+                
+                this.notesHistory.push({ 
+                    note: noteData.maqamNote,
+                    rawNote: noteData.note,
+                    frequency, 
+                    timestamp: now 
+                });
+                
+                if (this.notesHistory.length > 15) {
+                    this.notesHistory.shift();
+                }
 
                 const detectedMaqam = this.detectMaqamFromHistory();
-                if (detectedMaqam && detectedMaqam !== this.currentMaqam) this.handleMaqamTransition(detectedMaqam);
+                
+                if (detectedMaqam && detectedMaqam !== this.currentMaqam) {
+                    const timeInMaqam = now - this.lastTransitionTime;
+                    this.maqamDurations[this.currentMaqam] += timeInMaqam;
+                    
+                    this.handleMaqamTransition(detectedMaqam);
+                    this.lastTransitionTime = now;
+                }
                 
                 const stability = this.calculateMaqamStability();
                 this.stabilityHistory.push(stability);
-                if (this.stabilityHistory.length > 50) this.stabilityHistory.shift();
                 
-                return { note: noteData, maqam: detectedMaqam || this.currentMaqam, stability, transitions: this.transitions };
+                if (this.stabilityHistory.length > 30) {
+                    this.stabilityHistory.shift();
+                }
+                
+                return { 
+                    note: noteData, 
+                    maqam: detectedMaqam || this.currentMaqam, 
+                    stability, 
+                    transitions: this.transitions 
+                };
             }
 
             detectMaqamFromHistory() {
-                if (this.notesHistory.length < 3) return null;
-                const recentNotes = this.notesHistory.map(n => n.note);
-                let bestMatch = null, bestScore = 0;
+                if (this.notesHistory.length < 4) return null;
+                
+                const recentNotes = this.notesHistory.map(n => n.rawNote).slice(-8);
+                let bestMatch = null;
+                let bestScore = 0;
 
                 for (const [maqamKey, maqam] of Object.entries(MaqamData.maqamat)) {
                     let score = 0;
+                    let matches = 0;
+                    
                     for (let i = 0; i < Math.min(recentNotes.length, maqam.notes.length); i++) {
-                        if (this.notesMatch(recentNotes[recentNotes.length - 1 - i], maqam.notes[i])) score += 10;
+                        const historyNote = recentNotes[recentNotes.length - 1 - i];
+                        const maqamNote = maqam.notes[i];
+                        
+                        if (this.notesMatch(historyNote, maqamNote)) {
+                            score += 10;
+                            matches++;
+                        } else if (this.notesClose(historyNote, maqamNote)) {
+                            score += 3;
+                        }
                     }
-                    if (score > bestScore) { bestScore = score; bestMatch = maqamKey; }
+                    
+                    const matchPercentage = matches / Math.min(recentNotes.length, maqam.notes.length);
+                    const totalScore = score * matchPercentage;
+                    
+                    if (totalScore > bestScore) {
+                        bestScore = totalScore;
+                        bestMatch = maqamKey;
+                    }
                 }
-                return bestMatch;
+                
+                return bestScore > 15 ? bestMatch : null;
             }
 
             notesMatch(note1, note2) {
                 if (!note1 || !note2) return false;
-                const cleanNote1 = note1.replace(/\s*\(.*?\)\s*/g, '');
-                const synonyms = { 'دو': ['C'], 'ري': ['D'], 'مي': ['E'], 'فا': ['F'], 'صول': ['G'], 'لا': ['A'], 'سي': ['B'] };
-                if (cleanNote1 === note2) return true;
-                for (const [arabic, western] of Object.entries(synonyms)) {
-                    if ((cleanNote1 === arabic && western.includes(note2)) || (cleanNote1 === note2 && western.includes(arabic))) return true;
-                }
-                return false;
+                
+                const normalizeNote = (n) => {
+                    return n.replace(/\s*\(.*?\)\s*/g, '')
+                           .replace('_half', '')
+                           .replace('_flat', '')
+                           .replace('#', '');
+                };
+                
+                const n1 = normalizeNote(note1);
+                const n2 = normalizeNote(note2);
+                
+                const synonyms = {
+                    'دو': 'C', 'C': 'دو',
+                    'ري': 'D', 'D': 'ري',
+                    'مي': 'E', 'E': 'مي',
+                    'فا': 'F', 'F': 'فا',
+                    'صول': 'G', 'G': 'صول',
+                    'لا': 'A', 'A': 'لا',
+                    'سي': 'B', 'B': 'سي'
+                };
+                
+                return n1 === n2 || synonyms[n1] === n2 || synonyms[n2] === n1;
+            }
+
+            notesClose(note1, note2) {
+                if (!note1 || !note2) return false;
+                
+                const getBaseNote = (n) => {
+                    return n.replace(/\s*\(.*?\)\s*/g, '')
+                           .replace('_half', '')
+                           .replace('_flat', '')
+                           .replace('#', '');
+                };
+                
+                return getBaseNote(note1) === getBaseNote(note2);
             }
 
             handleMaqamTransition(newMaqam) {
-                const transition = { from: this.currentMaqam, to: newMaqam, timestamp: Date.now() };
+                const transition = {
+                    from: this.currentMaqam,
+                    to: newMaqam,
+                    timestamp: Date.now(),
+                    fromName: MaqamData.maqamat[this.currentMaqam]?.name || this.currentMaqam,
+                    toName: MaqamData.maqamat[newMaqam]?.name || newMaqam
+                };
+                
                 this.transitions.push(transition);
                 this.previousMaqam = this.currentMaqam;
                 this.currentMaqam = newMaqam;
-                if (!this.maqamDurations[newMaqam]) this.maqamDurations[newMaqam] = 0;
+                
                 return transition;
             }
 
             calculateMaqamStability() {
-                if (this.notesHistory.length < 5) return 1.0;
-                const recentNotes = this.notesHistory.slice(-5);
-                const expectedNotes = MaqamData.maqamat[this.currentMaqam].notes;
+                if (this.notesHistory.length < 5) return 0.8;
+                
+                const recentNotes = this.notesHistory.slice(-8);
+                const expectedNotes = MaqamData.maqamat[this.currentMaqam]?.notes || [];
+                
+                if (expectedNotes.length === 0) return 0.5;
+                
                 let matches = 0;
-                for (let i = 0; i < recentNotes.length; i++) {
-                    if (i < expectedNotes.length && this.notesMatch(recentNotes[i].note, expectedNotes[i])) matches++;
+                let total = 0;
+                
+                for (let i = 0; i < Math.min(recentNotes.length, expectedNotes.length); i++) {
+                    if (this.notesMatch(recentNotes[i].rawNote, expectedNotes[i])) {
+                        matches++;
+                    }
+                    total++;
                 }
-                return matches / recentNotes.length;
+                
+                const frequency = recentNotes[recentNotes.length - 1]?.frequency || 0;
+                const expectedFreq = MaqamData.getFrequency(expectedNotes[0] || 'C');
+                const freqStability = frequency > 0 ? 1 - Math.min(0.3, Math.abs(frequency - expectedFreq) / expectedFreq) : 0.8;
+                
+                return (matches / total) * 0.7 + freqStability * 0.3;
             }
 
             suggestCadences() {
                 const maqam = this.currentMaqam;
-                const cadences = MaqamData.cadences[maqam] || [];
-                return cadences.map(cadence => ({ pattern: cadence, description: this.describeCadence(cadence) }));
+                const cadences = MaqamData.cadences[maqam] || MaqamData.cadences.rast;
+                
+                return cadences.map(cadence => ({
+                    pattern: cadence,
+                    description: this.describeCadence(cadence)
+                }));
             }
 
             describeCadence(cadence) {
                 const parts = cadence.split('-');
                 const lastNote = parts[parts.length - 1];
                 const firstNote = parts[0];
+                
                 if (lastNote === firstNote) return 'قفلة تأكيدية على المقام';
                 else if (parts.length > 4) return 'قفلة مطولة مع زخارف';
+                else if (cadence.includes('half') || cadence.includes('flat')) return 'قفلة شرقية مميزة';
                 else return 'قفلة سريعة مباشرة';
             }
 
@@ -840,11 +981,15 @@
                 this.notesHistory = [];
                 this.transitions = [];
                 this.stabilityHistory = [];
-                for (const maqam in this.maqamDurations) this.maqamDurations[maqam] = 0;
+                this.lastTransitionTime = Date.now();
+                
+                for (const maqam in this.maqamDurations) {
+                    this.maqamDurations[maqam] = 0;
+                }
             }
         }
 
-        // ==================== الرادار البصري ====================
+        // ==================== الرادار البصري المتقدم ====================
         class MaqamVisualizer {
             constructor(canvasId) {
                 this.canvas = document.getElementById(canvasId);
@@ -856,21 +1001,32 @@
                 this.radius = Math.min(this.width, this.height) / 2 - 20;
                 this.currentMaqam = 'rast';
                 this.notes = [];
+                this.rotation = 0;
             }
 
             drawMaqamRadar(maqam, notes, stability) {
                 this.ctx.clearRect(0, 0, this.width, this.height);
+                
+                this.rotation += 0.002;
+                
                 this.drawBackgroundCircles();
                 this.drawRadialLines();
                 this.drawMaqamNotes(maqam);
                 this.drawPlayedNotes(notes);
                 this.drawLabels();
-                if (notes.length > 0) this.drawCurrentIndicator(notes[notes.length - 1], stability);
+                this.drawCenterGlow(stability);
+                
+                if (notes.length > 0) {
+                    this.drawCurrentIndicator(notes[notes.length - 1], stability);
+                }
+                
+                this.drawMaqamColorEffect(maqam);
             }
 
             drawBackgroundCircles() {
                 this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
                 this.ctx.lineWidth = 1;
+                
                 for (let i = 1; i <= 4; i++) {
                     const r = (this.radius * i) / 4;
                     this.ctx.beginPath();
@@ -882,10 +1038,12 @@
             drawRadialLines() {
                 this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
                 this.ctx.lineWidth = 1;
+                
                 for (let i = 0; i < 12; i++) {
-                    const angle = (i * Math.PI * 2) / 12 - Math.PI / 2;
+                    const angle = (i * Math.PI * 2) / 12 - Math.PI / 2 + this.rotation * 0.1;
                     const x = this.centerX + Math.cos(angle) * this.radius;
                     const y = this.centerY + Math.sin(angle) * this.radius;
+                    
                     this.ctx.beginPath();
                     this.ctx.moveTo(this.centerX, this.centerY);
                     this.ctx.lineTo(x, y);
@@ -896,102 +1054,162 @@
             drawMaqamNotes(maqam) {
                 const maqamData = MaqamData.maqamat[maqam];
                 if (!maqamData) return;
+                
                 const notes = maqamData.notes;
                 const color = maqamData.color;
                 
                 notes.forEach((note, index) => {
-                    const angle = (index * Math.PI * 2) / 12 - Math.PI / 2;
+                    const angle = (index * Math.PI * 2) / 12 - Math.PI / 2 + this.rotation * 0.05;
                     const distance = 0.8 * this.radius;
                     const x = this.centerX + Math.cos(angle) * distance;
                     const y = this.centerY + Math.sin(angle) * distance;
                     
                     this.ctx.beginPath();
-                    this.ctx.arc(x, y, 8, 0, Math.PI * 2);
-                    this.ctx.fillStyle = color + '40';
+                    this.ctx.arc(x, y, 10, 0, Math.PI * 2);
+                    this.ctx.fillStyle = color + '30';
                     this.ctx.fill();
                     this.ctx.strokeStyle = color;
                     this.ctx.lineWidth = 2;
                     this.ctx.stroke();
                     
+                    this.ctx.shadowColor = color;
+                    this.ctx.shadowBlur = 10;
+                    
                     this.ctx.fillStyle = '#fff';
-                    this.ctx.font = '12px Arial';
+                    this.ctx.font = 'bold 12px Arial';
                     this.ctx.textAlign = 'center';
                     this.ctx.textBaseline = 'middle';
-                    this.ctx.fillText(note.replace('_', ' '), x, y - 15);
+                    
+                    let displayNote = note.replace('_half', ' ♭½')
+                                         .replace('_flat', ' ♭')
+                                         .replace('#', ' ♯');
+                    this.ctx.fillText(displayNote, x, y - 18);
+                    
+                    this.ctx.shadowBlur = 0;
                 });
             }
 
             drawPlayedNotes(notes) {
                 if (!notes || notes.length === 0) return;
                 
-                notes.forEach((noteData, index) => {
-                    const noteIndex = this.getNoteIndex(noteData.note);
-                    if (noteIndex === -1) return;
+                for (let i = 0; i < notes.length; i++) {
+                    const noteData = notes[i];
+                    const noteIndex = this.getNoteIndex(noteData.rawNote || noteData.note);
                     
-                    const angle = (noteIndex * Math.PI * 2) / 12 - Math.PI / 2;
-                    const freshness = index / notes.length;
-                    const distance = (0.5 + freshness * 0.3) * this.radius;
+                    if (noteIndex === -1) continue;
+                    
+                    const age = (Date.now() - noteData.timestamp) / 2000;
+                    if (age > 1) continue;
+                    
+                    const angle = (noteIndex * Math.PI * 2) / 12 - Math.PI / 2 + this.rotation * 0.1;
+                    const freshness = 1 - age;
+                    const distance = (0.4 + freshness * 0.4) * this.radius;
+                    
                     const x = this.centerX + Math.cos(angle) * distance;
                     const y = this.centerY + Math.sin(angle) * distance;
-                    const size = 10 * (1 - freshness * 0.5);
-                    const alpha = 1 - freshness;
+                    
+                    const size = 15 * freshness;
+                    const alpha = freshness;
                     
                     this.ctx.beginPath();
                     this.ctx.arc(x, y, size, 0, Math.PI * 2);
-                    this.ctx.fillStyle = `rgba(255, 215, 0, ${alpha})`;
+                    
+                    const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, size * 2);
+                    gradient.addColorStop(0, `rgba(255, 215, 0, ${alpha})`);
+                    gradient.addColorStop(1, `rgba(255, 140, 0, ${alpha * 0.3})`);
+                    
+                    this.ctx.fillStyle = gradient;
                     this.ctx.fill();
                     
-                    if (index > 0) {
-                        const prevNoteIndex = this.getNoteIndex(notes[index - 1].note);
+                    if (i > 0) {
+                        const prevNoteData = notes[i - 1];
+                        const prevNoteIndex = this.getNoteIndex(prevNoteData.rawNote || prevNoteData.note);
+                        
                         if (prevNoteIndex !== -1) {
-                            const prevAngle = (prevNoteIndex * Math.PI * 2) / 12 - Math.PI / 2;
-                            const prevDistance = (0.5 + ((index - 1) / notes.length) * 0.3) * this.radius;
-                            const prevX = this.centerX + Math.cos(prevAngle) * prevDistance;
-                            const prevY = this.centerY + Math.sin(prevAngle) * prevDistance;
-                            
-                            this.ctx.beginPath();
-                            this.ctx.moveTo(prevX, prevY);
-                            this.ctx.lineTo(x, y);
-                            this.ctx.strokeStyle = `rgba(255, 215, 0, ${alpha * 0.5})`;
-                            this.ctx.lineWidth = 2;
-                            this.ctx.stroke();
+                            const prevAge = (Date.now() - prevNoteData.timestamp) / 2000;
+                            if (prevAge <= 1) {
+                                const prevAngle = (prevNoteIndex * Math.PI * 2) / 12 - Math.PI / 2 + this.rotation * 0.1;
+                                const prevFreshness = 1 - prevAge;
+                                const prevDistance = (0.4 + prevFreshness * 0.4) * this.radius;
+                                const prevX = this.centerX + Math.cos(prevAngle) * prevDistance;
+                                const prevY = this.centerY + Math.sin(prevAngle) * prevDistance;
+                                
+                                this.ctx.beginPath();
+                                this.ctx.moveTo(prevX, prevY);
+                                this.ctx.lineTo(x, y);
+                                this.ctx.strokeStyle = `rgba(255, 215, 0, ${Math.min(alpha, prevFreshness) * 0.5})`;
+                                this.ctx.lineWidth = 2;
+                                this.ctx.stroke();
+                            }
                         }
                     }
-                });
+                }
             }
 
             drawCurrentIndicator(lastNote, stability) {
-                const noteIndex = this.getNoteIndex(lastNote.note);
+                const noteIndex = this.getNoteIndex(lastNote.rawNote || lastNote.note);
                 if (noteIndex === -1) return;
                 
-                const angle = (noteIndex * Math.PI * 2) / 12 - Math.PI / 2;
+                const angle = (noteIndex * Math.PI * 2) / 12 - Math.PI / 2 + this.rotation * 0.1;
                 const distance = 0.8 * this.radius;
                 const x = this.centerX + Math.cos(angle) * distance;
                 const y = this.centerY + Math.sin(angle) * distance;
                 
+                this.ctx.shadowColor = '#fff';
+                this.ctx.shadowBlur = 20;
+                
                 this.ctx.beginPath();
-                this.ctx.arc(x, y, 15, 0, Math.PI * 2);
+                this.ctx.arc(x, y, 18, 0, Math.PI * 2);
                 this.ctx.strokeStyle = '#fff';
                 this.ctx.lineWidth = 3;
                 this.ctx.stroke();
                 
                 this.ctx.beginPath();
-                this.ctx.arc(x, y, 20 * (1 + stability), 0, Math.PI * 2);
+                this.ctx.arc(x, y, 22 * (0.8 + stability * 0.2), 0, Math.PI * 2);
                 this.ctx.strokeStyle = `rgba(76, 175, 80, ${stability})`;
                 this.ctx.lineWidth = 2;
+                this.ctx.stroke();
+                
+                this.ctx.shadowBlur = 0;
+            }
+
+            drawCenterGlow(stability) {
+                const gradient = this.ctx.createRadialGradient(
+                    this.centerX, this.centerY, 0,
+                    this.centerX, this.centerY, this.radius * 0.3
+                );
+                
+                const color = MaqamData.maqamat[this.currentMaqam]?.color || '#ffd700';
+                
+                gradient.addColorStop(0, color + '40');
+                gradient.addColorStop(0.5, color + '10');
+                gradient.addColorStop(1, 'transparent');
+                
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.width, this.height);
+            }
+
+            drawMaqamColorEffect(maqam) {
+                const color = MaqamData.maqamat[maqam]?.color || '#ffd700';
+                
+                this.ctx.strokeStyle = color + '80';
+                this.ctx.lineWidth = 2;
+                this.ctx.beginPath();
+                this.ctx.arc(this.centerX, this.centerY, this.radius + 2, 0, Math.PI * 2);
                 this.ctx.stroke();
             }
 
             drawLabels() {
                 const noteNames = ['دو', 'دو#', 'ري', 'ري#', 'مي', 'فا', 'فا#', 'صول', 'صول#', 'لا', 'لا#', 'سي'];
+                
                 noteNames.forEach((name, index) => {
-                    const angle = (index * Math.PI * 2) / 12 - Math.PI / 2;
-                    const distance = this.radius + 15;
+                    const angle = (index * Math.PI * 2) / 12 - Math.PI / 2 + this.rotation * 0.1;
+                    const distance = this.radius + 20;
                     const x = this.centerX + Math.cos(angle) * distance;
                     const y = this.centerY + Math.sin(angle) * distance;
                     
-                    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                    this.ctx.font = '10px Arial';
+                    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                    this.ctx.font = 'bold 11px Arial';
                     this.ctx.textAlign = 'center';
                     this.ctx.textBaseline = 'middle';
                     this.ctx.fillText(name, x, y);
@@ -1000,12 +1218,19 @@
 
             getNoteIndex(note) {
                 const noteMap = {
-                    'دو': 0, 'C': 0, 'دو دييز': 1, 'C#': 1, 'ري': 2, 'D': 2,
-                    'ري دييز': 3, 'D#': 3, 'مي': 4, 'E': 4, 'فا': 5, 'F': 5,
-                    'فا دييز': 6, 'F#': 6, 'صول': 7, 'G': 7, 'صول دييز': 8, 'G#': 8,
-                    'لا': 9, 'A': 9, 'لا دييز': 10, 'A#': 10, 'سي': 11, 'B': 11
+                    'دو': 0, 'C': 0, 'دو دييز': 1, 'C#': 1,
+                    'ري': 2, 'D': 2, 'ري دييز': 3, 'D#': 3,
+                    'مي': 4, 'E': 4, 'فا': 5, 'F': 5,
+                    'فا دييز': 6, 'F#': 6, 'صول': 7, 'G': 7,
+                    'صول دييز': 8, 'G#': 8, 'لا': 9, 'A': 9,
+                    'لا دييز': 10, 'A#': 10, 'سي': 11, 'B': 11
                 };
-                const cleanNote = note.replace(/\s*\(.*?\)\s*/g, '');
+                
+                let cleanNote = note;
+                if (typeof note === 'string') {
+                    cleanNote = note.replace(/\s*\(.*?\)\s*/g, '');
+                }
+                
                 return noteMap[cleanNote] !== undefined ? noteMap[cleanNote] : -1;
             }
 
@@ -1029,8 +1254,9 @@
                 this.stopBtn = document.getElementById('stopBtn');
                 this.resetBtn = document.getElementById('resetBtn');
                 this.currentMaqamEl = document.querySelector('#currentMaqam .maqam-name');
-                this.currentNoteEl = document.querySelector('.note-name');
-                this.currentFreqEl = document.querySelector('.note-frequency');
+                this.currentMaqamDesc = document.querySelector('#currentMaqam .maqam-desc');
+                this.noteNameEl = document.querySelector('.note-name');
+                this.noteFreqEl = document.querySelector('.note-frequency');
                 this.stabilityFill = document.getElementById('stabilityFill');
                 this.stabilityValue = document.getElementById('stabilityValue');
                 this.pathLog = document.getElementById('pathLog');
@@ -1040,8 +1266,10 @@
                 this.jinsEl = document.getElementById('jins');
                 this.degreeEl = document.getElementById('degree');
                 this.intervalsEl = document.getElementById('intervals');
-                this.referenceSelect = document.getElementById('referenceSelect');
+                this.referenceSelect = document.getElementById('referenceNote');
                 this.liveIndicator = document.getElementById('liveIndicator');
+                this.cadenceSuggestions = document.getElementById('cadenceSuggestions');
+                this.instrumentSelect = document.getElementById('instrumentSelect');
                 
                 this.init();
                 this.animate();
@@ -1051,11 +1279,14 @@
                 this.startBtn.addEventListener('click', () => this.startAnalysis());
                 this.stopBtn.addEventListener('click', () => this.stopAnalysis());
                 this.resetBtn.addEventListener('click', () => this.resetAnalysis());
+                this.referenceSelect.addEventListener('change', () => this.updateReference());
                 
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                     this.showError('متصفحك لا يدعم الوصول إلى الميكروفون');
                     this.startBtn.disabled = true;
                 }
+                
+                this.addToPathLog('🎵 مرحباً بك في محلل المقامات الشرقية');
             }
 
             animate() {
@@ -1069,10 +1300,16 @@
 
             async startAnalysis() {
                 try {
+                    this.addToPathLog('🔄 جاري طلب إذن الميكروفون...');
+                    
                     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
                     await this.audioContext.resume();
                     
-                    this.pitchDetector = new PitchDetector(this.audioContext, (frequency) => this.onPitchDetected(frequency));
+                    this.pitchDetector = new PitchDetector(
+                        this.audioContext, 
+                        (frequency) => this.onPitchDetected(frequency)
+                    );
+                    
                     await this.pitchDetector.start();
                     
                     this.isRunning = true;
@@ -1082,15 +1319,22 @@
                     this.statusValue.style.color = '#4caf50';
                     this.liveIndicator.style.background = '#4caf50';
                     
-                    this.addToPathLog('🎵 بدء التحليل');
+                    this.addToPathLog('✅ تم الوصول للميكروفون - اعزف الآن');
+                    
                 } catch (error) {
                     this.showError('خطأ في بدء التحليل: ' + error.message);
+                    this.addToPathLog('❌ خطأ: ' + error.message);
                 }
             }
 
             stopAnalysis() {
-                if (this.pitchDetector) this.pitchDetector.stop();
-                if (this.audioContext) this.audioContext.close();
+                if (this.pitchDetector) {
+                    this.pitchDetector.stop();
+                }
+                
+                if (this.audioContext) {
+                    this.audioContext.close();
+                }
                 
                 this.isRunning = false;
                 this.startBtn.disabled = false;
@@ -1100,68 +1344,89 @@
                 this.liveIndicator.style.background = '#ff4757';
                 
                 this.addToPathLog('⏹️ توقف التحليل');
+                this.showQuickReport();
             }
 
             resetAnalysis() {
                 this.maqamEngine.reset();
                 this.frequencyHistory = [];
+                
                 this.pathLog.innerHTML = '';
                 this.addToPathLog('🔄 تمت إعادة التعيين');
+                
                 this.statusValue.textContent = 'تمت إعادة التعيين';
-                this.updateUI();
+                
+                this.updateUI({
+                    maqam: 'rast',
+                    note: { maqamNote: '--', frequency: 0 },
+                    stability: 0
+                });
             }
 
             onPitchDetected(frequency) {
                 if (!this.isRunning) return;
                 
-                this.liveFrequency.textContent = frequency.toFixed(2) + ' Hz';
-                this.frequencyHistory.push(frequency);
-                if (this.frequencyHistory.length > 50) this.frequencyHistory.shift();
-                
-                const referenceA4 = parseInt(document.getElementById('referenceNote').value);
+                const referenceA4 = parseInt(this.referenceSelect.value);
                 const analysis = this.maqamEngine.analyzeNote(frequency, referenceA4);
+                
+                this.frequencyHistory.push(frequency);
+                if (this.frequencyHistory.length > 30) {
+                    this.frequencyHistory.shift();
+                }
                 
                 this.visualizer.update(analysis.maqam, this.maqamEngine.notesHistory);
                 this.updateUI(analysis);
                 
                 if (analysis.transitions.length > 0) {
                     const lastTransition = analysis.transitions[analysis.transitions.length - 1];
-                    this.addToPathLog(`🔄 انتقال: ${MaqamData.maqamat[lastTransition.from]?.name || lastTransition.from} ← ${MaqamData.maqamat[lastTransition.to]?.name || lastTransition.to}`);
+                    if (lastTransition.timestamp > Date.now() - 1000) {
+                        this.addToPathLog(`🔄 انتقال: ${lastTransition.fromName} ← ${lastTransition.toName}`);
+                    }
                 }
+                
+                const avgFrequency = this.frequencyHistory.reduce((a, b) => a + b, 0) / this.frequencyHistory.length;
+    this.liveFrequency.textContent = avgFrequency.toFixed(2) + ' Hz';
             }
 
             updateUI(analysis) {
                 if (!analysis) return;
                 
-                const maqamName = MaqamData.maqamat[analysis.maqam]?.name || 'غير معروف';
-                this.currentMaqamEl.textContent = maqamName;
-                this.liveMaqam.textContent = maqamName;
+                const maqamData = MaqamData.maqamat[analysis.maqam] || MaqamData.maqamat.rast;
+                
+                this.currentMaqamEl.textContent = maqamData.name;
+                this.currentMaqamDesc.textContent = maqamData.description;
+                this.liveMaqam.textContent = maqamData.name;
                 
                 if (analysis.note) {
-                    this.currentNoteEl.textContent = analysis.note.maqamNote;
-                    this.currentFreqEl.textContent = analysis.note.frequency.toFixed(2) + ' Hz';
+                    this.noteNameEl.textContent = analysis.note.maqamNote;
+                    this.noteFreqEl.textContent = analysis.note.frequency.toFixed(2) + ' Hz';
                 }
                 
-                const stabilityPercent = Math.round(analysis.stability * 100);
+                const stabilityPercent = Math.min(100, Math.max(0, Math.round(analysis.stability * 100)));
                 this.stabilityFill.style.width = stabilityPercent + '%';
                 this.stabilityValue.textContent = stabilityPercent + '%';
                 
-                const maqamDetails = MaqamData.maqamat[analysis.maqam];
-                if (maqamDetails) {
-                    this.jinsEl.textContent = maqamDetails.jins.map(j => MaqamData.ajnas[j]?.name || j).join(' - ');
-                    this.degreeEl.textContent = maqamDetails.root;
-                    this.intervalsEl.textContent = maqamDetails.intervals.join(', ');
-                }
+                this.jinsEl.textContent = maqamData.jins.map(j => 
+                    MaqamData.ajnas[j]?.name || j
+                ).join(' - ');
+                
+                this.degreeEl.textContent = maqamData.root + ' (' + this.getArabicNoteName(maqamData.root) + ')';
+                this.intervalsEl.textContent = maqamData.intervals.map(i => i + '/4').join(', ');
                 
                 this.updateCadenceSuggestions();
             }
 
+            getArabicNoteName(note) {
+                const names = { 'C': 'دو', 'D': 'ري', 'E': 'مي', 'F': 'فا', 'G': 'صول', 'A': 'لا', 'B': 'سي' };
+                return names[note] || note;
+            }
+
             updateCadenceSuggestions() {
                 const suggestions = this.maqamEngine.suggestCadences();
-                const suggestionsList = document.getElementById('cadenceSuggestions');
-                if (suggestionsList && suggestions.length > 0) {
-                    suggestionsList.innerHTML = suggestions.map(s => 
-                        `<div class="suggestion-item" onclick="alert('تجربة قفلة: ${s.pattern}')">
+                
+                if (suggestions && suggestions.length > 0) {
+                    this.cadenceSuggestions.innerHTML = suggestions.map(s => 
+                        `<div class="suggestion-item" onclick="app.playCadence('${s.pattern}')">
                             ${s.pattern.replace(/-/g, ' - ')}
                             <small>${s.description}</small>
                         </div>`
@@ -1169,23 +1434,55 @@
                 }
             }
 
+            updateReference() {
+                const value = this.referenceSelect.value;
+                this.addToPathLog(`🎚️ تغيير الدوزان إلى ${value} Hz`);
+            }
+
+            playCadence(pattern) {
+                this.addToPathLog(`🎵 تجربة قفلة: ${pattern}`);
+            }
+
+            showQuickReport() {
+                if (this.maqamEngine.transitions.length === 0) {
+                    this.addToPathLog('📊 لا توجد انتقالات كافية للتقرير');
+                    return;
+                }
+                
+                const totalTime = this.maqamEngine.transitions.length > 0 ? 
+                    Date.now() - this.maqamEngine.transitions[0].timestamp : 0;
+                
+                const avgStability = this.maqamEngine.stabilityHistory.length > 0 ?
+                    (this.maqamEngine.stabilityHistory.reduce((a, b) => a + b, 0) / this.maqamEngine.stabilityHistory.length) * 100 : 0;
+                
+                this.addToPathLog(`📊 تقرير: ${this.maqamEngine.transitions.length} انتقالات | استقرار ${Math.round(avgStability)}%`);
+            }
+
             addToPathLog(message) {
                 const entry = document.createElement('div');
                 entry.className = 'log-entry';
-                entry.textContent = message;
+                
+                const time = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                entry.textContent = `[${time}] ${message}`;
+                
                 this.pathLog.insertBefore(entry, this.pathLog.firstChild);
-                while (this.pathLog.children.length > 10) this.pathLog.removeChild(this.pathLog.lastChild);
+                
+                while (this.pathLog.children.length > 15) {
+                    this.pathLog.removeChild(this.pathLog.lastChild);
+                }
             }
 
             showError(message) {
                 console.error(message);
                 this.statusValue.textContent = 'خطأ: ' + message;
                 this.statusValue.style.color = '#ff4757';
+                this.liveIndicator.style.background = '#ff4757';
             }
         }
 
         // تشغيل التطبيق
         const app = new MaqamAnalyzerApp();
+        window.app = app; // للوصول من الأحداث
     </script>
 </body>
 </html>
