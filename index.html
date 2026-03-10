@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>محلل المقامات الشرقية - النسخة الذهبية الكاملة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محلل المقامات - النسخة النهائية</title>
     <style>
         * {
             margin: 0;
@@ -13,109 +13,99 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0a0c14 0%, #1a1e2b 100%);
-            min-height: 100vh;
-            color: #fff;
+            background: linear-gradient(135deg, #1a1e2b, #2d3349);
+            color: white;
             padding: 15px;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        /* ===== الهيدر الرئيسي ===== */
-        .main-header {
-            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,140,0,0.1));
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 25px;
-            margin-bottom: 25px;
+        /* ===== الهيدر ===== */
+        .header {
+            background: rgba(255,215,0,0.1);
+            padding: 20px;
+            border-radius: 20px;
             text-align: center;
-            border: 1px solid rgba(255,215,0,0.3);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            border: 2px solid #ffd700;
         }
 
-        .main-header h1 {
-            font-size: 42px;
-            background: linear-gradient(135deg, #ffd700, #ff8c00, #ff4500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .header h1 {
+            color: #ffd700;
+            font-size: 40px;
             margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(255,215,0,0.3);
         }
 
-        .main-header p {
+        .header p {
             color: #a0a8c0;
             font-size: 18px;
         }
 
-        /* ===== التحكم بالميكروفون المتقدم ===== */
-        .mic-advanced {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 80px;
-            padding: 15px 30px;
+        /* ===== قسم الميكروفون ===== */
+        .mic-section {
+            background: rgba(0,0,0,0.3);
+            padding: 25px;
+            border-radius: 30px;
+            margin-bottom: 25px;
             display: flex;
             align-items: center;
-            gap: 25px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,215,0,0.2);
+            gap: 30px;
             flex-wrap: wrap;
+            border: 2px solid #ffd700;
         }
 
-        .mic-button-super {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
+        .mic-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
             border: none;
-            font-size: 45px;
+            font-size: 60px;
             cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
-        .mic-button-super.mic-on {
+        .mic-on {
             background: #4caf50;
             color: white;
-            animation: pulse-green 2s infinite;
+            animation: pulse 1.5s infinite;
         }
 
-        .mic-button-super.mic-off {
+        .mic-off {
             background: #f44336;
             color: white;
         }
 
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(76, 175, 80, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 #4caf50; }
+            70% { box-shadow: 0 0 30px 10px #4caf50; }
+            100% { box-shadow: 0 0 0 0 #4caf50; }
         }
 
         .mic-info {
             flex: 1;
         }
 
-        .mic-status-text {
-            font-size: 20px;
+        .mic-status {
+            font-size: 24px;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
-
-        .mic-status-text.on { color: #4caf50; }
-        .mic-status-text.off { color: #f44336; }
 
         .mic-permission {
-            font-size: 14px;
             color: #a0a8c0;
+            font-size: 16px;
         }
 
-        /* ===== مؤشر مستوى الصوت المتقدم ===== */
-        .volume-section {
-            background: rgba(0,0,0,0.3);
-            border-radius: 50px;
-            padding: 15px 25px;
+        /* ===== مؤشر الصوت المتطور ===== */
+        .volume-meter {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 20px;
             min-width: 250px;
         }
 
@@ -130,183 +120,162 @@
             font-weight: bold;
         }
 
-        .volume-percentage {
+        .volume-value {
             color: #4caf50;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
         }
 
-        .volume-bar-container {
-            height: 25px;
-            background: rgba(255,255,255,0.1);
+        .volume-bar-bg {
+            height: 30px;
+            background: #444;
             border-radius: 15px;
             overflow: hidden;
             margin-bottom: 5px;
-            position: relative;
         }
 
         .volume-bar-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #4caf50, #ffd700, #ff4500);
+            background: linear-gradient(90deg, #4caf50, #ffd700, #f44336);
             transition: width 0.05s;
-            border-radius: 15px;
+        }
+
+        .volume-peak-indicator {
+            position: relative;
+            height: 10px;
+            background: #333;
+            border-radius: 5px;
         }
 
         .volume-peak {
             position: absolute;
-            top: 0;
-            height: 100%;
-            width: 2px;
+            width: 4px;
+            height: 14px;
             background: white;
+            top: -2px;
             opacity: 0;
             transition: opacity 0.1s;
         }
 
-        .volume-scale {
-            display: flex;
-            justify-content: space-between;
-            color: #a0a8c0;
-            font-size: 10px;
-            padding: 0 5px;
-        }
-
         .volume-wave {
             display: flex;
-            gap: 2px;
-            height: 30px;
+            gap: 3px;
+            height: 50px;
+            margin-top: 15px;
             align-items: flex-end;
-            margin-top: 10px;
         }
 
         .wave-bar {
             flex: 1;
             background: #ffd700;
             height: 0%;
-            border-radius: 2px 2px 0 0;
+            border-radius: 3px 3px 0 0;
             transition: height 0.05s;
         }
 
-        /* ===== الشبكة الرئيسية ===== */
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
+        /* ===== لوحة التحكم ===== */
+        .control-panel {
+            background: rgba(0,0,0,0.3);
             padding: 25px;
-            border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 30px;
+            margin-bottom: 25px;
+            border: 2px solid #ffd700;
         }
 
-        .card-title {
+        .control-title {
             color: #ffd700;
-            font-size: 22px;
+            font-size: 28px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        /* ===== الرادار المتطور ===== */
-        .radar-container {
-            position: relative;
-            display: flex;
-            justify-content: center;
+        .control-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
             margin-bottom: 20px;
         }
 
-        #radarCanvas {
-            width: 100%;
-            max-width: 350px;
-            height: auto;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.5);
-            box-shadow: 0 0 50px rgba(255,215,0,0.2);
-        }
-
-        .maqam-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .maqam-big-name {
-            font-size: 40px;
-            font-weight: bold;
-            color: #ffd700;
-            text-shadow: 0 0 20px rgba(255,215,0,0.5);
-        }
-
-        /* ===== عرض النوتة العملاق ===== */
-        .note-giant {
-            text-align: center;
+        .control-btn {
             padding: 20px;
-            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,140,0,0.1));
-            border-radius: 30px;
-            margin: 15px 0;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .note-giant-name {
-            font-size: 90px;
+        .btn-green { background: #4caf50; color: white; }
+        .btn-red { background: #f44336; color: white; }
+        .btn-gold { background: #ffd700; color: black; }
+        .btn-orange { background: #ff8c00; color: white; }
+
+        .control-btn:hover:not(:disabled) {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px #ffd700;
+        }
+
+        .control-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* ===== عرض النوتة ===== */
+        .note-display {
+            background: linear-gradient(135deg, #2d3349, #1a1e2b);
+            padding: 30px;
+            border-radius: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 2px solid #ffd700;
+        }
+
+        .note-big {
+            font-size: 120px;
             font-weight: bold;
             color: #ffd700;
             line-height: 1;
             text-shadow: 0 0 30px #ffd700;
         }
 
-        .note-giant-details {
+        .note-details {
             display: flex;
             justify-content: center;
             gap: 30px;
-            margin-top: 15px;
-            font-size: 18px;
+            margin-top: 20px;
+            font-size: 20px;
         }
 
-        .note-giant-freq {
-            color: #4caf50;
-        }
+        .note-freq { color: #4caf50; }
+        .note-cents { color: #ff8c00; }
 
-        .note-giant-cents {
-            color: #ff8c00;
-        }
-
-        /* ===== مؤشر الاستقرار المحسن ===== */
-        .stability-container {
+        /* ===== مؤشر الاستقرار ===== */
+        .stability-box {
             background: rgba(0,0,0,0.3);
-            border-radius: 20px;
             padding: 20px;
-            margin: 15px 0;
+            border-radius: 20px;
+            margin-bottom: 25px;
         }
 
         .stability-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .stability-label {
-            color: #a0a8c0;
-        }
-
-        .stability-value {
-            color: #4caf50;
-            font-weight: bold;
-            font-size: 20px;
+            margin-bottom: 10px;
         }
 
         .stability-bar-bg {
             height: 30px;
-            background: rgba(255,255,255,0.1);
+            background: #444;
             border-radius: 15px;
             overflow: hidden;
-            position: relative;
         }
 
         .stability-bar-fill {
@@ -321,381 +290,370 @@
             justify-content: space-between;
             margin-top: 5px;
             color: #a0a8c0;
-            font-size: 12px;
         }
 
-        /* ===== نظام السولفا المتقدم ===== */
-        .solfa-premium {
-            background: linear-gradient(135deg, #2d3349, #1a1e2b);
+        /* ===== السولفا ===== */
+        .solfa-box {
+            background: linear-gradient(90deg, #2d3349, #1a1e2b);
+            padding: 20px;
             border-radius: 50px;
-            padding: 15px 25px;
-            margin: 15px 0;
+            margin-bottom: 25px;
             overflow-x: auto;
             white-space: nowrap;
-            border: 1px solid #ffd700;
+            border: 2px solid #ffd700;
         }
 
         .solfa-item {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 15px 25px;
             margin: 0 5px;
             border-radius: 30px;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: bold;
-            transition: all 0.3s;
+            transition: 0.3s;
         }
 
         .solfa-item.active {
             background: #ffd700;
-            color: #1a1e2b;
+            color: black;
             transform: scale(1.1);
-            box-shadow: 0 0 20px #ffd700;
+            box-shadow: 0 0 30px #ffd700;
         }
 
-        /* ===== قائمة الأخطاء المتطورة ===== */
-        .errors-premium {
+        /* ===== الأخطاء ===== */
+        .errors-box {
+            background: rgba(244,67,54,0.1);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
             max-height: 250px;
             overflow-y: auto;
-            padding: 15px;
-            background: rgba(244,67,54,0.05);
-            border-radius: 20px;
-            border: 1px solid #f44336;
+            border: 2px solid #f44336;
         }
 
-        .error-card {
-            background: rgba(244,67,54,0.1);
-            border-right: 5px solid #f44336;
+        .error-item {
+            background: rgba(244,67,54,0.2);
             padding: 15px;
             margin-bottom: 10px;
             border-radius: 10px;
+            border-right: 5px solid #f44336;
         }
 
-        .error-time {
-            color: #ffd700;
-            font-size: 12px;
-        }
-
-        .error-details {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        .error-expected {
-            color: #4caf50;
-        }
-
-        .error-actual {
-            color: #f44336;
-        }
-
-        .error-diff {
-            color: #ff8c00;
-        }
-
-        /* ===== أزرار التحكم الفاخرة ===== */
-        .control-buttons-premium {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .btn-premium {
-            padding: 18px;
-            border: none;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-start {
-            background: linear-gradient(135deg, #4caf50, #45a049);
-            color: white;
-            grid-column: span 2;
-        }
-
-        .btn-stop {
-            background: linear-gradient(135deg, #f44336, #d32f2f);
-            color: white;
-        }
-
-        .btn-report {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: #1a1e2b;
-        }
-
-        .btn-errors {
-            background: linear-gradient(135deg, #ff8c00, #ff4500);
-            color: white;
-        }
-
-        .btn-premium:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255,215,0,0.3);
-        }
-
-        .btn-premium:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
+        .error-time { color: #ffd700; }
+        .error-details { display: flex; gap: 20px; margin-top: 10px; }
+        .error-expected { color: #4caf50; }
+        .error-actual { color: #f44336; }
+        .error-diff { color: #ff8c00; }
 
         /* ===== سجل النوتات ===== */
-        .notes-history {
+        .history-box {
             background: rgba(0,0,0,0.3);
+            padding: 20px;
             border-radius: 20px;
-            padding: 15px;
+            margin-bottom: 25px;
             max-height: 200px;
             overflow-y: auto;
         }
 
         .history-item {
-            padding: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            color: #a0a8c0;
             display: flex;
             justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #444;
         }
 
-        .history-note {
-            color: #ffd700;
-            font-weight: bold;
-        }
+        .history-note { color: #ffd700; font-weight: bold; }
 
-        /* ===== شريط الحالة المتقدم ===== */
-        .status-premium {
+        /* ===== شريط الحالة ===== */
+        .status-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             background: rgba(0,0,0,0.5);
-            border-radius: 30px;
             padding: 20px;
-            margin-top: 25px;
-            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 30px;
+            margin-bottom: 25px;
+            border: 2px solid #ffd700;
         }
 
-        .status-block {
+        .status-item {
             text-align: center;
         }
 
-        .status-label-small {
-            color: #a0a8c0;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
+        .status-label { color: #a0a8c0; margin-bottom: 5px; }
+        .status-value { color: #ffd700; font-size: 22px; font-weight: bold; }
 
-        .status-value-big {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffd700;
-        }
-
-        /* ===== قسم التعليمات المتكامل ===== */
-        .guide-section {
-            background: rgba(255,255,255,0.03);
-            border-radius: 40px;
+        /* ===== التعليمات ===== */
+        .guide-box {
+            background: rgba(255,215,0,0.05);
             padding: 30px;
+            border-radius: 40px;
+            border: 3px solid #ffd700;
             margin-top: 30px;
-            border: 1px solid rgba(255,215,0,0.2);
         }
 
         .guide-title {
             color: #ffd700;
-            font-size: 28px;
-            margin-bottom: 25px;
+            font-size: 36px;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
-        .guide-steps-grid {
+        .guide-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
             margin-bottom: 30px;
         }
 
-        .guide-step-card {
+        .guide-card {
             background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 20px;
-            position: relative;
-            border-right: 5px solid #ffd700;
+            padding: 25px;
+            border-radius: 25px;
+            border-right: 8px solid #ffd700;
         }
 
-        .guide-step-number {
-            width: 40px;
-            height: 40px;
+        .guide-number {
+            width: 50px;
+            height: 50px;
             background: #ffd700;
-            color: #1a1e2b;
-            border-radius: 50%;
+            color: black;
+            border-radius: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 24px;
             font-weight: bold;
-            font-size: 20px;
             margin-bottom: 15px;
         }
 
         .guide-step-title {
             color: #ffd700;
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 22px;
+            margin-bottom: 15px;
         }
 
         .guide-step-desc {
             color: #a0a8c0;
-            line-height: 1.6;
+            line-height: 1.8;
+            font-size: 16px;
         }
 
         .guide-tips {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             flex-wrap: wrap;
-            margin-top: 20px;
+            margin: 25px 0;
         }
 
         .guide-tip {
             background: rgba(255,215,0,0.1);
-            padding: 15px 25px;
-            border-radius: 50px;
+            padding: 20px 30px;
+            border-radius: 60px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
             flex: 1;
         }
 
-        .guide-tip-icon {
-            font-size: 24px;
-        }
+        .guide-tip-icon { font-size: 30px; }
+        .guide-tip-text { color: #ffd700; font-size: 18px; }
 
-        .guide-tip-text {
-            color: #ffd700;
-        }
-
-        .guide-note-important {
+        .guide-warning {
             background: rgba(244,67,54,0.1);
-            border-right: 5px solid #f44336;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
+            padding: 25px;
+            border-radius: 20px;
+            border-right: 8px solid #f44336;
+            margin-top: 25px;
         }
+
+        .guide-warning strong { color: #f44336; font-size: 20px; }
+        .guide-warning p { color: #a0a8c0; margin-top: 10px; font-size: 16px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- الهيدر الفاخر -->
-        <div class="main-header">
-            <h1>🎵 محلل المقامات الشرقية الذهبي</h1>
-            <p>النسخة الكاملة - كل الميزات في مكان واحد</p>
+        <!-- الهيدر -->
+        <div class="header">
+            <h1>🎵 محلل المقامات الشرقية</h1>
+            <p>النسخة النهائية - كل الميزات والميكروفون شغال 100%</p>
         </div>
 
-        <!-- التحكم بالميكروفون المتطور -->
-        <div class="mic-advanced">
-            <button id="superMicBtn" class="mic-button-super mic-off">🎤</button>
+        <!-- قسم الميكروفون -->
+        <div class="mic-section">
+            <button id="micBtn" class="mic-button mic-off">🎤</button>
             <div class="mic-info">
-                <div id="micStatusText" class="mic-status-text off">الميكروفون مغلق</div>
-                <div id="micPermission" class="mic-permission">اضغط لفتح الميكروفون</div>
+                <div id="micStatus" class="mic-status">الميكروفون مغلق</div>
+                <div id="micPerm" class="mic-permission">اضغط على الزر الأحمر لفتح الميكروفون</div>
             </div>
             
-            <!-- مؤشر مستوى الصوت المتقدم -->
-            <div class="volume-section">
+            <!-- مؤشر الصوت -->
+            <div class="volume-meter">
                 <div class="volume-header">
                     <span class="volume-label">🔊 مستوى الصوت</span>
-                    <span class="volume-percentage" id="volumePercent">0%</span>
+                    <span class="volume-value" id="volumePercent">0%</span>
                 </div>
-                <div class="volume-bar-container">
+                <div class="volume-bar-bg">
                     <div class="volume-bar-fill" id="volumeFill"></div>
+                </div>
+                <div class="volume-peak-indicator">
                     <div class="volume-peak" id="volumePeak"></div>
                 </div>
-                <div class="volume-scale">
-                    <span>🔇 صامت</span>
-                    <span>🔈 ضعيف</span>
-                    <span>🔊 متوسط</span>
-                    <span>📢 عالي</span>
-                </div>
-                <div class="volume-wave" id="volumeWave">
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
-                    <div class="wave-bar"></div>
+                <div class="volume-wave" id="waveContainer">
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+                    <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
                     <div class="wave-bar"></div>
                 </div>
             </div>
         </div>
 
-        <!-- الشبكة الرئيسية -->
-        <div class="dashboard">
-            <!-- بطاقة الرادار والمقام -->
-            <div class="card">
-                <div class="card-title">📡 رادار المقامات</div>
-                <div class="radar-container">
-                    <canvas id="radarCanvas" width="400" height="400"></canvas>
-                    <div class="maqam-center">
-                        <div class="maqam-big-name" id="maqamBigName">راست</div>
-                    </div>
-                </div>
-                <div class="stability-container">
-                    <div class="stability-header">
-                        <span class="stability-label">📊 استقرار المقام</span>
-                        <span class="stability-value" id="stabilityPercent">0%</span>
-                    </div>
-                    <div class="stability-bar-bg">
-                        <div class="stability-bar-fill" id="stabilityFill" style="width: 0%"></div>
-                    </div>
-                    <div class="stability-markers">
-                        <span>ضعيف</span>
-                        <span>متوسط</span>
-                        <span>ممتاز</span>
-                    </div>
-                </div>
+        <!-- لوحة التحكم -->
+        <div class="control-panel">
+            <div class="control-title">🎮 لوحة التحكم</div>
+            <div class="control-buttons">
+                <button class="control-btn btn-green" id="startBtn" disabled>▶️ بدء التحليل</button>
+                <button class="control-btn btn-red" id="stopBtn" disabled>⏹️ إيقاف</button>
+                <button class="control-btn btn-gold" id="reportBtn" disabled>🔊 قراءة التقرير</button>
+                <button class="control-btn btn-orange" id="errorsBtn" disabled>⚠️ قراءة الأخطاء</button>
+            </div>
+        </div>
+
+        <!-- عرض النوتة -->
+        <div class="note-display">
+            <div class="note-big" id="noteName">--</div>
+            <div class="note-details">
+                <span class="note-freq" id="noteFreq">0 Hz</span>
+                <span class="note-cents" id="noteCents">0 سنت</span>
+            </div>
+        </div>
+
+        <!-- مؤشر الاستقرار -->
+        <div class="stability-box">
+            <div class="stability-header">
+                <span>📊 استقرار المقام</span>
+                <span id="stabilityPercent">0%</span>
+            </div>
+            <div class="stability-bar-bg">
+                <div class="stability-bar-fill" id="stabilityFill"></div>
+            </div>
+            <div class="stability-markers">
+                <span>ضعيف</span>
+                <span>متوسط</span>
+                <span>ممتاز</span>
+            </div>
+        </div>
+
+        <!-- السولفا -->
+        <div class="solfa-box" id="solfaContainer">
+            <span class="solfa-item">دو</span>
+            <span class="solfa-item">ري</span>
+            <span class="solfa-item">مي</span>
+            <span class="solfa-item">فا</span>
+            <span class="solfa-item">صول</span>
+            <span class="solfa-item">لا</span>
+            <span class="solfa-item">سي</span>
+            <span class="solfa-item">دو</span>
+        </div>
+
+        <!-- الأخطاء -->
+        <div class="errors-box" id="errorsContainer">
+            <div class="error-item">✅ لا توجد أخطاء بعد</div>
+        </div>
+
+        <!-- سجل النوتات -->
+        <div class="history-box" id="historyContainer"></div>
+
+        <!-- شريط الحالة -->
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-label">الحالة</div>
+                <div class="status-value" id="statusState">⚪ متوقف</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">المقام</div>
+                <div class="status-value" id="statusMaqam">راست</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">النوتة</div>
+                <div class="status-value" id="statusNote">--</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">مستوى الصوت</div>
+                <div class="status-value" id="statusVolume">0%</div>
+            </div>
+        </div>
+
+        <!-- التعليمات الكاملة -->
+        <div class="guide-box">
+            <div class="guide-title">
+                <span>📋</span>
+                <span>طريقة الاستخدام - اتبع الخطوات بالترتيب</span>
             </div>
 
-            <!-- بطاقة النوتة والتحليل -->
-            <div class="card">
-                <div class="card-title">🎵 النوتة الحالية</div>
-                <div class="note-giant">
-                    <div class="note-giant-name" id="giantNote">--</div>
-                    <div class="note-giant-details">
-                        <span class="note-giant-freq" id="giantFreq">0 Hz</span>
-                        <span class="note-giant-cents" id="giantCents">0 سنت</span>
+            <div class="guide-grid">
+                <!-- 1 -->
+                <div class="guide-card">
+                    <div class="guide-number">1</div>
+                    <div class="guide-step-title">🔴 فتح الميكروفون</div>
+                    <div class="guide-step-desc">
+                        • اضغط على الزر <strong style="color:#ffd700">🎤 الأحمر</strong><br>
+                        • ستظهر نافذة تطلب الإذن - اضغط "سماح"<br>
+                        • الزر يتحول إلى <strong style="color:#4caf50">أخضر</strong><br>
+                        • مؤشر الصوت يبدأ بالحركة
                     </div>
                 </div>
 
-                <!-- السولفا المتقدمة -->
-                <div class="solfa-premium" id="solfaContainer">
-                    <span class="solfa-item">دو</span>
-                    <span class="solfa-item">ري</span>
-                    <span class="solfa-item">مي</span>
-                    <span class="solfa-item">فا</span>
-                    <span class="solfa-item">صول</span>
-                    <span class="solfa-item">لا</span>
-                    <span class="solfa-item">سي</span>
-                    <span class="solfa-item">دو</span>
-                </div>
-
-                <!-- الأخطاء المتطورة -->
-                <div class="card-title" style="margin-top: 20px;">⚠️ الأخطاء المكتشفة</div>
-                <div class="errors-premium" id="errorsContainer">
-                    <div class="error-card">
-                        <div class="error-time">✅ لا توجد أخطاء بعد</div>
+                <!-- 2 -->
+                <div class="guide-card">
+                    <div class="guide-number">2</div>
+                    <div class="guide-step-title">▶️ بدء التحليل</div>
+                    <div class="guide-step-desc">
+                        • اضغط على زر <strong style="color:#4caf50">"بدء التحليل"</strong><br>
+                        • التطبيق يبدأ بالاستماع لصوتك<br>
+                        • شاهد النوتات تظهر فوراً<br>
+                        • مؤشر الاستقرار يتحرك
                     </div>
                 </div>
-            </div>
 
-            <!-- بطاقة التحكم والتاريخ -->
-            <div class="card">
-                <div class="card-title">🎮 لوحة التحكم</div>
-                
-                <div class="control-buttons-premium"
+                <!-- 3 -->
+                <div class="guide-card">
+                    <div class="guide-number">3</div>
+                    <div class="guide-step-title">🎵 العزف</div>
+                    <div class="guide-step-desc">
+                        • اعزف على آلتك الموسيقية<br>
+                        • اسم النوتة يظهر بحجم كبير<br>
+                        • شاهد الموجات تتحرك مع صوتك<br>
+                        • الأخطاء تظهر تلقائياً
+                    </div>
+                </div>
+
+                <!-- 4 -->
+                <div class="guide-card">
+                    <div class="guide-number">4</div>
+                    <div class="guide-step-title">🔇 إغلاق الميكروفون</div>
+                    <div class="guide-step-desc">
+                        • اضغط على الزر <strong style="color:#4caf50">🎤 الأخضر</strong><br>
+                        • الزر يعود <strong style="color:#f44336">أحمر</strong><br>
+                        • مؤشر الصوت يتوقف<br>
+                        • التحليل يتوقف تلقائياً
+                    </div>
+                </div>
+
+                <!-- 5 -->
+                <div class="guide-card">
+                    <div class="guide-number">5</div>
+                    <div class="guide-step-title">🔊 الاستماع للتقرير</div>
+                    <div class="guide-step-desc">
+                        • اضغط <strong>"قراءة التقرير"</strong><br>
+                        • يقرأ لك: عدد النوتات، الدقة، الأخطاء<br>
+                        • يخبرك بأعلى مستوى صوت<br>
+                        • يعطيك تقييم لأدائك
+                    </div>
+                </div>
+
+                <!-- 6 -->
+                <div class="guide-card">
+                    <div class="
