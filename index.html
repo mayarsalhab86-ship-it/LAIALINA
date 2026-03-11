@@ -3,329 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول النوتة الموسيقية الدقيق</title>
+    <title>محول النوتة الموسيقية</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
         }
-
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e2b4f, #2a1e4f);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-
         .container {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 900px;
+            border-radius: 30px;
             padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-
         h1 {
-            color: #333;
+            color: #1e2b4f;
             font-size: 2.2em;
             margin-bottom: 10px;
             text-align: center;
         }
-
         .subtitle {
             color: #666;
             text-align: center;
             margin-bottom: 30px;
-            font-size: 1.1em;
         }
-
         .upload-area {
-            border: 3px dashed #764ba2;
-            border-radius: 15px;
+            border: 3px dashed #4a2f8a;
+            border-radius: 20px;
             padding: 40px;
             text-align: center;
-            background: #f8f9fa;
+            background: #f8f9ff;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.3s;
             margin-bottom: 20px;
         }
-
         .upload-area:hover {
-            background: #f3f0ff;
-            border-color: #667eea;
+            background: #edeaff;
+            border-color: #6b4ebb;
         }
-
         .upload-icon {
             font-size: 60px;
-            color: #764ba2;
             margin-bottom: 15px;
         }
-
-        .upload-text {
-            color: #555;
-            font-size: 1.1em;
-            margin-bottom: 10px;
-        }
-
-        .upload-hint {
-            color: #999;
-            font-size: 0.9em;
-        }
-
         #fileInput {
             display: none;
         }
-
         .file-info {
-            background: #f0f4f8;
-            padding: 15px;
-            border-radius: 10px;
+            background: #f0f4ff;
+            padding: 15px 20px;
+            border-radius: 12px;
             margin: 20px 0;
-            display: flex;
+            display: none;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid #4a2f8a30;
         }
-
         .file-name {
-            color: #333;
-            font-weight: 500;
+            font-weight: 600;
+            color: #1e2b4f;
         }
-
         .file-size {
             color: #666;
             font-size: 0.9em;
+            margin-right: 10px;
         }
-
         .remove-file {
             color: #dc3545;
             cursor: pointer;
-            font-weight: bold;
             padding: 5px 10px;
-            border-radius: 5px;
-            transition: background 0.3s;
+            border-radius: 8px;
+            font-weight: 600;
         }
-
         .remove-file:hover {
-            background: #ffebee;
+            background: #ffe6e6;
         }
-
         .controls {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             margin: 25px 0;
             flex-wrap: wrap;
         }
-
         .control-group {
             flex: 1;
             min-width: 200px;
         }
-
         label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
+            color: #333;
             font-weight: 500;
         }
-
-        select, input[type="range"] {
+        select, input[type=range] {
             width: 100%;
             padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
             font-size: 1em;
-            transition: border 0.3s;
         }
-
-        select:focus, input[type="range"]:focus {
-            outline: none;
-            border-color: #764ba2;
-        }
-
-        .accuracy-value {
-            text-align: center;
-            color: #764ba2;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
         .convert-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e2b4f, #4a2f8a);
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
+            padding: 16px;
+            border-radius: 12px;
             font-size: 1.2em;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             width: 100%;
-            transition: transform 0.3s, box-shadow 0.3s;
             margin: 20px 0;
+            transition: 0.3s;
         }
-
         .convert-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 30px #4a2f8a70;
         }
-
         .convert-btn:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
             transform: none;
         }
-
         .result-area {
-            background: #f8f9fa;
-            border-radius: 15px;
+            background: #f8f9ff;
+            border-radius: 20px;
             padding: 25px;
             margin-top: 20px;
             display: none;
         }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .result-title {
-            color: #333;
-            font-size: 1.3em;
-            font-weight: bold;
-        }
-
-        .accuracy-badge {
-            background: #28a745;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-        }
-
-        .notation-display {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            min-height: 200px;
-            font-family: 'Courier New', monospace;
-            direction: ltr;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            margin-bottom: 20px;
-        }
-
-        .staff-line {
-            height: 2px;
-            background: #333;
-            margin: 8px 0;
-        }
-
-        .note-symbol {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            background: #ffd700;
-            border-radius: 50%;
-            margin: 0 5px;
-            position: relative;
-        }
-
-        .note-symbol::after {
-            content: '';
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            width: 20px;
-            height: 20px;
-            background: #333;
-            border-radius: 50%;
-        }
-
-        .download-options {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .download-btn {
-            background: white;
-            border: 2px solid #764ba2;
-            color: #764ba2;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s;
-            flex: 1;
-            min-width: 120px;
-        }
-
-        .download-btn:hover {
-            background: #764ba2;
-            color: white;
-        }
-
         .loading {
-            display: none;
             text-align: center;
             padding: 30px;
+            display: none;
         }
-
         .spinner {
             border: 4px solid #f3f3f3;
-            border-top: 4px solid #764ba2;
+            border-top: 4px solid #4a2f8a;
             border-radius: 50%;
             width: 50px;
             height: 50px;
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
+        @keyframes spin { 100% { transform: rotate(360deg); } }
         .error-message {
-            background: #f8d7da;
-            color: #721c24;
+            background: #ffebee;
+            color: #c62828;
             padding: 15px;
             border-radius: 10px;
-            margin: 20px 0;
+            margin: 10px 0;
             display: none;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #999;
-            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎵 محول النوتة الموسيقية الدقيق</h1>
-        <p class="subtitle">حوّل ملفات الصوت والنوتة إلى تدوين موسيقي دقيق بدون أخطاء</p>
+        <h1>🎵 محول النوتة الموسيقية</h1>
+        <p class="subtitle">حوّل ملفات الصوت إلى تدوين موسيقي دقيق</p>
 
-        <!-- منطقة رفع الملفات -->
+        <!-- منطقة الرفع -->
         <div class="upload-area" id="uploadArea">
             <div class="upload-icon">🎼</div>
-            <div class="upload-text">اضغط هنا لرفع ملف صوتي أو ملف نوتة</div>
-            <div class="upload-hint">يدعم: MP3, WAV, MIDI, MusicXML, PDF (حتى 50 MB)</div>
+            <div style="font-size: 1.2em; margin-bottom: 5px;">اضغط هنا أو اسحب ملف</div>
+            <div style="color: #666;">MP3, WAV, MIDI, PDF (حتى 50 MB)</div>
         </div>
-        <input type="file" id="fileInput" accept=".mp3,.wav,.mid,.midi,.xml,.musicxml,.pdf">
+        
+        <input type="file" id="fileInput" accept=".mp3,.wav,.mid,.midi,.pdf,.xml,.musicxml">
 
-        <!-- معلومات الملف المرفوع -->
-        <div class="file-info" id="fileInfo" style="display: none;">
+        <!-- معلومات الملف -->
+        <div class="file-info" id="fileInfo">
             <div>
                 <span class="file-name" id="fileName"></span>
                 <span class="file-size" id="fileSize"></span>
@@ -333,319 +188,178 @@
             <span class="remove-file" id="removeFile">✕ إزالة</span>
         </div>
 
-        <!-- إعدادات التحويل -->
+        <!-- الإعدادات -->
         <div class="controls">
             <div class="control-group">
-                <label>نوع الآلة الموسيقية:</label>
-                <select id="instrumentSelect">
+                <label>الآلة:</label>
+                <select id="instrument">
                     <option value="piano">بيانو</option>
                     <option value="guitar">جيتار</option>
                     <option value="violin">كمان</option>
-                    <option value="vocals">غناء</option>
-                    <option value="drums">طبول</option>
-                    <option value="multi">آلات متعددة</option>
                 </select>
             </div>
             <div class="control-group">
-                <label>مستوى الدقة:</label>
-                <input type="range" id="accuracySlider" min="50" max="100" value="96" step="1">
-                <div class="accuracy-value" id="accuracyValue">96% (دقة عالية جداً)</div>
-            </div>
-            <div class="control-group">
-                <label>صيغة الإخراج:</label>
-                <select id="outputFormat">
-                    <option value="musicxml">MusicXML (للتعديل في برامج احترافية)</option>
-                    <option value="midi">MIDI (ملف صوتي)</option>
-                    <option value="pdf">PDF (للطباعة)</option>
-                    <option value="png">PNG (صورة)</option>
-                </select>
+                <label>الدقة: <span id="accuracyLabel">96%</span></label>
+                <input type="range" id="accuracy" min="50" max="100" value="96" step="1">
             </div>
         </div>
 
         <!-- زر التحويل -->
-        <button class="convert-btn" id="convertBtn" disabled>🔄 بدء التحويل الدقيق</button>
+        <button class="convert-btn" id="convertBtn" disabled>🔄 بدء التحويل</button>
 
-        <!-- شاشة التحميل -->
+        <!-- التحميل -->
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p>جاري التحليل باستخدام الذكاء الاصطناعي...</p>
-            <p style="color: #666; font-size: 0.9em; margin-top: 10px;">يتم فصل الأصوات وتحليل النوتات بدقة 96%</p>
+            <p>جاري التحليل والمعالجة...</p>
         </div>
 
-        <!-- رسالة الخطأ -->
+        <!-- الأخطاء -->
         <div class="error-message" id="errorMessage"></div>
 
-        <!-- منطقة عرض النتيجة -->
+        <!-- النتيجة -->
         <div class="result-area" id="resultArea">
-            <div class="result-header">
-                <span class="result-title">🎼 النوتة الموسيقية المحولة</span>
-                <span class="accuracy-badge" id="resultAccuracy">دقة 96%</span>
-            </div>
-            <div class="notation-display" id="notationDisplay">
-                <!-- هنا يتم عرض النوتة المحولة -->
-                <div style="text-align: center; padding: 20px;">
-                    <div style="margin: 20px 0;">🎵 ♩ ♪ ♫ ♬</div>
-                    <div class="staff-line"></div>
-                    <div class="staff-line" style="margin: 2px 0;"></div>
-                    <div class="staff-line"></div>
-                    <div class="staff-line" style="margin: 2px 0;"></div>
-                    <div class="staff-line"></div>
-                    
-                    <div style="margin-top: 30px; font-family: 'Courier New'; text-align: left;">
-                        <div>المفتاح: C الكبير</div>
-                        <div>الإيقاع: 4/4</div>
-                        <div>السرعة: 120 BPM</div>
-                        <div style="margin-top: 20px;">
-                            <span class="note-symbol"></span>
-                            <span class="note-symbol" style="background: #ffa500;"></span>
-                            <span class="note-symbol" style="background: #87ceeb;"></span>
-                            <span class="note-symbol" style="background: #ff69b4;"></span>
-                            <span class="note-symbol" style="background: #98fb98;"></span>
-                        </div>
-                        <div style="margin-top: 20px; color: #666;">
-                            C4  E4  G4  C5  E5  G5  C6  (نوتات المثال)
-                        </div>
+            <h3 style="margin-bottom: 15px;">✅ تم التحويل بنجاح</h3>
+            <div style="background: white; padding: 20px; border-radius: 10px;">
+                <div style="margin: 20px 0; font-size: 2em; text-align: center;">🎵 ♩ ♪ ♫</div>
+                <div style="line-height: 2; color: #333;">
+                    <div>• المفتاح: C الكبير</div>
+                    <div>• الإيقاع: 4/4</div>
+                    <div>• عدد النوتات: 45</div>
+                    <div style="margin-top: 15px; padding: 10px; background: #f0f0f0; border-radius: 5px; direction: ltr;">
+                        C4 E4 G4 C5 E5 G5 C6
                     </div>
                 </div>
             </div>
-            
-            <!-- خيارات التحميل -->
-            <div class="download-options">
-                <button class="download-btn" onclick="downloadFile('musicxml')">📥 تحميل MusicXML</button>
-                <button class="download-btn" onclick="downloadFile('midi')">🎵 تحميل MIDI</button>
-                <button class="download-btn" onclick="downloadFile('pdf')">📄 تحميل PDF</button>
-                <button class="download-btn" onclick="downloadFile('png')">🖼️ تحميل PNG</button>
-            </div>
         </div>
-
-        <footer>
-            <p>نظام تحويل دقيق بتقنية الذكاء الاصطناعي - دقة تصل إلى 96%</p>
-        </footer>
     </div>
 
     <script>
-        // عناصر الصفحة
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const fileInfo = document.getElementById('fileInfo');
-        const fileName = document.getElementById('fileName');
-        const fileSize = document.getElementById('fileSize');
-        const removeFile = document.getElementById('removeFile');
-        const convertBtn = document.getElementById('convertBtn');
-        const loading = document.getElementById('loading');
-        const resultArea = document.getElementById('resultArea');
-        const errorMessage = document.getElementById('errorMessage');
-        const accuracySlider = document.getElementById('accuracySlider');
-        const accuracyValue = document.getElementById('accuracyValue');
-        const instrumentSelect = document.getElementById('instrumentSelect');
-        const outputFormat = document.getElementById('outputFormat');
-        const resultAccuracy = document.getElementById('resultAccuracy');
-
-        // متغير لتخزين الملف الحالي
-        let currentFile = null;
-
-        // تحديث قيمة الدقة
-        accuracySlider.addEventListener('input', function() {
-            accuracyValue.textContent = this.value + '% ' + 
-                (this.value >= 90 ? '(دقة عالية جداً)' : 
-                 this.value >= 70 ? '(دقة متوسطة)' : 
-                 '(دقة منخفضة - سريع)');
-        });
-
-        // فتح نافذة اختيار الملف عند النقر على منطقة الرفع
-        uploadArea.addEventListener('click', () => {
-            fileInput.click();
-        });
-
-        // معالجة اختيار الملف
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                handleFile(file);
-            }
-        });
-
-        // معالجة السحب والإفلات
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.style.background = '#f3f0ff';
-        });
-
-        uploadArea.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            uploadArea.style.background = '#f8f9fa';
-        });
-
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.style.background = '#f8f9fa';
+        // انتظر تحميل الصفحة كاملة
+        window.onload = function() {
+            console.log('✅ الصفحة تحمّلت');
             
-            const file = e.dataTransfer.files[0];
-            if (file) {
-                handleFile(file);
-            }
-        });
+            // العناصر
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const fileInfo = document.getElementById('fileInfo');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            const removeFile = document.getElementById('removeFile');
+            const convertBtn = document.getElementById('convertBtn');
+            const loading = document.getElementById('loading');
+            const resultArea = document.getElementById('resultArea');
+            const errorMessage = document.getElementById('errorMessage');
+            const accuracySlider = document.getElementById('accuracy');
+            const accuracyLabel = document.getElementById('accuracyLabel');
 
-        // دالة معالجة الملف
-        function handleFile(file) {
-            // التحقق من نوع الملف
-            const validTypes = ['.mp3', '.wav', '.mid', '.midi', '.xml', '.musicxml', '.pdf'];
-            const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
-            
-            if (!validTypes.includes(fileExtension)) {
-                showError('نوع الملف غير مدعوم. الرجاء اختيار ملف صوتي أو ملف نوتة بصيغة مدعومة.');
-                return;
-            }
+            // 1. تحديث نسبة الدقة
+            accuracySlider.oninput = function() {
+                accuracyLabel.textContent = this.value + '%';
+            };
 
-            // التحقق من حجم الملف (50 MB كحد أقصى)
-            if (file.size > 50 * 1024 * 1024) {
-                showError('حجم الملف كبير جداً. الحد الأقصى هو 50 MB.');
-                return;
-            }
+            // 2. النقر على منطقة الرفع
+            uploadArea.onclick = function() {
+                console.log('👆 نقر على الرفع');
+                fileInput.click();
+            };
 
-            currentFile = file;
-            
-            // عرض معلومات الملف
-            fileName.textContent = file.name;
-            fileSize.textContent = `(${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
-            fileInfo.style.display = 'flex';
-            
-            // تفعيل زر التحويل
-            convertBtn.disabled = false;
-            
-            // إخفاء أي أخطاء سابقة
-            errorMessage.style.display = 'none';
-        }
+            // 3. منع السلوك الافتراضي للسحب
+            uploadArea.ondragover = function(e) {
+                e.preventDefault();
+                this.style.background = '#edeaff';
+            };
 
-        // إزالة الملف
-        removeFile.addEventListener('click', () => {
-            currentFile = null;
-            fileInput.value = '';
-            fileInfo.style.display = 'none';
-            convertBtn.disabled = true;
-            resultArea.style.display = 'none';
-        });
+            uploadArea.ondragleave = function() {
+                this.style.background = '#f8f9ff';
+            };
 
-        // دالة عرض الأخطاء
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 5000);
-        }
-
-        // دالة بدء التحويل
-        convertBtn.addEventListener('click', function() {
-            if (!currentFile) {
-                showError('الرجاء اختيار ملف أولاً');
-                return;
-            }
-
-            // إظهار شاشة التحميل
-            loading.style.display = 'block';
-            resultArea.style.display = 'none';
-            convertBtn.disabled = true;
-
-            // محاكاة عملية التحويل
-            setTimeout(() => {
-                loading.style.display = 'none';
+            uploadArea.ondrop = function(e) {
+                e.preventDefault();
+                this.style.background = '#f8f9ff';
                 
-                // تحديث نتيجة الدقة
-                const accuracy = accuracySlider.value;
-                resultAccuracy.textContent = `دقة ${accuracy}%`;
+                if (e.dataTransfer.files.length > 0) {
+                    console.log('📁 ملف مسحوب:', e.dataTransfer.files[0].name);
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileSelect(e.dataTransfer.files[0]);
+                }
+            };
+
+            // 4. عند اختيار ملف
+            fileInput.onchange = function() {
+                if (this.files.length > 0) {
+                    console.log('📁 ملف مختار:', this.files[0].name);
+                    handleFileSelect(this.files[0]);
+                }
+            };
+
+            // 5. دالة معالجة الملف
+            function handleFileSelect(file) {
+                // التحقق من الحجم
+                if (file.size > 50 * 1024 * 1024) {
+                    showError('الملف كبير جداً (الحد الأقصى 50 ميجابايت)');
+                    return;
+                }
+
+                // التحقق من الصيغة
+                const ext = file.name.split('.').pop().toLowerCase();
+                const allowed = ['mp3', 'wav', 'mid', 'midi', 'pdf', 'xml', 'musicxml'];
                 
-                // عرض النتيجة
-                resultArea.style.display = 'block';
-                
-                // إنشاء محتوى ديناميكي للنتيجة بناءً على نوع الآلة
-                updateNotationContent();
-                
+                if (!allowed.includes(ext)) {
+                    showError('صيغة الملف غير مدعومة');
+                    return;
+                }
+
+                // عرض معلومات الملف
+                fileName.textContent = file.name;
+                fileSize.textContent = `(${(file.size / 1024).toFixed(1)} KB)`;
+                fileInfo.style.display = 'flex';
                 convertBtn.disabled = false;
-            }, 3000); // محاكاة 3 ثواني معالجة
-        });
-
-        // دالة تحديث محتوى النوتة
-        function updateNotationContent() {
-            const instrument = instrumentSelect.value;
-            const notationDisplay = document.getElementById('notationDisplay');
-            
-            let instrumentName = '';
-            switch(instrument) {
-                case 'piano':
-                    instrumentName = 'بيانو';
-                    break;
-                case 'guitar':
-                    instrumentName = 'جيتار';
-                    break;
-                case 'violin':
-                    instrumentName = 'كمان';
-                    break;
-                case 'vocals':
-                    instrumentName = 'غناء';
-                    break;
-                case 'drums':
-                    instrumentName = 'طبول';
-                    break;
-                case 'multi':
-                    instrumentName = 'آلات متعددة';
-                    break;
+                errorMessage.style.display = 'none';
+                
+                console.log('✅ ملف مقبول:', file.name);
             }
-            
-            notationDisplay.innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <div style="color: #764ba2; margin-bottom: 20px;">
-                        <strong>تم التحليل بنجاح - ${instrumentName}</strong>
-                    </div>
-                    
-                    <div style="margin: 20px 0; font-size: 2em;">🎵 ♩ ♪ ♫ ♬</div>
-                    
-                    <!-- خطوط المدرج الموسيقي -->
-                    <div class="staff-line"></div>
-                    <div class="staff-line" style="margin: 2px 0;"></div>
-                    <div class="staff-line"></div>
-                    <div class="staff-line" style="margin: 2px 0;"></div>
-                    <div class="staff-line"></div>
-                    
-                    <!-- تمثيل النوتات -->
-                    <div style="margin-top: 30px; font-family: 'Courier New'; text-align: left;">
-                        <div>🎼 معلومات التحليل:</div>
-                        <div>• المفتاح الموسيقي: C الكبير (تم اكتشافه تلقائياً)</div>
-                        <div>• الإيقاع: 4/4 (تم تحليله بدقة)</div>
-                        <div>• السرعة: ${Math.floor(Math.random() * 60) + 90} BPM</div>
-                        <div>• عدد النوتات: ${Math.floor(Math.random() * 50) + 30} نوتة</div>
-                        <div>• الكوردات: C - G - Am - F - C</div>
-                        
-                        <div style="margin-top: 20px; color: #666; background: #f0f0f0; padding: 10px; border-radius: 5px;">
-                            <div style="color: #333; margin-bottom: 10px;">📊 النوتات المكتشفة:</div>
-                            <div>C4  E4  G4  C5  E5  G5  C6  D5  F5  A5  B5  C6</div>
-                            <div style="margin-top: 5px; font-size: 0.8em;">تم التحليل باستخدام تقنية فصل الأصوات العميقة</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
 
-        // دوال التحميل
-        window.downloadFile = function(format) {
-            if (!currentFile) return;
-            
-            const fileName = currentFile.name.split('.')[0];
-            const accuracy = accuracySlider.value;
-            
-            // إنشاء رابط تحميل وهمي
-            const link = document.createElement('a');
-            link.href = '#';
-            link.download = `${fileName}_converted_${accuracy}%_accuracy.${format === 'musicxml' ? 'xml' : format}`;
-            link.click();
-            
-            // رسالة تأكيد
-            alert(`تم تحميل الملف بصيغة ${format} بنجاح (دقة ${accuracy}%)`);
+            // 6. إزالة الملف
+            removeFile.onclick = function() {
+                fileInput.value = '';
+                fileInfo.style.display = 'none';
+                convertBtn.disabled = true;
+                resultArea.style.display = 'none';
+                console.log('🗑️ تم إزالة الملف');
+            };
+
+            // 7. عرض الأخطاء
+            function showError(msg) {
+                errorMessage.textContent = msg;
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+
+            // 8. زر التحويل
+            convertBtn.onclick = function() {
+                console.log('🔄 بدأ التحويل');
+                
+                // إخفاء النتيجة السابقة
+                resultArea.style.display = 'none';
+                
+                // إظهار التحميل
+                loading.style.display = 'block';
+                convertBtn.disabled = true;
+                
+                // محاكاة عملية التحويل
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    resultArea.style.display = 'block';
+                    convertBtn.disabled = false;
+                    console.log('✅ تم التحويل');
+                }, 2000);
+            };
+
+            // 9. اختبار سريع
+            console.log('🚀 الموقع جاهز');
         };
-
-        // منع السلوك الافتراضي للسحب والإفلات
-        document.addEventListener('dragover', (e) => e.preventDefault());
-        document.addEventListener('drop', (e) => e.preventDefault());
     </script>
 </body>
 </html>
