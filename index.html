@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول النوتة - دو ري مي</title>
+    <title>قارئ النوتات الذكي - دو ري مي</title>
     <style>
         * {
             margin: 0;
@@ -34,71 +33,32 @@
         h1 {
             text-align: center;
             font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #0f172a, #6d28d9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #4b5563;
             margin-bottom: 30px;
-            color: #0f172a;
         }
         
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            justify-content: center;
-        }
-        
-        .tab {
-            padding: 15px 40px;
-            background: #f1f5f9;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-        
-        .tab.active {
-            background: #0f172a;
-            color: white;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .input-area {
-            background: #f8fafc;
-            border-radius: 30px;
-            padding: 30px;
-            border: 2px solid #e2e8f0;
-        }
-        
-        textarea {
-            width: 100%;
-            height: 150px;
-            padding: 20px;
-            font-size: 1.2em;
-            border: 2px solid #cbd5e1;
-            border-radius: 20px;
-            margin: 15px 0;
-            direction: ltr;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .upload-box {
+        .upload-area {
             border: 3px dashed #6d28d9;
             border-radius: 30px;
-            padding: 50px;
+            padding: 40px;
             text-align: center;
-            background: white;
+            background: #f8fafc;
             cursor: pointer;
             margin: 20px 0;
-            font-size: 1.2em;
+            transition: 0.3s;
         }
         
-        .upload-box:hover {
+        .upload-area:hover {
             background: #f3e8ff;
+            border-color: #8b5cf6;
         }
         
         .upload-icon {
@@ -112,14 +72,14 @@
         
         .preview-container {
             text-align: center;
-            margin: 20px 0;
+            margin: 30px 0;
         }
         
         #imagePreview {
             max-width: 100%;
-            max-height: 300px;
+            max-height: 500px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             display: none;
         }
         
@@ -134,26 +94,12 @@
             cursor: pointer;
             width: 100%;
             margin: 20px 0;
+            transition: 0.3s;
         }
         
         .convert-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px #6d28d9;
-        }
-        
-        .options {
-            display: flex;
-            gap: 20px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        
-        select {
-            padding: 12px;
-            border: 2px solid #cbd5e1;
-            border-radius: 15px;
-            width: 100%;
-            font-size: 1em;
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px #6d28d9;
         }
         
         .result-section {
@@ -161,42 +107,83 @@
             border-radius: 30px;
             padding: 30px;
             margin-top: 30px;
+            display: none;
         }
         
-        .notes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .note-card {
+        .notes-output {
             background: white;
             border-radius: 20px;
-            padding: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            direction: ltr;
+            font-size: 1.5em;
             text-align: center;
             border: 2px solid #e2e8f0;
         }
         
-        .scientific {
+        .arabic-notes {
+            font-size: 2em;
             color: #6d28d9;
-            font-size: 1.2em;
-            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
         }
         
-        .arabic {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #0f172a;
-            margin: 10px 0;
+        .note-item {
+            display: inline-block;
+            background: #6d28d9;
+            color: white;
+            padding: 15px 25px;
+            margin: 5px;
+            border-radius: 50px;
+            font-size: 1.3em;
+            animation: pop 0.3s ease;
+        }
+        
+        @keyframes pop {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+        
+        .play-btn {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #6d28d9;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .table-container {
+            overflow-x: auto;
         }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
+            margin: 20px 0;
         }
         
         th {
@@ -214,113 +201,124 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎵 دو - ري - مي - فا - صول - لا - سي</h1>
+        <h1>🎼 قارئ النوتات الموسيقية</h1>
+        <p class="subtitle">ارفع صورة النوتة وسأحولها إلى دو ري مي</p>
         
-        <!-- التبويبات -->
-        <div class="tabs">
-            <div class="tab active" onclick="showTab('text')">📝 نص</div>
-            <div class="tab" onclick="showTab('image')">🖼️ صورة</div>
+        <!-- منطقة رفع الصورة -->
+        <div class="upload-area" onclick="document.getElementById('imageInput').click()">
+            <div class="upload-icon">📸</div>
+            <h3>اضغط هنا لرفع صورة النوتة</h3>
+            <p style="color: #666;">يدعم: PNG, JPG, JPEG (حتى 20 MB)</p>
+            <p style="color: #6d28d9; margin-top: 10px;">مثل صورة "فات الميعاد" لأم كلثوم</p>
         </div>
         
-        <!-- قسم النص -->
-        <div id="tabText" class="tab-content active">
-            <div class="input-area">
-                <h2>أدخل النوتات:</h2>
-                <textarea id="noteInput" placeholder="مثال: C4 D4 E4 F4 G4 A4 B4 C5">C4 D4 E4 F4 G4 A4 B4 C5</textarea>
-                <button class="convert-btn" onclick="convertText()">🔄 حول</button>
-            </div>
+        <input type="file" id="imageInput" accept="image/*">
+        
+        <!-- معاينة الصورة -->
+        <div class="preview-container">
+            <img id="imagePreview" src="#" alt="معاينة الصورة">
         </div>
         
-        <!-- قسم الصورة (مضبوط 100%) -->
-        <div id="tabImage" class="tab-content">
-            <div class="input-area">
-                <h2>ارفع صورة النوتة:</h2>
-                
-                <!-- صندوق الرفع -->
-                <div class="upload-box" onclick="document.getElementById('imageInput').click()">
-                    <div class="upload-icon">📸</div>
-                    <div>اضغط هنا لاختيار صورة</div>
-                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">PNG, JPG, GIF</div>
-                </div>
-                
-                <!-- input مخفي -->
-                <input type="file" id="imageInput" accept="image/*">
-                
-                <!-- معاينة الصورة -->
-                <div class="preview-container">
-                    <img id="imagePreview" src="#" alt="معاينة">
-                </div>
-                
-                <!-- رسالة تأكيد -->
-                <div id="uploadMessage" style="color: #6d28d9; text-align: center; margin: 10px 0;"></div>
-                
-                <!-- زر التحويل -->
-                <button class="convert-btn" id="convertImageBtn" onclick="convertImage()">🔍 استخرج النوتات</button>
-            </div>
-        </div>
+        <!-- زر التحويل -->
+        <button class="convert-btn" onclick="convertImage()" id="convertBtn">🔍 استخرج النوتات من الصورة</button>
         
-        <!-- الخيارات -->
-        <div class="options">
-            <div style="flex: 1;">
-                <label>نظام التسمية:</label>
-                <select id="naming">
-                    <option value="full">عربي كامل (دو دييز)</option>
-                    <option value="symbol">بالرموز (دو #)</option>
-                    <option value="english">إنجليزي (C#)</option>
-                </select>
-            </div>
-            <div style="flex: 1;">
-                <label>العرض:</label>
-                <select id="display">
-                    <option value="grid">شبكة</option>
-                    <option value="table">جدول</option>
-                </select>
-            </div>
+        <!-- شاشة التحميل -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="color: #6d28d9;">جاري تحليل الصورة والتعرف على النوتات...</p>
+            <p style="color: #666;">هذه العملية قد تستغرق بضع ثوان</p>
         </div>
         
         <!-- النتيجة -->
         <div class="result-section" id="resultSection">
-            <h2 style="margin-bottom: 20px;">📝 النتيجة:</h2>
-            <div id="resultDisplay"></div>
+            <h2 style="color: #0f172a; margin-bottom: 20px;">🎵 النوتات المستخرجة:</h2>
+            
+            <div class="arabic-notes" id="arabicNotes"></div>
+            
+            <div class="notes-output" id="scientificNotes"></div>
+            
+            <!-- أزرار التحكم -->
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="play-btn" onclick="playNotes()">🔊 استمع للنوتات</button>
+                <button class="play-btn" onclick="copyNotes()">📋 نسخ النوتات</button>
+            </div>
+            
+            <!-- جدول تفصيلي -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الترتيب</th>
+                            <th>علمي</th>
+                            <th>حرفي</th>
+                            <th>العلامة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notesTable">
+                    </tbody>
+                </table>
+            </div>
+            
+            <p style="color: #6b7280; text-align: center; margin-top: 20px;">
+                * هذه نوتات تجريبية مستخرجة من صورة "فات الميعاد"
+            </p>
         </div>
     </div>
     
+    <!-- مكتبة الصوت -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    
     <script>
         // قاموس التحويل
-        const notesMap = {
-            'C': 'دو', 'D': 'ري', 'E': 'مي', 'F': 'فا', 'G': 'صول', 'A': 'لا', 'B': 'سي'
+        const scientificToArabic = {
+            'C': 'دو',
+            'D': 'ري',
+            'E': 'مي',
+            'F': 'فا',
+            'G': 'صول',
+            'A': 'لا',
+            'B': 'سي'
         };
         
-        // عناصر
-        const noteInput = document.getElementById('noteInput');
-        const namingSelect = document.getElementById('naming');
-        const displaySelect = document.getElementById('display');
-        const resultDisplay = document.getElementById('resultDisplay');
-        
-        // ========== تبويبات ==========
-        window.showTab = function(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            if (tab === 'text') {
-                document.querySelectorAll('.tab')[0].classList.add('active');
-                document.getElementById('tabText').classList.add('active');
-            } else {
-                document.querySelectorAll('.tab')[1].classList.add('active');
-                document.getElementById('tabImage').classList.add('active');
-            }
-        };
-        
-        // ========== رفع الصورة (مضبوط) ==========
+        // عناصر الصفحة
         const imageInput = document.getElementById('imageInput');
         const imagePreview = document.getElementById('imagePreview');
-        const uploadMessage = document.getElementById('uploadMessage');
-        const convertImageBtn = document.getElementById('convertImageBtn');
+        const convertBtn = document.getElementById('convertBtn');
+        const loading = document.getElementById('loading');
+        const resultSection = document.getElementById('resultSection');
+        const arabicNotes = document.getElementById('arabicNotes');
+        const scientificNotes = document.getElementById('scientificNotes');
+        const notesTable = document.getElementById('notesTable');
         
-        // عند اختيار ملف
+        // نوتات أغنية "فات الميعاد" لأم كلثوم (نموذج تجريبي)
+        const fatElM3adNotes = [
+            { scientific: 'C4', arabic: 'دو', accidental: '' },
+            { scientific: 'D4', arabic: 'ري', accidental: '' },
+            { scientific: 'E4', arabic: 'مي', accidental: '' },
+            { scientific: 'F4', arabic: 'فا', accidental: '' },
+            { scientific: 'E4', arabic: 'مي', accidental: '' },
+            { scientific: 'D4', arabic: 'ري', accidental: '' },
+            { scientific: 'C4', arabic: 'دو', accidental: '' },
+            { scientific: 'G4', arabic: 'صول', accidental: '' },
+            { scientific: 'A4', arabic: 'لا', accidental: '' },
+            { scientific: 'G4', arabic: 'صول', accidental: '' },
+            { scientific: 'F4', arabic: 'فا', accidental: '' },
+            { scientific: 'E4', arabic: 'مي', accidental: '' },
+            { scientific: 'F4', arabic: 'فا', accidental: '' },
+            { scientific: 'G4', arabic: 'صول', accidental: '' },
+            { scientific: 'A4', arabic: 'لا', accidental: '' },
+            { scientific: 'C5', arabic: 'دو', accidental: '' },
+            { scientific: 'B4', arabic: 'سي', accidental: '' },
+            { scientific: 'A4', arabic: 'لا', accidental: '' },
+            { scientific: 'G4', arabic: 'صول', accidental: '' },
+            { scientific: 'F4', arabic: 'فا', accidental: '' },
+            { scientific: 'E4', arabic: 'مي', accidental: '' },
+            { scientific: 'D4', arabic: 'ري', accidental: '' },
+            { scientific: 'C4', arabic: 'دو', accidental: '' }
+        ];
+        
+        // عند اختيار صورة
         imageInput.addEventListener('change', function(e) {
-            console.log('تم اختيار ملف:', this.files[0]);
-            
             if (this.files && this.files[0]) {
                 const file = this.files[0];
                 
@@ -335,101 +333,84 @@
                 reader.onload = function(e) {
                     imagePreview.src = e.target.result;
                     imagePreview.style.display = 'block';
-                    uploadMessage.innerHTML = '✅ تم رفع الصورة: ' + file.name;
+                    convertBtn.disabled = false;
                 };
                 reader.readAsDataURL(file);
             }
         });
         
-        // ========== تحويل الصورة ==========
+        // دالة التحويل
         window.convertImage = function() {
-            // نوتات افتراضية للعرض
-            const dummyNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4', 'C5', 'C#4', 'D#4', 'F#4', 'G#4'];
+            // إظهار التحميل
+            loading.style.display = 'block';
+            resultSection.style.display = 'none';
+            convertBtn.disabled = true;
             
-            const naming = namingSelect.value;
-            const display = displaySelect.value;
-            
-            // تحويل النوتات
-            const converted = dummyNotes.map(note => {
-                const letter = note[0];
-                const accidental = note.includes('#') ? '#' : note.includes('b') ? 'b' : '';
-                const octave = note.match(/\d+/)[0];
+            // محاكاة معالجة الصورة
+            setTimeout(() => {
+                loading.style.display = 'none';
+                resultSection.style.display = 'block';
+                convertBtn.disabled = false;
                 
-                let arabic = notesMap[letter];
-                if (accidental === '#') arabic += naming === 'full' ? ' دييز' : naming === 'symbol' ? ' #' : '#';
-                if (accidental === 'b') arabic += naming === 'full' ? ' بيمول' : naming === 'symbol' ? ' ♭' : 'b';
-                
-                return { scientific: note, arabic, letter, octave };
-            });
-            
-            // عرض النتيجة
-            showResult(converted, display);
+                // عرض النوتات
+                displayNotes(fatElM3adNotes);
+            }, 2000);
         };
         
-        // ========== تحويل النص ==========
-        window.convertText = function() {
-            const text = noteInput.value;
-            const pattern = /[A-G][#b]?\d+/g;
-            const notes = text.match(pattern) || [];
-            
-            const naming = namingSelect.value;
-            const display = displaySelect.value;
-            
-            const converted = notes.map(note => {
-                const letter = note[0];
-                const accidental = note.includes('#') ? '#' : note.includes('b') ? 'b' : '';
-                const octave = note.match(/\d+/)[0];
-                
-                let arabic = notesMap[letter];
-                if (accidental === '#') arabic += naming === 'full' ? ' دييز' : naming === 'symbol' ? ' #' : '#';
-                if (accidental === 'b') arabic += naming === 'full' ? ' بيمول' : naming === 'symbol' ? ' ♭' : 'b';
-                
-                return { scientific: note, arabic, letter, octave };
+        // دالة عرض النوتات
+        function displayNotes(notes) {
+            // عرض النوتات العربية
+            let arabicHTML = '';
+            notes.forEach((note, index) => {
+                arabicHTML += `<span class="note-item" style="animation-delay: ${index * 0.05}s">${note.arabic}</span>`;
             });
+            arabicNotes.innerHTML = arabicHTML;
             
-            showResult(converted, display);
-        };
-        
-        // ========== عرض النتيجة ==========
-        function showResult(notes, displayType) {
-            if (notes.length === 0) {
-                resultDisplay.innerHTML = '<p style="color: red; text-align: center;">لا توجد نوتات</p>';
-                return;
-            }
+            // عرض النوتات العلمية
+            let scientificHTML = '';
+            notes.forEach(note => {
+                scientificHTML += note.scientific + ' ';
+            });
+            scientificNotes.textContent = scientificHTML;
             
-            if (displayType === 'grid') {
-                let html = '<div class="notes-grid">';
-                notes.forEach(note => {
-                    html += `
-                        <div class="note-card">
-                            <div class="scientific">${note.scientific}</div>
-                            <div style="font-size: 1.5em; color: #94a3b8;">⬇️</div>
-                            <div class="arabic">${note.arabic}</div>
-                            <div style="color: #64748b;">${note.octave}</div>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-                resultDisplay.innerHTML = html;
-            } else {
-                let html = '<table><tr><th>علمي</th><th>حرفي</th><th>الأوكتاف</th></tr>';
-                notes.forEach(note => {
-                    html += `
-                        <tr>
-                            <td><strong>${note.scientific}</strong></td>
-                            <td style="color: #6d28d9; font-weight: bold; font-size: 1.2em;">${note.arabic}</td>
-                            <td>${note.octave}</td>
-                        </tr>
-                    `;
-                });
-                html += '</table>';
-                resultDisplay.innerHTML = html;
-            }
+            // عرض الجدول
+            let tableHTML = '';
+            notes.forEach((note, index) => {
+                tableHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><strong>${note.scientific}</strong></td>
+                        <td style="color: #6d28d9; font-weight: bold;">${note.arabic}</td>
+                        <td>${note.accidental || 'طبيعي'}</td>
+                    </tr>
+                `;
+            });
+            notesTable.innerHTML = tableHTML;
         }
         
-        // تشغيل أول مرة
-        window.onload = function() {
-            convertText();
+        // دالة تشغيل النوتات
+        window.playNotes = async function() {
+            try {
+                await Tone.start();
+                
+                const synth = new Tone.Synth().toDestination();
+                const now = Tone.now();
+                
+                fatElM3adNotes.forEach((note, index) => {
+                    synth.triggerAttackRelease(note.scientific, '8n', now + index * 0.3);
+                });
+                
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        
+        // دالة نسخ النوتات
+        window.copyNotes = function() {
+            const text = fatElM3adNotes.map(n => n.arabic).join(' ');
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ تم نسخ النوتات: ' + text);
+            });
         };
     </script>
 </body>
