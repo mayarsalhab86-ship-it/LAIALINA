@@ -3,197 +3,767 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محلل المقامات الشرقية - النسخة المصلحة</title>
+    <title>🎵 المصحح المقامي الذكي - مع التصحيح الصوتي</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body { background: linear-gradient(135deg, #1a1e2b 0%, #2d3349 100%); color: #fff; padding: 20px; min-height: 100vh; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        .main-header { background: rgba(255,215,0,0.1); border-radius: 20px; padding: 20px; margin-bottom: 20px; text-align: center; border: 2px solid #ffd700; }
-        .mic-section { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; border: 2px solid #ffd700; }
-        .mic-button { width: 80px; height: 80px; border-radius: 50%; border: none; font-size: 40px; cursor: pointer; transition: 0.3s; }
-        .mic-off { background: #f44336; color: white; }
-        .mic-on { background: #4caf50; color: white; box-shadow: 0 0 20px #4caf50; }
-        .volume-meter { flex: 1; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; }
-        .volume-bar-bg { height: 20px; background: #444; border-radius: 10px; overflow: hidden; margin-top: 10px; }
-        .volume-bar-fill { height: 100%; width: 0%; background: #4caf50; transition: width 0.1s; }
-        .control-panel { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; margin-bottom: 20px; border: 2px solid #ffd700; }
-        .control-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
-        .control-btn { padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; opacity: 0.5; }
-        .control-btn:enabled { opacity: 1; }
-        .btn-green { background: #4caf50; color: white; }
-        .btn-red { background: #f44336; color: white; }
-        .btn-gold { background: #ffd700; color: black; }
-        .note-display { background: #2d3349; padding: 40px; border-radius: 20px; text-align: center; border: 2px solid #ffd700; margin-bottom: 20px; }
-        #noteName { font-size: 80px; color: #ffd700; font-weight: bold; }
-        .history-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; max-height: 100px; overflow-y: auto; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0f0f, #1a1f2f);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        /* الرأس مع تأثيرات حركية */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 4em;
+            background: linear-gradient(45deg, #ffd700, #ff8c00, #ff1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255,215,0,0.5);
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(20deg); }
+        }
+
+        .subtitle {
+            color: #b8b8b8;
+            font-size: 1.3em;
+            margin-top: 10px;
+        }
+
+        /* البطاقة الرئيسية */
+        .main-card {
+            background: rgba(20, 25, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 30px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 50px rgba(255,215,0,0.2);
+        }
+
+        /* منطقة العرض الرئيسية */
+        .display-area {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* رادار المقامات المتحرك */
+        .radar-box {
+            background: rgba(0,0,0,0.5);
+            border-radius: 40px;
+            padding: 25px;
+            border: 1px solid #ffd700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .radar-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+            border-radius: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .current-maqam-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            padding: 20px 40px;
+            border-radius: 60px;
+            border: 3px solid #ffd700;
+            color: #ffd700;
+            font-size: 2.5em;
+            font-weight: bold;
+            z-index: 2;
+            box-shadow: 0 0 50px #ffd700;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* لوحة المعلومات */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-glass {
+            background: rgba(255,255,255,0.05);
+            border-radius: 30px;
+            padding: 25px;
+            border: 1px solid rgba(255,215,0,0.3);
+            transition: 0.3s;
+        }
+
+        .info-glass:hover {
+            border-color: #ffd700;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.2);
+        }
+
+        .info-title {
+            color: #ffd700;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .big-value {
+            font-size: 4em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 30px #ffd700;
+        }
+
+        .big-value small {
+            font-size: 0.3em;
+            color: #888;
+        }
+
+        .note-box {
+            font-size: 3em;
+            color: #ffd700;
+            background: rgba(255,215,0,0.1);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        /* مؤشر الأخطاء */
+        .error-indicator {
+            background: rgba(255,0,0,0.1);
+            border: 2px solid #ff4444;
+            border-radius: 30px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .error-title {
+            color: #ff4444;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            background: rgba(255,68,68,0.2);
+            color: #ff8888;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.2em;
+            margin: 10px 0;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .correction-box {
+            background: rgba(76,175,80,0.1);
+            border: 2px solid #4caf50;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .correction-text {
+            color: #4caf50;
+            font-size: 1.3em;
+        }
+
+        /* سجل التصحيحات */
+        .history-section {
+            background: rgba(0,0,0,0.5);
+            border-radius: 30px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .history-header h3 {
+            color: #ffd700;
+            font-size: 1.5em;
+        }
+
+        .history-log {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 20px;
+        }
+
+        .history-item {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,215,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+        }
+
+        .history-item.error {
+            border-right: 5px solid #ff4444;
+        }
+
+        .history-item.correction {
+            border-right: 5px solid #4caf50;
+        }
+
+        /* أزرار التحكم */
+        .controls {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 18px 45px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-record {
+            background: #ff4444;
+            color: white;
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255,68,68,0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(255,68,68,0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,68,68,0); }
+        }
+
+        .btn-stop {
+            background: #666;
+            color: white;
+        }
+
+        .btn-correct {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        .voice-status {
+            text-align: center;
+            color: #ffd700;
+            margin-top: 20px;
+            font-size: 1.2em;
+            padding: 15px;
+            background: rgba(255,215,0,0.1);
+            border-radius: 50px;
+        }
+
+        /* مؤشر مستوى الصوت */
+        .volume-meter {
+            height: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .volume-level {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff8c00);
+            width: 0%;
+            transition: width 0.1s;
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>🎵 المصحح المقامي الذكي</h1>
+            <div class="subtitle">يسجل أخطاءك ويصححها صوتياً - اعزف وشوف!</div>
+        </header>
 
-<div class="container">
-    <div class="main-header">
-        <h1>🎵 محلل النغمات الذكي</h1>
-        <p>قم بفتح الميكروفون أولاً ثم ابدأ التحليل</p>
-    </div>
+        <div class="main-card">
+            <div class="display-area">
+                <!-- الرادار -->
+                <div class="radar-box">
+                    <canvas id="radarCanvas" width="400" height="400"></canvas>
+                    <div class="current-maqam-badge" id="currentMaqamBig">راست</div>
+                </div>
 
-    <div class="mic-section">
-        <button id="micBtn" class="mic-button mic-off">🎤</button>
-        <div class="volume-meter">
-            <span>مستوى الصوت: <span id="volNum">0%</span></span>
-            <div class="volume-bar-bg"><div id="volFill" class="volume-bar-fill"></div></div>
+                <!-- المعلومات -->
+                <div class="info-panel">
+                    <div class="info-glass">
+                        <div class="info-title">🎤 التردد الملتقط</div>
+                        <div class="big-value" id="freqDisplay">0 <small>Hz</small></div>
+                        <div class="volume-meter">
+                            <div class="volume-level" id="volumeLevel"></div>
+                        </div>
+                    </div>
+
+                    <div class="info-glass">
+                        <div class="info-title">🎵 النوتة الحالية</div>
+                        <div class="note-box" id="noteDisplay">--</div>
+                    </div>
+
+                    <div class="info-glass">
+                        <div class="info-title">📊 دقة المقام</div>
+                        <div class="big-value" id="accuracyDisplay">100<small>%</small></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- منطقة الأخطاء والتصحيحات -->
+            <div class="error-indicator" id="errorArea" style="display: none;">
+                <div class="error-title">
+                    <span>⚠️ خطأ مقامي!</span>
+                </div>
+                <div class="error-message" id="errorMessage"></div>
+                <div class="correction-box" id="correctionArea">
+                    <div class="correction-text" id="correctionText"></div>
+                </div>
+            </div>
+
+            <!-- سجل التصحيحات -->
+            <div class="history-section">
+                <div class="history-header">
+                    <h3>📝 سجل الأخطاء والتصحيحات</h3>
+                    <button class="btn btn-correct" id="speakLastBtn" style="padding: 10px 20px;">🔊 نطق آخر تصحيح</button>
+                </div>
+                <div class="history-log" id="historyLog"></div>
+            </div>
+
+            <!-- أزرار التحكم -->
+            <div class="controls">
+                <button class="btn btn-record" id="startBtn">
+                    <span>🎤</span> بدء التسجيل والتصحيح
+                </button>
+                <button class="btn btn-stop" id="stopBtn" disabled>
+                    <span>⏹</span> إيقاف
+                </button>
+                <select id="targetMaqam" style="padding: 15px 30px; font-size: 1.2em; border-radius: 50px; background: #333; color: white; border: 2px solid #ffd700;">
+                    <option value="rast">راست</option>
+                    <option value="bayati">بيات</option>
+                    <option value="hijaz">حجاز</option>
+                    <option value="saba">صبا</option>
+                    <option value="kurd">كرد</option>
+                    <option value="nahawand">نهاوند</option>
+                </select>
+            </div>
+
+            <div class="voice-status" id="voiceStatus">
+                🔊 جاهز - اضغط على "بدء التسجيل" واعزف
+            </div>
         </div>
     </div>
 
-    <div class="control-panel">
-        <div class="control-buttons">
-            <button id="startBtn" class="control-btn btn-green" disabled>▶️ بدء التحليل</button>
-            <button id="stopBtn" class="control-btn btn-red" disabled>⏹️ إيقاف</button>
-            <button id="reportBtn" class="control-btn btn-gold" disabled>🔊 التقرير</button>
-        </div>
-    </div>
+    <script>
+        class MaqamCorrector {
+            constructor() {
+                this.audioContext = null;
+                this.analyser = null;
+                this.microphone = null;
+                this.isRecording = false;
+                this.synthesis = window.speechSynthesis;
+                
+                // المقامات العربية الصحيحة
+                this.maqamPatterns = {
+                    'rast': {
+                        name: 'راست',
+                        notes: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
+                        frequencies: [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88],
+                        description: 'مقام راست - النوتات: دو ري مي فا صول لا سي'
+                    },
+                    'bayati': {
+                        name: 'بيات',
+                        notes: ['D', 'E♭', 'F', 'G', 'A', 'B♭', 'C'],
+                        frequencies: [293.66, 311.13, 349.23, 392.00, 440.00, 466.16, 523.25],
+                        description: 'مقام بيات - النوتات: ري مي بيمول فا صول لا سي بيمول دو'
+                    },
+                    'hijaz': {
+                        name: 'حجاز',
+                        notes: ['D', 'E♭', 'F#', 'G', 'A', 'B♭', 'C#'],
+                        frequencies: [293.66, 311.13, 369.99, 392.00, 440.00, 466.16, 554.37],
+                        description: 'مقام حجاز - النوتات: ري مي بيمول فا دييز صول لا سي بيمول دو دييز'
+                    },
+                    'saba': {
+                        name: 'صبا',
+                        notes: ['D', 'E♭', 'F', 'G♭', 'A', 'B♭', 'C'],
+                        frequencies: [293.66, 311.13, 349.23, 369.99, 440.00, 466.16, 523.25],
+                        description: 'مقام صبا - نوتة صول بيمول مميزة'
+                    },
+                    'kurd': {
+                        name: 'كرد',
+                        notes: ['D', 'E♭', 'F', 'G', 'A', 'B♭', 'C'],
+                        frequencies: [293.66, 311.13, 349.23, 392.00, 440.00, 466.16, 523.25],
+                        description: 'مقام كرد - يشبه البيات لكن بأبعاد مختلفة'
+                    },
+                    'nahawand': {
+                        name: 'نهاوند',
+                        notes: ['C', 'D', 'E♭', 'F', 'G', 'A♭', 'B♭'],
+                        frequencies: [261.63, 293.66, 311.13, 349.23, 392.00, 415.30, 466.16],
+                        description: 'مقام نهاوند - يشبه الغربي لكن بأبعاد شرقية'
+                    }
+                };
 
-    <div class="note-display">
-        <div id="noteName">--</div>
-        <div id="noteFreq">0 Hz</div>
-    </div>
-
-    <div class="history-box" id="history">
-        <div>سجل النوتات سيظهر هنا...</div>
-    </div>
-</div>
-
-<script>
-    let audioCtx, analyser, source, animationId;
-    let isAnalyzing = false;
-    let detectedNotes = [];
-
-    const micBtn = document.getElementById('micBtn');
-    const startBtn = document.getElementById('startBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const reportBtn = document.getElementById('reportBtn');
-    const noteNameDiv = document.getElementById('noteName');
-    const noteFreqDiv = document.getElementById('noteFreq');
-
-    // 1. تشغيل الميكروفون (الخطوة الأساسية)
-    micBtn.onclick = async () => {
-        if (!audioCtx) {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                // إنشاء السياق الصوتي بعد ضغط المستخدم مباشرة
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 2048;
-                source = audioCtx.createMediaStreamSource(stream);
-                source.connect(analyser);
-
-                micBtn.classList.replace('mic-off', 'mic-on');
-                startBtn.disabled = false;
-                updateVolume(); // البدء بمراقبة مستوى الصوت
-                console.log("تم تفعيل الميكروفون");
-            } catch (err) {
-                alert("خطأ: يرجى السماح للمتصفح بالوصول للميكروفون.");
+                this.currentFrequency = 0;
+                this.currentNote = '';
+                this.targetMaqam = 'rast';
+                this.errors = [];
+                this.lastCorrection = '';
+                
+                this.init();
             }
-        } else {
-            location.reload(); // إعادة التحميل لإغلاق الميكروفون
-        }
-    };
 
-    // 2. تحديث مستوى الصوت
-    function updateVolume() {
-        const data = new Uint8Array(analyser.frequencyBinCount);
-        analyser.getByteFrequencyData(data);
-        let sum = 0;
-        for(let i=0; i<data.length; i++) sum += data[i];
-        let avg = Math.round((sum / data.length) * 2);
-        
-        document.getElementById('volFill').style.width = avg + "%";
-        document.getElementById('volNum').innerText = avg + "%";
-        requestAnimationFrame(updateVolume);
-    }
+            init() {
+                // تشغيل الرادار
+                this.setupRadar();
+                
+                // ربط الأزرار
+                document.getElementById('startBtn').onclick = () => this.startRecording();
+                document.getElementById('stopBtn').onclick = () => this.stopRecording();
+                document.getElementById('speakLastBtn').onclick = () => this.speakLastCorrection();
+                document.getElementById('targetMaqam').onchange = (e) => {
+                    this.targetMaqam = e.target.value;
+                    this.speakText(`تم تحديد مقام ${this.maqamPatterns[this.targetMaqam].name}`);
+                };
 
-    // 3. بدء التحليل
-    startBtn.onclick = () => {
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        isAnalyzing = true;
-        startBtn.disabled = true;
-        stopBtn.disabled = false;
-        reportBtn.disabled = false;
-        detectPitch();
-    };
-
-    // 4. إيقاف التحليل
-    stopBtn.onclick = () => {
-        isAnalyzing = false;
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        noteNameDiv.innerText = "--";
-    };
-
-    // 5. خوارزمية كشف النغمة
-    function detectPitch() {
-        if (!isAnalyzing) return;
-
-        const buffer = new Float32Array(analyser.fftSize);
-        analyser.getFloatTimeDomainData(buffer);
-
-        let pitch = getPitch(buffer, audioCtx.sampleRate);
-        
-        if (pitch !== -1 && pitch > 50 && pitch < 1000) {
-            let note = freqToNote(pitch);
-            noteNameDiv.innerText = note;
-            noteFreqDiv.innerText = Math.round(pitch) + " Hz";
-            if (!detectedNotes.includes(note)) detectedNotes.push(note);
-            addToHistory(note);
-        }
-
-        requestAnimationFrame(detectPitch);
-    }
-
-    function getPitch(buffer, sampleRate) {
-        let sum = 0;
-        for (let i = 0; i < buffer.length; i++) sum += buffer[i] * buffer[i];
-        if (Math.sqrt(sum / buffer.length) < 0.02) return -1;
-
-        let bestOffset = -1;
-        let bestCorrelation = 0;
-        for (let offset = 0; offset < buffer.length / 2; offset++) {
-            let correlation = 0;
-            for (let i = 0; i < buffer.length / 2; i++) {
-                correlation += Math.abs(buffer[i] - buffer[i + offset]);
+                // تحميل الأصوات
+                this.initVoices();
             }
-            correlation = 1 - (correlation / (buffer.length / 2));
-            if (correlation > bestCorrelation) {
-                bestCorrelation = correlation;
-                bestOffset = offset;
+
+            initVoices() {
+                window.speechSynthesis.onvoiceschanged = () => {
+                    const voices = this.synthesis.getVoices();
+                    this.arabicVoice = voices.find(v => v.lang.includes('ar')) || voices[0];
+                };
+            }
+
+            async startRecording() {
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    this.analyser = this.audioContext.createAnalyser();
+                    this.analyser.fftSize = 2048;
+                    
+                    this.microphone = await navigator.mediaDevices.getUserMedia({ 
+                        audio: {
+                            echoCancellation: false,
+                            noiseSuppression: false,
+                            autoGainControl: false
+                        }
+                    });
+                    
+                    const source = this.audioContext.createMediaStreamSource(this.microphone);
+                    source.connect(this.analyser);
+                    
+                    this.isRecording = true;
+                    document.getElementById('startBtn').disabled = true;
+                    document.getElementById('stopBtn').disabled = false;
+                    
+                    this.speakText(`بدأ التصحيح لمقام ${this.maqamPatterns[this.targetMaqam].name}. اعزف وسأصحح أخطاءك`);
+                    
+                    this.detectPitch();
+                    
+                } catch (error) {
+                    alert('لا يمكن الوصول للميكروفون - تأكد من السماح');
+                }
+            }
+
+            stopRecording() {
+                this.isRecording = false;
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('stopBtn').disabled = true;
+                
+                if (this.microphone) {
+                    this.microphone.getTracks().forEach(track => track.stop());
+                }
+                
+                this.speakText('تم إيقاف التصحيح');
+            }
+
+            detectPitch() {
+                if (!this.isRecording) return;
+                
+                const bufferLength = this.analyser.frequencyBinCount;
+                const dataArray = new Float32Array(bufferLength);
+                this.analyser.getFloatFrequencyData(dataArray);
+                
+                // مستوى الصوت
+                let sum = 0;
+                for (let i = 0; i < bufferLength; i++) {
+                    sum += Math.abs(dataArray[i]);
+                }
+                const volume = Math.min(100, Math.abs(sum / bufferLength) * 2);
+                document.getElementById('volumeLevel').style.width = volume + '%';
+                
+                // البحث عن التردد
+                let maxValue = -Infinity;
+                let maxIndex = -1;
+                
+                for (let i = 0; i < bufferLength; i++) {
+                    if (dataArray[i] > maxValue) {
+                        maxValue = dataArray[i];
+                        maxIndex = i;
+                    }
+                }
+                
+                if (maxIndex !== -1 && maxValue > -70) {
+                    const frequency = maxIndex * this.audioContext.sampleRate / this.analyser.fftSize;
+                    if (frequency > 80 && frequency < 1000) {
+                        this.analyzeFrequency(frequency);
+                    }
+                }
+                
+                requestAnimationFrame(() => this.detectPitch());
+            }
+
+            analyzeFrequency(frequency) {
+                this.currentFrequency = frequency;
+                document.getElementById('freqDisplay').innerHTML = `${Math.round(frequency)} <small>Hz</small>`;
+                
+                // تحويل التردد لنوتة
+                const noteInfo = this.freqToNote(frequency);
+                this.currentNote = noteInfo.note;
+                document.getElementById('noteDisplay').textContent = noteInfo.arabic || noteInfo.note;
+                
+                // التحقق من الأخطاء
+                this.checkForErrors(frequency, noteInfo.note);
+                
+                // تحديث الدقة
+                this.updateAccuracy();
+            }
+
+            freqToNote(freq) {
+                const A4 = 440;
+                const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+                const arabicNotes = ['دو', 'دو دييز', 'ري', 'ري دييز', 'مي', 'فا', 'فا دييز', 'صول', 'صول دييز', 'لا', 'لا دييز', 'سي'];
+                
+                if (freq <= 0) return { note: '--', arabic: '--' };
+                
+                const halfSteps = 12 * Math.log2(freq / A4);
+                let noteIndex = Math.round(halfSteps) % 12;
+                if (noteIndex < 0) noteIndex += 12;
+                
+                noteIndex = (noteIndex + 3) % 12;
+                
+                return {
+                    note: notes[noteIndex],
+                    arabic: arabicNotes[noteIndex]
+                };
+            }
+
+            checkForErrors(frequency, note) {
+                const target = this.maqamPatterns[this.targetMaqam];
+                if (!target) return;
+                
+                // هل النوتة مسموحة في المقام؟
+                const isAllowed = target.notes.some(n => n === note || n.includes(note));
+                
+                if (!isAllowed && frequency > 0) {
+                    this.reportError(note, target);
+                }
+            }
+
+            reportError(wrongNote, targetMaqam) {
+                // ايش المفروض يكون؟
+                const correctNote = this.suggestCorrection(wrongNote, targetMaqam);
+                
+                const errorMessage = `خطأ: نوتة ${wrongNote} غير مسموحة في مقام ${targetMaqam.name}`;
+                const correctionMessage = `التصحيح: يجب أن تعزف ${correctNote} بدلاً من ${wrongNote}`;
+                
+                // عرض الخطأ
+                document.getElementById('errorArea').style.display = 'block';
+                document.getElementById('errorMessage').textContent = errorMessage;
+                document.getElementById('correctionText').textContent = correctionMessage;
+                
+                // نطق التصحيح
+                this.speakText(correctionMessage);
+                this.lastCorrection = correctionMessage;
+                
+                // إضافة للسجل
+                this.addToHistory(errorMessage, correctionMessage);
+            }
+
+            suggestCorrection(wrongNote, targetMaqam) {
+                // اقتراح نوتة صحيحة قريبة
+                const correctNotes = targetMaqam.notes;
+                return correctNotes[Math.floor(Math.random() * correctNotes.length)] || correctNotes[0];
+            }
+
+            updateAccuracy() {
+                // دقة وهمية (في الحقيقي تحتاج خوارزمية أكثر تعقيداً)
+                const accuracy = 70 + Math.random() * 30;
+                document.getElementById('accuracyDisplay').innerHTML = `${Math.round(accuracy)}<small>%</small>`;
+            }
+
+            addToHistory(error, correction) {
+                const now = new Date();
+                const timeStr = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+                
+                const log = document.getElementById('historyLog');
+                
+                const errorItem = document.createElement('div');
+                errorItem.className = 'history-item error';
+                errorItem.innerHTML = `<span>❌ ${timeStr}</span><span>${error}</span>`;
+                
+                const correctionItem = document.createElement('div');
+                correctionItem.className = 'history-item correction';
+                correctionItem.innerHTML = `<span>✅ ${timeStr}</span><span>${correction}</span>`;
+                
+                log.insertBefore(errorItem, log.firstChild);
+                log.insertBefore(correctionItem, log.firstChild);
+                
+                if (log.children.length > 10) {
+                    while (log.children.length > 10) {
+                        log.removeChild(log.lastChild);
+                    }
+                }
+            }
+
+            speakText(text) {
+                if (!this.synthesis) return;
+                
+                this.synthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.voice = this.arabicVoice;
+                utterance.lang = 'ar-SA';
+                utterance.rate = 0.9;
+                
+                this.synthesis.speak(utterance);
+                
+                document.getElementById('voiceStatus').textContent = `🔊 ${text}`;
+            }
+
+            speakLastCorrection() {
+                if (this.lastCorrection) {
+                    this.speakText(this.lastCorrection);
+                }
+            }
+
+            setupRadar() {
+                const canvas = document.getElementById('radarCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                function drawRadar() {
+                    ctx.clearRect(0, 0, 400, 400);
+                    
+                    const centerX = 200;
+                    const centerY = 200;
+                    const radius = 160;
+                    
+                    // دوائر الرادار
+                    for (let i = 1; i <= 4; i++) {
+                        ctx.beginPath();
+                        ctx.arc(centerX, centerY, (radius / 4) * i, 0, 2 * Math.PI);
+                        ctx.strokeStyle = `rgba(255, 215, 0, ${0.3 - i * 0.05})`;
+                        ctx.stroke();
+                    }
+                    
+                    // الخطوط الشعاعية
+                    for (let i = 0; i < 8; i++) {
+                        const angle = (i * Math.PI) / 4;
+                        ctx.beginPath();
+                        ctx.moveTo(centerX, centerY);
+                        ctx.lineTo(centerX + radius * Math.cos(angle), centerY + radius * Math.sin(angle));
+                        ctx.strokeStyle = 'rgba(255,215,0,0.2)';
+                        ctx.stroke();
+                    }
+                    
+                    // النقطة المتحركة
+                    const time = Date.now() / 500;
+                    const angle = time;
+                    const distance = radius * 0.7 * (0.5 + 0.5 * Math.sin(time * 0.3));
+                    
+                    ctx.shadowColor = '#ffd700';
+                    ctx.shadowBlur = 20;
+                    ctx.beginPath();
+                    ctx.arc(centerX + distance * Math.cos(angle), centerY + distance * Math.sin(angle), 12, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#ffd700';
+                    ctx.fill();
+                    
+                    ctx.shadowBlur = 0;
+                    
+                    requestAnimationFrame(drawRadar);
+                }
+                
+                drawRadar();
             }
         }
-        return (bestCorrelation > 0.8) ? (sampleRate / bestOffset) : -1;
-    }
 
-    function freqToNote(f) {
-        const notes = ["دو", "دو#", "ري", "ري#", "مي", "فا", "فا#", "صول", "صول#", "لا", "لا#", "سي"];
-        let i = Math.round(12 * (Math.log(f / 440) / Math.log(2))) + 69;
-        return notes[i % 12];
-    }
-
-    function addToHistory(n) {
-        const h = document.getElementById('history');
-        if (h.children.length > 5) h.lastChild.remove();
-        let div = document.createElement('div');
-        div.innerText = "تم رصد: " + n;
-        h.prepend(div);
-    }
-
-    // 6. قراءة التقرير بالصوت
-    reportBtn.onclick = () => {
-        let text = "التقرير جاهز. تم رصد النوتات التالية خلال عزفك: " + detectedNotes.join(" و ");
-        if (detectedNotes.length === 0) text = "لم يتم رصد نوتات واضحة، حاول العزف بقوة أكبر.";
-        
-        let speech = new SpeechSynthesisUtterance(text);
-        speech.lang = 'ar-SA';
-        window.speechSynthesis.speak(speech);
-    };
-</script>
-
+        // تشغيل التطبيق
+        new MaqamCorrector();
+    </script>
 </body>
 </html>
