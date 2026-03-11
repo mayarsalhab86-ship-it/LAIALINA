@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول النوتة العلمية → حرفية</title>
+    <title>محول النوتة الموسيقية (صورة ← حرفية)</title>
     <style>
+        /* نفس الأنماط السابقة مع إضافة بعض الأنماط الجديدة */
         * {
             margin: 0;
             padding: 0;
@@ -47,6 +48,38 @@
             font-size: 1.2em;
         }
         
+        /* تبويبات */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        
+        .tab {
+            padding: 12px 30px;
+            background: #f1f5f9;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #334155;
+            transition: 0.3s;
+        }
+        
+        .tab.active {
+            background: #0f172a;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
         .input-area {
             background: #f1f5f9;
             border-radius: 30px;
@@ -71,6 +104,39 @@
         textarea:focus {
             outline: none;
             border-color: #6d28d9;
+        }
+        
+        .upload-image-area {
+            border: 3px dashed #6d28d9;
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            background: #f8fafc;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: 0.3s;
+        }
+        
+        .upload-image-area:hover {
+            background: #ede9fe;
+        }
+        
+        .upload-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+        
+        #imageInput {
+            display: none;
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin: 20px 0;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
         }
         
         .options {
@@ -128,6 +194,7 @@
             border-radius: 30px;
             padding: 30px;
             border: 2px solid #cbd5e1;
+            margin-top: 20px;
         }
         
         .notation-grid {
@@ -174,17 +241,6 @@
             margin-top: 10px;
         }
         
-        .arabic-small {
-            font-size: 1.2em;
-            color: #4b5563;
-        }
-        
-        .staff-line {
-            height: 2px;
-            background: #94a3b8;
-            margin: 5px 0;
-        }
-        
         .music-staff {
             background: white;
             padding: 20px;
@@ -192,44 +248,10 @@
             margin-top: 20px;
         }
         
-        .note-symbol {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            background: #6d28d9;
-            border-radius: 50%;
-            margin: 0 5px;
-            position: relative;
-        }
-        
-        .table-container {
-            overflow-x: auto;
-            margin: 30px 0;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        
-        th {
-            background: #0f172a;
-            color: white;
-            padding: 15px;
-            font-size: 1.1em;
-        }
-        
-        td {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        tr:hover {
-            background: #f1f5f9;
+        .staff-line {
+            height: 2px;
+            background: #94a3b8;
+            margin: 5px 0;
         }
         
         .badge {
@@ -240,84 +262,115 @@
             font-size: 0.9em;
         }
         
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #64748b;
+        .info-note {
+            background: #fef9c3;
+            border-right: 5px solid #eab308;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 20px 0;
+            color: #854d0e;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🎼 دو ري مي فا صول لا سي</h1>
-        <p class="subtitle">حوّل النوتة العلمية (Scientific) إلى حرفية (عربية) بدقة 100%</p>
+        <p class="subtitle">حوّل النوتة العلمية (Scientific) إلى حرفية (عربية) - الآن مع رفع الصور!</p>
 
-        <!-- منطقة الإدخال -->
-        <div class="input-area">
-            <h2 style="color: #0f172a; margin-bottom: 15px;">✏️ أدخل النوتة العلمية:</h2>
-            
-            <textarea id="scientificInput" placeholder="مثال: C4, D#4, Eb4, F4, G4, A4, B4, C5
-أو اكتب قطعة كاملة مثل:
-C4 E4 G4 C5 E5 G5 C6
-C#4 D4 D#4 E4 F4 F#4 G4 G#4 A4 A#4 B4 C5">C4 E4 G4 C5 E5 G5 C6
+        <!-- تبويبات -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('text')">📝 نص علمي</div>
+            <div class="tab" onclick="switchTab('image')">🖼️ صورة نوتة</div>
+        </div>
+
+        <!-- قسم النص العلمي -->
+        <div id="tabText" class="tab-content active">
+            <div class="input-area">
+                <h2 style="color: #0f172a; margin-bottom: 15px;">✏️ أدخل النوتة العلمية:</h2>
+                <textarea id="scientificInput" placeholder="مثال: C4, D#4, Eb4, F4, G4, A4, B4, C5">C4 E4 G4 C5 E5 G5 C6
 C#4 D4 D#4 E4 F4 F#4 G4 G#4 A4 A#4 B4 C5</textarea>
-            
-            <div class="options">
-                <div class="option-group">
-                    <label>🎹 الأوكتاف (Octave):</label>
-                    <select id="octaveSelect">
-                        <option value="all">كل الأوكتافات</option>
-                        <option value="0">أوكتاف 0</option>
-                        <option value="1">أوكتاف 1</option>
-                        <option value="2">أوكتاف 2</option>
-                        <option value="3">أوكتاف 3</option>
-                        <option value="4" selected>أوكتاف 4 (الأوسط)</option>
-                        <option value="5">أوكتاف 5</option>
-                        <option value="6">أوكتاف 6</option>
-                        <option value="7">أوكتاف 7</option>
-                    </select>
+                
+                <button class="convert-btn" onclick="convertFromText()">
+                    <span>🔄</span> حول إلى حرفية
+                </button>
+            </div>
+        </div>
+
+        <!-- قسم الصورة -->
+        <div id="tabImage" class="tab-content">
+            <div class="input-area">
+                <h2 style="color: #0f172a; margin-bottom: 15px;">🖼️ ارفع صورة النوتة الموسيقية:</h2>
+                
+                <div class="info-note">
+                    <strong>🔬 ملاحظة:</strong> هذه ميزة تجريبية تقوم بمحاكاة استخراج النوتات. للتعرف الحقيقي على الصور، سنستخدم لاحقاً تقنيات ذكاء اصطناعي متقدمة.
                 </div>
                 
-                <div class="option-group">
-                    <label>🔤 نظام التسمية:</label>
-                    <select id="namingSystem">
-                        <option value="full">كامل (دو دييز)</option>
-                        <option value="symbol">بالرموز (دو #)</option>
-                        <option value="english">إنجليزي (C#)</option>
-                        <option value="mix">مختلط</option>
-                    </select>
+                <div class="upload-image-area" id="uploadImageArea">
+                    <div class="upload-icon">📸</div>
+                    <div style="font-size: 1.2em; margin-bottom: 5px;">اضغط هنا أو اسحب صورة</div>
+                    <div style="color: #666;">PNG, JPG, JPEG, GIF (حتى 10 MB)</div>
                 </div>
                 
-                <div class="option-group">
-                    <label>🎯 عرض النتيجة:</label>
-                    <select id="displayFormat">
-                        <option value="grid">شبكة</option>
-                        <option value="table">جدول</option>
-                        <option value="text">نص متصل</option>
-                    </select>
+                <input type="file" id="imageInput" accept="image/*">
+                
+                <div style="text-align: center;">
+                    <img id="imagePreview" class="image-preview" alt="معاينة الصورة">
                 </div>
+                
+                <button class="convert-btn" onclick="convertFromImage()" id="convertImageBtn" disabled>
+                    <span>🔍</span> استخرج النوتات من الصورة
+                </button>
+            </div>
+        </div>
+
+        <!-- الخيارات المشتركة -->
+        <div class="options">
+            <div class="option-group">
+                <label>🎹 الأوكتاف (Octave):</label>
+                <select id="octaveSelect">
+                    <option value="all">كل الأوكتافات</option>
+                    <option value="0">أوكتاف 0</option>
+                    <option value="1">أوكتاف 1</option>
+                    <option value="2">أوكتاف 2</option>
+                    <option value="3">أوكتاف 3</option>
+                    <option value="4" selected>أوكتاف 4 (الأوسط)</option>
+                    <option value="5">أوكتاف 5</option>
+                    <option value="6">أوكتاف 6</option>
+                    <option value="7">أوكتاف 7</option>
+                </select>
             </div>
             
-            <button class="convert-btn" onclick="convertNotation()">
-                <span>🔄</span> حول إلى حرفية
-            </button>
+            <div class="option-group">
+                <label>🔤 نظام التسمية:</label>
+                <select id="namingSystem">
+                    <option value="full">كامل (دو دييز)</option>
+                    <option value="symbol">بالرموز (دو #)</option>
+                    <option value="english">إنجليزي (C#)</option>
+                    <option value="mix">مختلط</option>
+                </select>
+            </div>
+            
+            <div class="option-group">
+                <label>🎯 عرض النتيجة:</label>
+                <select id="displayFormat">
+                    <option value="grid">شبكة</option>
+                    <option value="table">جدول</option>
+                </select>
+            </div>
         </div>
 
         <!-- النتيجة -->
-        <div class="result-section" id="resultSection" style="display: block;">
+        <div class="result-section" id="resultSection">
             <h2 style="color: #0f172a; margin-bottom: 20px;">📝 النتيجة (حرفي عربي):</h2>
             
-            <!-- شبكة النوتات -->
             <div id="notationGrid" class="notation-grid"></div>
             
-            <!-- المدرج الموسيقي -->
             <div class="music-staff">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <span class="badge">🎼 المدرج الموسيقي</span>
                     <span id="totalNotes" class="badge" style="background: #0f172a;">0 نوتة</span>
                 </div>
                 
-                <!-- خطوط المدرج -->
                 <div style="position: relative; height: 150px; margin: 30px 0;">
                     <div class="staff-line" style="position: absolute; top: 0; width: 100%;"></div>
                     <div class="staff-line" style="position: absolute; top: 30px; width: 100%;"></div>
@@ -325,93 +378,70 @@ C#4 D4 D#4 E4 F4 F#4 G4 G#4 A4 A#4 B4 C5</textarea>
                     <div class="staff-line" style="position: absolute; top: 90px; width: 100%;"></div>
                     <div class="staff-line" style="position: absolute; top: 120px; width: 100%;"></div>
                     
-                    <!-- النوتات على المدرج -->
-                    <div id="staffNotes" style="position: relative; height: 100%; display: flex; justify-content: center; align-items: center; gap: 15px;">
-                        <!-- هنا تظهر النوتات -->
-                    </div>
-                </div>
-                
-                <div style="text-align: center; color: #4b5563;">
-                    <span>🎵 دو | ري | مي | فا | صول | لا | سي</span>
+                    <div id="staffNotes" style="position: relative; height: 100%;"></div>
                 </div>
             </div>
             
-            <!-- جدول التحويل -->
-            <div class="table-container" id="conversionTable" style="margin-top: 30px;">
-                <table>
-                    <thead>
+            <div class="table-container" style="overflow-x: auto; margin-top: 30px;">
+                <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 20px; overflow: hidden;">
+                    <thead style="background: #0f172a; color: white;">
                         <tr>
-                            <th>علمي (Scientific)</th>
-                            <th>حرفي (عربي)</th>
-                            <th>العلامة</th>
-                            <th>التردد (Hz)</th>
+                            <th style="padding: 15px;">علمي (Scientific)</th>
+                            <th style="padding: 15px;">حرفي (عربي)</th>
+                            <th style="padding: 15px;">التردد (Hz)</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody">
-                        <!-- هنا يضاف الجدول -->
-                    </tbody>
+                    <tbody id="tableBody"></tbody>
                 </table>
             </div>
         </div>
         
-        <footer>
-            <p>⚡ تحويل دقيق 100% - كل نوتة علمية تقابلها حرفيتها بالعربية</p>
+        <footer style="text-align: center; margin-top: 30px; color: #64748b;">
+            <p>⚡ تحويل دقيق 100% للنص العلمي | 🖼️ تجريبي للصور</p>
         </footer>
     </div>
 
     <script>
-        // قاموس التحويل العلمي إلى حرفي
+        // نفس القاموس السابق
         const scientificToArabic = {
-            'C': 'دو',
-            'D': 'ري', 
-            'E': 'مي',
-            'F': 'فا',
-            'G': 'صول',
-            'A': 'لا',
-            'B': 'سي'
+            'C': 'دو', 'D': 'ري', 'E': 'مي', 'F': 'فا', 'G': 'صول', 'A': 'لا', 'B': 'سي'
         };
 
-        // قاموس العلامات
-        const accidentals = {
-            '#': 'دييز',
-            'b': 'بيمول',
-            '##': 'دييز مزدوج',
-            'bb': 'بيمول مزدوج'
-        };
+        // عناصر
+        const scientificInput = document.getElementById('scientificInput');
+        const octaveSelect = document.getElementById('octaveSelect');
+        const namingSystem = document.getElementById('namingSystem');
+        const displayFormat = document.getElementById('displayFormat');
+        const grid = document.getElementById('notationGrid');
+        const tableBody = document.getElementById('tableBody');
+        const staffNotes = document.getElementById('staffNotes');
+        const totalNotesSpan = document.getElementById('totalNotes');
 
-        // دالة التحويل الرئيسية
-        function convertNotation() {
-            const input = document.getElementById('scientificInput').value;
-            const octave = document.getElementById('octaveSelect').value;
-            const naming = document.getElementById('namingSystem').value;
-            const format = document.getElementById('displayFormat').value;
-            
-            // استخراج النوتات من النص
-            const notes = extractNotes(input);
-            
-            // تصفية حسب الأوكتاف
-            const filteredNotes = filterByOctave(notes, octave);
-            
-            // تحديث الواجهة
-            updateDisplay(filteredNotes, naming, format);
-            
-            // تحديث الإحصائيات
-            document.getElementById('totalNotes').textContent = filteredNotes.length + ' نوتة';
-        }
+        // متغير لتخزين آخر نوتات محولة
+        let lastConvertedNotes = [];
 
-        // دالة استخراج النوتات
+        // دوال المساعدة (نفس السابق)
         function extractNotes(text) {
             const pattern = /[A-G][#b]{0,2}\d+/g;
             return text.match(pattern) || [];
         }
 
-        // دالة تصفية الأوكتاف
         function filterByOctave(notes, octave) {
             if (octave === 'all') return notes;
             return notes.filter(note => note.endsWith(octave));
         }
 
-        // دالة تحويل نوتة واحدة
+        function calculateFrequency(letter, accidental, octave) {
+            const baseFreq = {
+                'C': 16.35, 'D': 18.35, 'E': 20.60, 'F': 21.83,
+                'G': 24.50, 'A': 27.50, 'B': 30.87
+            };
+            let freq = baseFreq[letter] * Math.pow(2, parseInt(octave));
+            if (accidental === '#') freq *= 1.05946;
+            if (accidental === 'b') freq /= 1.05946;
+            return Math.round(freq * 100) / 100;
+        }
+
         function convertSingleNote(note, naming) {
             const letter = note[0];
             const accidental = note.includes('#') ? '#' : note.includes('b') ? 'b' : '';
@@ -442,88 +472,95 @@ C#4 D4 D#4 E4 F4 F#4 G4 G#4 A4 A#4 B4 C5</textarea>
             };
         }
 
-        // دالة حساب التردد (تقريبي)
-        function calculateFrequency(letter, accidental, octave) {
-            const baseFreq = {
-                'C': 16.35, 'D': 18.35, 'E': 20.60, 'F': 21.83,
-                'G': 24.50, 'A': 27.50, 'B': 30.87
-            };
-            
-            let freq = baseFreq[letter] * Math.pow(2, parseInt(octave));
-            
-            if (accidental === '#') freq *= 1.05946;
-            if (accidental === 'b') freq /= 1.05946;
-            
-            return Math.round(freq * 100) / 100;
-        }
-
-        // دالة تحديث العرض
         function updateDisplay(notes, naming, format) {
-            const grid = document.getElementById('notationGrid');
-            const tableBody = document.getElementById('tableBody');
-            const staffNotes = document.getElementById('staffNotes');
-            
-            // تنظيف
             grid.innerHTML = '';
             tableBody.innerHTML = '';
             staffNotes.innerHTML = '';
-            
-            // تحويل كل نوتة
-            const convertedNotes = notes.map(note => convertSingleNote(note, naming));
-            
-            // عرض كشبكة
-            convertedNotes.forEach(note => {
-                const card = document.createElement('div');
-                card.className = 'note-card';
-                card.innerHTML = `
-                    <div class="scientific">${note.scientific}</div>
-                    <div class="arrow">⬇️</div>
-                    <div class="arabic">${note.arabic}</div>
-                    <div class="arabic-small">${note.frequency} Hz</div>
-                `;
-                grid.appendChild(card);
-            });
-            
-            // عرض كجدول
-            convertedNotes.forEach(note => {
+
+            const converted = notes.map(note => convertSingleNote(note, naming));
+            lastConvertedNotes = converted;
+
+            if (format === 'grid') {
+                converted.forEach(note => {
+                    const card = document.createElement('div');
+                    card.className = 'note-card';
+                    card.innerHTML = `
+                        <div class="scientific">${note.scientific}</div>
+                        <div class="arrow">⬇️</div>
+                        <div class="arabic">${note.arabic}</div>
+                        <div style="color: #6b7280;">${note.frequency} Hz</div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } else {
+                // table format already handled separately
+            }
+
+            // الجدول دائمًا يظهر
+            converted.forEach(note => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><strong>${note.scientific}</strong></td>
-                    <td><strong style="color: #6d28d9; font-size: 1.2em;">${note.arabic}</strong></td>
-                    <td>${note.accidental || 'طبيعي'}</td>
-                    <td>${note.frequency} Hz</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center;">${note.scientific}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center; font-weight: bold; color: #6d28d9;">${note.arabic}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center;">${note.frequency} Hz</td>
                 `;
                 tableBody.appendChild(row);
             });
-            
-            // عرض على المدرج
-            convertedNotes.slice(0, 8).forEach((note, index) => {
-                const noteElement = document.createElement('div');
-                noteElement.className = 'note-symbol';
-                
-                // تحديد الموضع حسب النوتة
-                const positions = {'C': 0, 'D': 1, 'E': 2, 'F': 3, 'G': 4, 'A': 5, 'B': 6};
+
+            // عرض بسيط على المدرج
+            converted.slice(0, 8).forEach((note, index) => {
+                const positions = {'C':0,'D':1,'E':2,'F':3,'G':4,'A':5,'B':6};
                 const top = 120 - (positions[note.letter] * 15);
-                
-                noteElement.style.position = 'absolute';
-                noteElement.style.top = top + 'px';
-                noteElement.style.left = (index * 60 + 50) + 'px';
-                noteElement.setAttribute('title', note.arabic);
-                
-                staffNotes.appendChild(noteElement);
+                const noteDiv = document.createElement('div');
+                noteDiv.className = 'note-symbol';
+                noteDiv.style.position = 'absolute';
+                noteDiv.style.top = top + 'px';
+                noteDiv.style.left = (index * 60 + 50) + 'px';
+                noteDiv.style.width = '30px';
+                noteDiv.style.height = '30px';
+                noteDiv.style.background = '#6d28d9';
+                noteDiv.style.borderRadius = '50%';
+                noteDiv.setAttribute('title', note.arabic);
+                staffNotes.appendChild(noteDiv);
             });
-            
-            // إظهار رسالة إذا مافي نوتات
-            if (notes.length === 0) {
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">لا توجد نوتات 😢</div>';
-                tableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 30px;">لا توجد نوتات</td></tr>';
-            }
+
+            totalNotesSpan.textContent = converted.length + ' نوتة';
         }
 
-        // تشغيل التحويل أول مرة
-        window.onload = function() {
-            convertNotation();
+        // دالة التحويل من النص
+        function convertFromText() {
+            const text = scientificInput.value;
+            const octave = octaveSelect.value;
+            const naming = namingSystem.value;
+            const format = displayFormat.value;
+
+            let notes = extractNotes(text);
+            notes = filterByOctave(notes, octave);
+            updateDisplay(notes, naming, format);
+        }
+
+        // دوال التبويب
+        window.switchTab = function(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            if (tab === 'text') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.getElementById('tabText').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                document.getElementById('tabImage').classList.add('active');
+            }
         };
-    </script>
-</body>
-</html>
+
+        // رفع الصورة
+        const uploadArea = document.getElementById('uploadImageArea');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const convertImageBtn = document.getElementById('convertImageBtn');
+
+        uploadArea.onclick = () => imageInput.click();
+
+        uploadArea.ondragover = (e) => {
+            e.preventDefault();
+            uploadArea.style.backgro
