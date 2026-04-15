@@ -2,7 +2,8 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>روضة الرشا 🌈</title>
+<title>🌸 روضة الرشا 🌸</title>
+
 <style>
 body {
     font-family: "Comic Sans MS", cursive;
@@ -11,9 +12,7 @@ body {
     direction: rtl;
 }
 
-h1 {
-    color: #ff4081;
-}
+h1 { color: #ff4081; }
 
 .menu button {
     padding: 10px 20px;
@@ -26,39 +25,33 @@ h1 {
     cursor: pointer;
 }
 
-.section {
-    display: none;
-}
+.section { display: none; }
+.active { display: block; }
 
-.active {
-    display: block;
-}
-
+/* لوحة السلم والثعبان */
 #board {
     display: grid;
-    grid-template-columns: repeat(10, 40px);
+    grid-template-columns: repeat(10, 35px);
     gap: 2px;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .cell {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     background: #fff;
     border: 1px solid #ccc;
-    font-size: 12px;
+    font-size: 11px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.player {
-    background: yellow;
-}
+.player { background: yellow; }
 
-button.play {
-    background: #ff9800;
+/* منطقة الألعاب */
+#gameArea {
     margin-top: 20px;
 }
 </style>
@@ -66,83 +59,173 @@ button.play {
 
 <body>
 
-<h1>🌸 روضة الرشا 🌸</h1>
+<h1>🌈 روضة الرشا 🌸</h1>
+
+<!-- أصوات -->
+<audio id="winSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b1c0.mp3"></audio>
+<audio id="loseSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c4b1e.mp3"></audio>
+<audio id="laughSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9b1c2a.mp3"></audio>
 
 <div class="menu">
-    <button onclick="showSection('home')">الرئيسية</button>
-    <button onclick="showSection('games')">🎮 ألعاب</button>
+    <button onclick="showSection('home')">🏡 الرئيسية</button>
+    <button onclick="showSection('games')">🎮 الألعاب</button>
 </div>
 
+<!-- الصفحة الرئيسية -->
 <div id="home" class="section active">
-    <h2>أهلاً بكم يا أطفال 💖</h2>
-    <p>هنا نتعلم ونلعب معاً 🌈</p>
+    <h2>أهلاً يا أبطال 💖</h2>
+    <p>تعلموا والعبوا واستمتعوا 🌈</p>
 </div>
 
+<!-- الألعاب -->
 <div id="games" class="section">
-    <h2>🎲 لعبة السلم والثعبان</h2>
-    <div id="board"></div>
-    <button class="play" onclick="rollDice()">ارمي النرد 🎲</button>
-    <p id="status"></p>
+
+    <h2>🎮 الألعاب</h2>
+
+    <button onclick="startSnake()">🐍 السلم والثعبان</button>
+    <button onclick="startGuessGame()">🎯 التخمين</button>
+    <button onclick="startColorGame()">🎨 الألوان</button>
+    <button onclick="startMemoryGame()">🧠 الذاكرة</button>
+    <button onclick="startClickGame()">⚡ السرعة</button>
+
+    <div id="gameArea"></div>
 </div>
 
 <script>
-// التنقل بين الصفحات
-function showSection(id) {
-    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+// تنقل الصفحات
+function showSection(id){
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
 }
 
-// إنشاء اللوحة
-const board = document.getElementById("board");
-for (let i = 100; i >= 1; i--) {
-    let cell = document.createElement("div");
-    cell.className = "cell";
-    cell.id = "cell-" + i;
-    cell.innerText = i;
-    board.appendChild(cell);
+// تشغيل صوت
+function playSound(id){
+    document.getElementById(id).play();
 }
 
-// اللاعب
+// ===================
+// 🐍 السلم والثعبان
+// ===================
 let position = 1;
 
-// سلالم وثعابين
-const ladders = {
-    4: 14,
-    9: 31,
-    28: 84
-};
+function startSnake(){
+    let area = document.getElementById("gameArea");
+    area.innerHTML = `
+        <div id="board"></div>
+        <button onclick="rollDice()">🎲 ارمي النرد</button>
+        <p id="status"></p>
+    `;
 
-const snakes = {
-    17: 7,
-    54: 34,
-    62: 19,
-    98: 79
-};
+    let board = document.getElementById("board");
+    board.innerHTML = "";
 
-function rollDice() {
-    let dice = Math.floor(Math.random() * 6) + 1;
+    for(let i=100;i>=1;i--){
+        let cell = document.createElement("div");
+        cell.className="cell";
+        cell.id="cell-"+i;
+        cell.innerText=i;
+        board.appendChild(cell);
+    }
+
+    position = 1;
+}
+
+const ladders = {4:14, 9:31, 28:84};
+const snakes = {17:7, 54:34, 62:19, 98:79};
+
+function rollDice(){
+    let dice = Math.floor(Math.random()*6)+1;
     position += dice;
 
-    if (position > 100) position = 100;
+    if(position > 100) position = 100;
 
-    if (ladders[position]) {
+    if(ladders[position]){
         position = ladders[position];
-        alert("طلعت سلم 😄");
+        playSound("laughSound");
     }
 
-    if (snakes[position]) {
+    if(snakes[position]){
         position = snakes[position];
-        alert("عضك ثعبان 😢");
+        playSound("loseSound");
     }
 
-    document.querySelectorAll('.cell').forEach(c => c.classList.remove('player'));
-    document.getElementById("cell-" + position).classList.add('player');
+    document.querySelectorAll('.cell').forEach(c=>c.classList.remove('player'));
+    let cell = document.getElementById("cell-"+position);
+    if(cell) cell.classList.add('player');
 
-    document.getElementById("status").innerText = "الموقع الحالي: " + position;
+    document.getElementById("status").innerText = "الموقع: " + position;
 
-    if (position === 100) {
+    if(position === 100){
         alert("🎉 فزت!");
+        playSound("winSound");
         position = 1;
+    }
+}
+
+// ===================
+// 🎯 التخمين
+// ===================
+function startGuessGame(){
+    let number = Math.floor(Math.random()*10)+1;
+    let guess = prompt("خمن رقم من 1 إلى 10");
+
+    if(Number(guess) === number){
+        alert("صح 👏");
+        playSound("winSound");
+    } else {
+        alert("غلط 😢 الرقم كان " + number);
+        playSound("loseSound");
+    }
+}
+
+// ===================
+// 🎨 الألوان
+// ===================
+function startColorGame(){
+    let colors = ["أحمر","أزرق","أخضر"];
+    let correct = colors[Math.floor(Math.random()*colors.length)];
+    let guess = prompt("اختر لون: أحمر / أزرق / أخضر");
+
+    if(guess === correct){
+        alert("برافو 🎨");
+        playSound("laughSound");
+    } else {
+        alert("جرب مرة ثانية");
+    }
+}
+
+// ===================
+// 🧠 الذاكرة
+// ===================
+function startMemoryGame(){
+    let arr = ["🐶","🐱","🐰"];
+    let show = arr.join(" ");
+    alert("احفظ: " + show);
+
+    let answer = prompt("شو كان الترتيب؟");
+
+    if(answer === show){
+        alert("ذاكرتك قوية 💪");
+        playSound("winSound");
+    } else {
+        alert("حاول مرة ثانية");
+    }
+}
+
+// ===================
+// ⚡ السرعة
+// ===================
+function startClickGame(){
+    let area = document.getElementById("gameArea");
+
+    area.innerHTML = "<button id='clickBtn'>اضغط بسرعة!</button>";
+
+    let start = Date.now();
+
+    document.getElementById("clickBtn").onclick = function(){
+        let time = Date.now() - start;
+        alert("سرعتك: " + time + " ms");
+        playSound("laughSound");
     }
 }
 </script>
