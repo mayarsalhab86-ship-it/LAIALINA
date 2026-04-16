@@ -1,234 +1,308 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>🌸 روضة الرشا 🌸</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فود Food - دليل مطاعم سلمية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* المتغيرات الأساسية للألوان */
+        :root {
+            --primary: #ff9800;
+            --primary-dark: #e68a00;
+            --secondary: #27ae60;
+            --dark: #222;
+            --light: #f8f9fa;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
 
-<style>
-body {
-    font-family: "Comic Sans MS", cursive;
-    background: linear-gradient(to right, #ffecd2, #fcb69f);
-    text-align: center;
-    direction: rtl;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
 
-h1 { color: #ff4081; }
+        body {
+            background-color: #fff;
+            color: var(--dark);
+        }
 
-.menu button {
-    padding: 10px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 15px;
-    background: #4caf50;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-}
+        /* الهيدر */
+        header {
+            background: #fff;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
 
-.section { display: none; }
-.active { display: block; }
+        .logo img {
+            height: 60px;
+        }
 
-/* لوحة السلم والثعبان */
-#board {
-    display: grid;
-    grid-template-columns: repeat(10, 35px);
-    gap: 2px;
-    justify-content: center;
-    margin-top: 15px;
-}
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            margin-right: 20px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
 
-.cell {
-    width: 35px;
-    height: 35px;
-    background: #fff;
-    border: 1px solid #ccc;
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .nav-links a:hover {
+            color: var(--primary);
+        }
 
-.player { background: yellow; }
+        /* القسم الرئيسي (البانر) */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1200x400?text=Food+Salamiyah');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
 
-/* منطقة الألعاب */
-#gameArea {
-    margin-top: 20px;
-}
-</style>
+        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
+
+        /* الأقسام */
+        .section-padding { padding: 60px 5%; }
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        /* شبكة المنتجات والمطاعم */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .item-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            transition: 0.3s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+        }
+
+        .item-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .item-info { padding: 20px; }
+        .item-tag {
+            background: #fff3e0;
+            color: var(--primary-dark);
+            padding: 2px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .item-name { font-size: 1.2rem; margin: 10px 0; font-weight: 700; }
+        .item-price {
+            color: var(--secondary);
+            font-weight: 800;
+            font-size: 1.3rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover { background: var(--primary-dark); }
+
+        /* كيفية الطلب */
+        .how-it-works { background: var(--light); text-align: center; }
+        .step-box { padding: 20px; }
+        .step-icon { font-size: 3rem; margin-bottom: 15px; display: block; }
+
+        /* الفوتر */
+        footer { background: #111; color: #fff; padding: 60px 5% 20px; text-align: center; }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+            text-align: right;
+        }
+        .footer-col h3 { margin-bottom: 20px; color: var(--primary); }
+        .footer-col p, .footer-col a { color: #bbb; text-decoration: none; display: block; margin-bottom: 10px; }
+        
+        .copyright { border-top: 1px solid #333; padding-top: 20px; font-size: 0.9rem; color: #777; }
+
+        /* الموبايل */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .nav-links { display: none; } /* يمكن إضافة قائمة منسدلة هنا */
+        }
+    </style>
 </head>
-
 <body>
 
-<h1>🌈 روضة الرشا 🌸</h1>
+    <header>
+        <div class="logo">
+            <img src="https://i.postimg.cc/SKYvRztj/Logo.png" alt="فود">
+        </div>
+        <nav class="nav-links">
+            <a href="#">الرئيسية</a>
+            <a href="#">المطاعم</a>
+            <a href="#">العروض</a>
+            <a href="#">تواصل معنا</a>
+        </nav>
+    </header>
 
-<!-- أصوات -->
-<audio id="winSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b1c0.mp3"></audio>
-<audio id="loseSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c4b1e.mp3"></audio>
-<audio id="laughSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9b1c2a.mp3"></audio>
+    <section class="hero">
+        <h1>أطيب الأكلات من مطاعم سلمية</h1>
+        <p>خدمة توصيل سريعة ومضمونة إلى باب منزلك</p>
+    </section>
 
-<div class="menu">
-    <button onclick="showSection('home')">🏡 الرئيسية</button>
-    <button onclick="showSection('games')">🎮 الألعاب</button>
-</div>
+    <main class="container section-padding">
+        
+        <h2 class="section-title">أقوى العروض اليوم</h2>
+        <div class="grid-container" id="offers-area">
+            </div>
 
-<!-- الصفحة الرئيسية -->
-<div id="home" class="section active">
-    <h2>أهلاً يا أبطال 💖</h2>
-    <p>تعلموا والعبوا واستمتعوا 🌈</p>
-</div>
+        <h2 class="section-title" style="margin-top: 60px;">مطاعم سلمية المميزة</h2>
+        <div class="grid-container" id="restaurants-area">
+            </div>
 
-<!-- الألعاب -->
-<div id="games" class="section">
+    </main>
 
-    <h2>🎮 الألعاب</h2>
+    <section class="section-padding how-it-works">
+        <h2 class="section-title" style="text-align: center; width: fit-content; margin: 0 auto 40px auto;">طريقة الطلب</h2>
+        <div class="grid-container">
+            <div class="step-box">
+                <span class="step-icon">📱</span>
+                <h3>اختر وجبتك</h3>
+                <p>تصفح قوائم الطعام من أشهر مطاعم المدينة</p>
+            </div>
+            <div class="step-box">
+                <span class="step-icon">🛒</span>
+                <h3>أضف للسلة</h3>
+                <p>حدد الكميات والإضافات التي ترغب بها</p>
+            </div>
+            <div class="step-box">
+                <span class="step-icon">🚗</span>
+                <h3>استلم طلبك</h3>
+                <p>فريق التوصيل سيصل إليك في أسرع وقت</p>
+            </div>
+        </div>
+    </section>
 
-    <button onclick="startSnake()">🐍 السلم والثعبان</button>
-    <button onclick="startGuessGame()">🎯 التخمين</button>
-    <button onclick="startColorGame()">🎨 الألوان</button>
-    <button onclick="startMemoryGame()">🧠 الذاكرة</button>
-    <button onclick="startClickGame()">⚡ السرعة</button>
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>فود Food</h3>
+                <p>مشروع رائد يهدف لتسهيل عملية طلب الطعام في مدينة سلمية وربط المطاعم بالزبائن مباشرة.</p>
+            </div>
+            <div class="footer-col">
+                <h3>روابط سريعة</h3>
+                <a href="#">عن المشروع</a>
+                <a href="#">انضم كمطعم</a>
+                <a href="#">سياسة الخصوصية</a>
+            </div>
+            <div class="footer-col">
+                <h3>تواصل معنا</h3>
+                <p>واتساب: 09xx-xxx-xxx</p>
+                <p>سلمية - شارع الحفرة</p>
+            </div>
+        </div>
+        <p class="copyright">جميع الحقوق محفوظة © 2026 - منصة فود</p>
+    </footer>
 
-    <div id="gameArea"></div>
-</div>
+    <script>
+        // بيانات المطاعم والوجبات التفصيلية
+        const data = {
+            offers: [
+                { name: "وجبة شاورما عربي (دبل)", price: "28,000 ل.س", img: "https://via.placeholder.com/400x300?text=Shawarma+Offer", tag: "الأكثر طلباً" },
+                { name: "عرض العائلة: 2 فروج بروستد", price: "115,000 ل.س", img: "https://via.placeholder.com/400x300?text=Broasted+Offer", tag: "توفير" },
+                { name: "بيتزا عائلية + كولا مجاناً", price: "45,000 ل.س", img: "https://via.placeholder.com/400x300?text=Pizza+Offer", tag: "عرض خاص" }
+            ],
+            restaurants: [
+                { name: "مطعم ليالينا", desc: "وجبات غربية، برغر، سناك", img: "https://via.placeholder.com/400x300?text=Layaleena" },
+                { name: "مشاوي أبو عمار", desc: "كباب، شقف، وشاورما على الفحم", img: "https://via.placeholder.com/400x300?text=Abu+Ammar" },
+                { name: "بيتزا تايم", desc: "أشهى أنواع البيتزا والباستا", img: "https://via.placeholder.com/400x300?text=Pizza+Time" },
+                { name: "فروج المدينة", desc: "بروستد، فروج مشوي، كريسبي", img: "https://via.placeholder.com/400x300?text=Al+Madina" }
+            ]
+        };
 
-<script>
-// تنقل الصفحات
-function showSection(id){
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-}
+        // وظيفة بناء البطاقات
+        function buildGrid() {
+            const offersCont = document.getElementById('offers-area');
+            const resCont = document.getElementById('restaurants-area');
 
-// تشغيل صوت
-function playSound(id){
-    document.getElementById(id).play();
-}
+            // بناء العروض
+            data.offers.forEach(item => {
+                offersCont.innerHTML += `
+                    <div class="item-card">
+                        <img src="${item.img}" class="item-img">
+                        <div class="item-info">
+                            <span class="item-tag">${item.tag}</span>
+                            <h3 class="item-name">${item.name}</h3>
+                            <span class="item-price">${item.price}</span>
+                            <button class="add-btn">إضافة للسلة</button>
+                        </div>
+                    </div>
+                `;
+            });
 
-// ===================
-// 🐍 السلم والثعبان
-// ===================
-let position = 1;
+            // بناء المطاعم
+            data.restaurants.forEach(res => {
+                resCont.innerHTML += `
+                    <div class="item-card">
+                        <img src="${res.img}" class="item-img">
+                        <div class="item-info">
+                            <h3 class="item-name">${res.name}</h3>
+                            <p style="color:#777; font-size:0.9rem; margin-bottom:15px;">${res.desc}</p>
+                            <button class="add-btn" style="background:#444;">عرض المنيو</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
 
-function startSnake(){
-    let area = document.getElementById("gameArea");
-    area.innerHTML = `
-        <div id="board"></div>
-        <button onclick="rollDice()">🎲 ارمي النرد</button>
-        <p id="status"></p>
-    `;
-
-    let board = document.getElementById("board");
-    board.innerHTML = "";
-
-    for(let i=100;i>=1;i--){
-        let cell = document.createElement("div");
-        cell.className="cell";
-        cell.id="cell-"+i;
-        cell.innerText=i;
-        board.appendChild(cell);
-    }
-
-    position = 1;
-}
-
-const ladders = {4:14, 9:31, 28:84};
-const snakes = {17:7, 54:34, 62:19, 98:79};
-
-function rollDice(){
-    let dice = Math.floor(Math.random()*6)+1;
-    position += dice;
-
-    if(position > 100) position = 100;
-
-    if(ladders[position]){
-        position = ladders[position];
-        playSound("laughSound");
-    }
-
-    if(snakes[position]){
-        position = snakes[position];
-        playSound("loseSound");
-    }
-
-    document.querySelectorAll('.cell').forEach(c=>c.classList.remove('player'));
-    let cell = document.getElementById("cell-"+position);
-    if(cell) cell.classList.add('player');
-
-    document.getElementById("status").innerText = "الموقع: " + position;
-
-    if(position === 100){
-        alert("🎉 فزت!");
-        playSound("winSound");
-        position = 1;
-    }
-}
-
-// ===================
-// 🎯 التخمين
-// ===================
-function startGuessGame(){
-    let number = Math.floor(Math.random()*10)+1;
-    let guess = prompt("خمن رقم من 1 إلى 10");
-
-    if(Number(guess) === number){
-        alert("صح 👏");
-        playSound("winSound");
-    } else {
-        alert("غلط 😢 الرقم كان " + number);
-        playSound("loseSound");
-    }
-}
-
-// ===================
-// 🎨 الألوان
-// ===================
-function startColorGame(){
-    let colors = ["أحمر","أزرق","أخضر"];
-    let correct = colors[Math.floor(Math.random()*colors.length)];
-    let guess = prompt("اختر لون: أحمر / أزرق / أخضر");
-
-    if(guess === correct){
-        alert("برافو 🎨");
-        playSound("laughSound");
-    } else {
-        alert("جرب مرة ثانية");
-    }
-}
-
-// ===================
-// 🧠 الذاكرة
-// ===================
-function startMemoryGame(){
-    let arr = ["🐶","🐱","🐰"];
-    let show = arr.join(" ");
-    alert("احفظ: " + show);
-
-    let answer = prompt("شو كان الترتيب؟");
-
-    if(answer === show){
-        alert("ذاكرتك قوية 💪");
-        playSound("winSound");
-    } else {
-        alert("حاول مرة ثانية");
-    }
-}
-
-// ===================
-// ⚡ السرعة
-// ===================
-function startClickGame(){
-    let area = document.getElementById("gameArea");
-
-    area.innerHTML = "<button id='clickBtn'>اضغط بسرعة!</button>";
-
-    let start = Date.now();
-
-    document.getElementById("clickBtn").onclick = function(){
-        let time = Date.now() - start;
-        alert("سرعتك: " + time + " ms");
-        playSound("laughSound");
-    }
-}
-</script>
-
+        window.onload = buildGrid;
+    </script>
 </body>
 </html>
