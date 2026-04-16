@@ -38,118 +38,55 @@
         .container { width: 92%; max-width: 1200px; margin: auto; padding: 20px 0; }
 
         /* العناوين */
-        h2.section-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin: 40px 0 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        h2.section-title::before {
-            content: "";
-            width: 6px;
-            height: 35px;
-            background: var(--primary);
-            border-radius: 10px;
-        }
+        h2.section-title { font-size: 1.8rem; font-weight: 800; margin: 40px 0 10px; display: flex; align-items: center; gap: 10px; }
+        h2.section-title::before { content: ""; width: 6px; height: 35px; background: var(--primary); border-radius: 10px; }
         .subtitle { color: var(--gray); margin-bottom: 30px; font-size: 1.1rem; }
 
         /* شبكة المنتجات (الأسعار) */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
 
         /* الكرت */
-        .card {
-            background: #fff;
-            border-radius: 25px;
-            border: 1px solid #eee;
-            overflow: hidden;
-            transition: 0.4s ease;
-            display: flex;
-            flex-direction: column;
-        }
+        .card { background: #fff; border-radius: 25px; border: 1px solid #eee; overflow: hidden; transition: 0.4s ease; display: flex; flex-direction: column; }
         .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        
         .card-image-box { position: relative; width: 100%; height: 220px; }
         .card-img { width: 100%; height: 100%; object-fit: cover; }
-        .tag {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--primary);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
+        
         .card-body { padding: 20px; flex-grow: 1; }
         .card-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; color: var(--dark); }
         .card-text { color: var(--gray); font-size: 0.95rem; margin-bottom: 20px; }
 
-        .card-footer {
-            padding: 20px;
-            border-top: 1px solid #f5f5f5;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .price { font-size: 1.5rem; font-weight: 900; color: var(--success); }
-        .order-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+        .card-footer { padding: 20px; border-top: 1px solid #f5f5f5; text-align: center; }
+        .order-btn { background: var(--primary); color: white; border: none; padding: 10px 25px; border-radius: 15px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; }
         .order-btn:hover { background: var(--primary-dark); }
 
         /* كيفية الطلب */
-        .how-to {
-            background: var(--light-bg);
-            padding: 60px 0;
-            margin: 60px 0;
-            border-radius: 40px;
-            text-align: center;
-        }
-        .steps {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            margin-top: 40px;
-            gap: 20px;
-        }
+        .how-to { background: var(--light-bg); padding: 60px 0; margin: 60px 0; border-radius: 40px; text-align: center; }
+        .steps { display: flex; flex-wrap: wrap; justify-content: space-around; margin-top: 40px; gap: 20px; }
         .step-item { flex: 1; min-width: 280px; padding: 20px; }
         .step-icon { font-size: 3.5rem; margin-bottom: 20px; display: block; }
-        .step-item h3 { margin-bottom: 15px; font-size: 1.5rem; }
+        
+        /* النافذة المنبثقة (Popup Modal) للتنيو */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { background-color: #fff; width: 90%; max-width: 600px; border-radius: 20px; padding: 30px; position: relative; max-height: 80vh; overflow-y: auto; }
+        .close-modal { position: absolute; top: 15px; left: 15px; font-size: 2rem; cursor: pointer; color: #aaa; }
+        .close-modal:hover { color: #333; }
+        .modal-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 20px; text-align: center; color: var(--dark); }
+        
+        /* خط الطلبات داخل المنيو */
+        .menu-list { list-style: none; }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .menu-item-name { font-weight: 600; font-size: 1.1rem; color: var(--dark); }
+        .menu-item-price { font-weight: 800; font-size: 1.2rem; color: var(--success); }
 
         /* الفوتر */
-        footer {
-            background: var(--dark);
-            color: #fff;
-            padding: 80px 5% 40px;
-            text-align: center;
-            border-radius: 50px 50px 0 0;
-        }
+        footer { background: var(--dark); color: #fff; padding: 60px 5% 40px; text-align: center; border-radius: 50px 50px 0 0; margin-top: 60px; }
         .footer-brand { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 20px; display: block; }
         .footer-nav { margin-bottom: 40px; }
         .footer-nav a { color: #ccc; text-decoration: none; margin: 0 15px; transition: 0.3s; }
         .footer-nav a:hover { color: var(--primary); }
         .copyright { color: #555; font-size: 0.9rem; border-top: 1px solid #222; padding-top: 30px; }
 
-        /* للموبايل */
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: 1fr; }
-            .section-title { font-size: 1.4rem; }
-        }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .section-title { font-size: 1.4rem; } }
     </style>
 </head>
 <body>
@@ -160,113 +97,122 @@
 
     <div class="container">
         
-        <h2 class="section-title">عروض فود الحصرية</h2>
-        <p class="subtitle">أفضل الأسعار للوجبات العائلية والفردية في سلمية</p>
-        <div class="grid" id="offers-list">
-            </div>
-
         <h2 class="section-title">مطاعم سلمية</h2>
         <p class="subtitle">تصفح منيو أفضل المطاعم واطلب الآن</p>
         <div class="grid" id="restaurants-list">
             </div>
 
         <section class="how-to">
-            <h2 style="display:inline-block; border-bottom: 4px solid var(--primary); padding-bottom: 10px;">كيفية الطلب</h2>
+            <h2>كيفية الطلب</h2>
             <div class="steps">
-                <div class="step-item">
-                    <span class="step-icon">📱</span>
-                    <h3>اختر مطعمك</h3>
-                    <p>تصفح قائمة مطاعم سلمية المتوفرة واختر ما تشتهيه</p>
-                </div>
-                <div class="step-item">
-                    <span class="step-icon">🛒</span>
-                    <h3>اطلب وجبتك</h3>
-                    <p>أضف الوجبات التي تحبها إلى سلة طلباتك وأكد الطلب</p>
-                </div>
-                <div class="step-item">
-                    <span class="step-icon">🚚</span>
-                    <h3>استلم طلبك</h3>
-                    <p>فريقنا سيصل إليك في وقت قياسي وبطعام ساخن</p>
-                </div>
+                <div class="step-item"><span class="step-icon">📱</span><h3>اختر مطعمك</h3><p>تصفح قائمة مطاعم سلمية واختر ما تشتهيه</p></div>
+                <div class="step-item"><span class="step-icon">🛒</span><h3>اطلب وجبتك</h3><p>أضف الوجبات التي تحبها إلى سلة طلباتك</p></div>
+                <div class="step-item"><span class="step-icon">🚚</span><h3>استلم طلبك</h3><p>فريقنا سيصل إليك بطعام ساخن</p></div>
             </div>
         </section>
 
     </div>
 
+    <div id="menu-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeMenu()">&times;</span>
+            <h3 id="modal-title" class="modal-title">المنيو</h3>
+            <ul id="menu-list" class="menu-list">
+                </ul>
+        </div>
+    </div>
+
     <footer>
         <span class="footer-brand">فود - Food</span>
-        <p style="color: #888; margin-bottom: 30px;">الطريقة الأسهل والأسرع لطلب الطعام في مدينة سلمية.</p>
         <nav class="footer-nav">
-            <a href="#">الرئيسية</a>
-            <a href="#">المطاعم</a>
-            <a href="#">العروض</a>
-            <a href="#">حلويات (قريباً)</a>
+            <a href="#">الرئيسية</a><a href="#">المطاعم</a><a href="#">العروض</a>
         </nav>
         <p class="copyright">جميع الحقوق محفوظة © 2026 - منصة فود سلمية</p>
     </footer>
 
     <script>
-        // البيانات الحقيقية (مطاعم وأكلات سلمية)
-        const offers = [
-            { title: "عرض شاورما السلام", price: "35,000", desc: "وجبة شاورما عربي دبل مع بطاطا ومخلل وكريم ثوم لقمة خيالية", img: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=500", tag: "الأكثر مبيعاً" },
-            { title: "عرض الكريسبي العائلي", price: "120,000", desc: "12 قطعة كريسبي مع بطاطا وصوصات عائلية ولتر كولا", img: "https://images.unsplash.com/photo-1562967914-608f82629710?w=500", tag: "توفير كبير" },
-            { title: "بيتزا ليالينا (سوبر)", price: "55,000", desc: "بيتزا حجم كبير بجميع الإضافات خضار وفطر ومرتديلا وقشقوان", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500", tag: "عرض خاص" },
-            { title: "وجبة بروستد المدينة", price: "60,000", desc: "فروج بروستد كامل مع بطاطا ومخلل وثوم خبز ساخن", img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500", tag: "طازج" }
-        ];
-
+        // بيانات المطاعم وقوائم الطعام (المنيو والأسعار)
         const restaurants = [
-            { name: "مطعم ليالينا", desc: "أشهر مطعم للوجبات الغربية، برغر، بيتزا، وسناك في سلمية", img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=500" },
-            { name: "مشاوي أبو عمار", desc: "مشاوي مشكلة، كباب، شقف، وشاورما على الفحم أصلية", img: "https://images.unsplash.com/photo-1544124499-58912cbddaad?w=500" },
-            { name: "بيتزا تايم", desc: "مختصون بالبيتزا الإيطالية والمعجنات والباستا المميزة", img: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=500" },
-            { name: "فروج المدينة", desc: "أفضل فروج بروستد ومشوي على السيخ في المدينة", img: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500" },
-            { name: "مطعم الوردة", desc: "وجبات شرقية، طبخ منزلي، ومقبلات شامية شهيرة", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7bb7445?w=500" },
-            { name: "حلويات قصر الشوكولا", desc: "كريب، وافل، وحلويات غربية متنوعة (قريباً على التطبيق)", img: "https://images.unsplash.com/photo-1551024601-bec78acc704b?w=500" }
+            { 
+                id: 1, name: "مطعم ليالينا", desc: "أشهر مطعم للوجبات الغربية، برغر، بيتزا، وسناك", img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=500",
+                menu: [
+                    { name: "برغر لحم كلاسيك", price: "35,000 ل.س" },
+                    { name: "بيتزا مارغريتا (وسط)", price: "40,000 ل.س" },
+                    { name: "وجبة كريسبي (5 قطع)", price: "50,000 ل.س" },
+                    { name: "ساندويش فاهيتا", price: "30,000 ل.س" }
+                ]
+            },
+            { 
+                id: 2, name: "مشاوي أبو عمار", desc: "مشاوي مشكلة، كباب، شقف، وشاورما على الفحم", img: "https://images.unsplash.com/photo-1544124499-58912cbddaad?w=500",
+                menu: [
+                    { name: "كيلو كباب لحم", price: "180,000 ل.س" },
+                    { name: "ساندويش شاورما سوبر", price: "32,000 ل.س" },
+                    { name: "كيلو شيش طاووق", price: "160,000 ل.س" },
+                    { name: "وجبة شاورما عربي", price: "38,000 ل.س" }
+                ]
+            },
+            { 
+                id: 3, name: "فروج المدينة", desc: "أفضل فروج بروستد ومشوي على السيخ في المدينة", img: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500",
+                menu: [
+                    { name: "فروج بروستد كامل", price: "75,000 ل.س" },
+                    { name: "فروج مشوي على السيخ", price: "70,000 ل.س" },
+                    { name: "نصف فروج بروستد", price: "40,000 ل.س" }
+                ]
+            }
         ];
 
-        function loadData() {
-            const oList = document.getElementById('offers-list');
+        function loadRestaurants() {
             const rList = document.getElementById('restaurants-list');
-
-            // إضافة العروض
-            offers.forEach(item => {
-                oList.innerHTML += `
-                    <div class="card">
-                        <div class="card-image-box">
-                            <img src="${item.img}" class="card-img">
-                            <span class="tag">${item.tag}</span>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">${item.title}</h3>
-                            <p class="card-text">${item.desc}</p>
-                        </div>
-                        <div class="card-footer">
-                            <span class="price">${item.price} ل.س</span>
-                            <button class="order-btn">اطلب</button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            // إضافة المطاعم
             restaurants.forEach(res => {
                 rList.innerHTML += `
                     <div class="card">
-                        <div class="card-image-box">
-                            <img src="${res.img}" class="card-img">
-                        </div>
+                        <div class="card-image-box"><img src="${res.img}" class="card-img"></div>
                         <div class="card-body">
                             <h3 class="card-title">${res.name}</h3>
                             <p class="card-text">${res.desc}</p>
                         </div>
                         <div class="card-footer">
-                            <button class="order-btn" style="width: 100%; background: #333;">مشاهدة المنيو</button>
+                            <button class="order-btn" onclick="openMenu(${res.id})">مشاهدة المنيو</button>
                         </div>
                     </div>
                 `;
             });
         }
 
-        window.onload = loadData;
+        // دالة لفتح المنيو وعرض خط الطلبات والأسعار
+        function openMenu(restaurantId) {
+            const restaurant = restaurants.find(r => r.id === restaurantId);
+            if (!restaurant) return;
+
+            document.getElementById('modal-title').innerText = `منيو ${restaurant.name}`;
+            const menuList = document.getElementById('menu-list');
+            menuList.innerHTML = ''; // تفريغ القائمة القديمة
+
+            restaurant.menu.forEach(item => {
+                menuList.innerHTML += `
+                    <li class="menu-item">
+                        <span class="menu-item-name">${item.name}</span>
+                        <span class="menu-item-price">${item.price}</span>
+                    </li>
+                `;
+            });
+
+            document.getElementById('menu-modal').style.display = 'flex';
+        }
+
+        function closeMenu() {
+            document.getElementById('menu-modal').style.display = 'none';
+        }
+
+        // إغلاق المنيو عند الضغط خارج النافذة
+        window.onclick = function(event) {
+            const modal = document.getElementById('menu-modal');
+            if (event.target == modal) {
+                closeMenu();
+            }
+        }
+
+        window.onload = loadRestaurants;
     </script>
 </body>
 </html>
