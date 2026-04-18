@@ -1,218 +1,156 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فود - اطلب من أفضل مطاعم سلمية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    
+    <title>عمر سلهب تاسع - بيجاوب على كل شي</title>
     <style>
-        /* إعدادات الألوان والتصميم */
-        :root {
-            --primary: #ff9800; /* لون البرتقال فود */
-            --primary-dark: #e65100;
-            --success: #2e7d32;
-            --dark: #1a1a1b;
-            --gray: #666;
-            --light-bg: #f9f9f9;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background-color: #fff; color: var(--dark); line-height: 1.6; }
-
-        /* الهيدر */
-        header {
-            background: #fff;
-            padding: 20px 5%;
+        body {
+            background: linear-gradient(145deg, #0b2b26, #1a4a3a);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            padding: 20px;
         }
-        header img { width: 140px; }
-
-        /* الحاوية الكبيرة */
-        .container { width: 92%; max-width: 1200px; margin: auto; padding: 20px 0; }
-
-        /* العناوين */
-        h2.section-title { font-size: 1.8rem; font-weight: 800; margin: 40px 0 10px; display: flex; align-items: center; gap: 10px; }
-        h2.section-title::before { content: ""; width: 6px; height: 35px; background: var(--primary); border-radius: 10px; }
-        .subtitle { color: var(--gray); margin-bottom: 30px; font-size: 1.1rem; }
-
-        /* شبكة المنتجات (الأسعار) */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-
-        /* الكرت */
-        .card { background: #fff; border-radius: 25px; border: 1px solid #eee; overflow: hidden; transition: 0.4s ease; display: flex; flex-direction: column; }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
-        .card-image-box { position: relative; width: 100%; height: 220px; }
-        .card-img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .card-body { padding: 20px; flex-grow: 1; }
-        .card-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; color: var(--dark); }
-        .card-text { color: var(--gray); font-size: 0.95rem; margin-bottom: 20px; }
-
-        .card-footer { padding: 20px; border-top: 1px solid #f5f5f5; text-align: center; }
-        .order-btn { background: var(--primary); color: white; border: none; padding: 10px 25px; border-radius: 15px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; }
-        .order-btn:hover { background: var(--primary-dark); }
-
-        /* كيفية الطلب */
-        .how-to { background: var(--light-bg); padding: 60px 0; margin: 60px 0; border-radius: 40px; text-align: center; }
-        .steps { display: flex; flex-wrap: wrap; justify-content: space-around; margin-top: 40px; gap: 20px; }
-        .step-item { flex: 1; min-width: 280px; padding: 20px; }
-        .step-icon { font-size: 3.5rem; margin-bottom: 20px; display: block; }
-        
-        /* النافذة المنبثقة (Popup Modal) للتنيو */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; }
-        .modal-content { background-color: #fff; width: 90%; max-width: 600px; border-radius: 20px; padding: 30px; position: relative; max-height: 80vh; overflow-y: auto; }
-        .close-modal { position: absolute; top: 15px; left: 15px; font-size: 2rem; cursor: pointer; color: #aaa; }
-        .close-modal:hover { color: #333; }
-        .modal-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 20px; text-align: center; color: var(--dark); }
-        
-        /* خط الطلبات داخل المنيو */
-        .menu-list { list-style: none; }
-        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
-        .menu-item-name { font-weight: 600; font-size: 1.1rem; color: var(--dark); }
-        .menu-item-price { font-weight: 800; font-size: 1.2rem; color: var(--success); }
-
-        /* الفوتر */
-        footer { background: var(--dark); color: #fff; padding: 60px 5% 40px; text-align: center; border-radius: 50px 50px 0 0; margin-top: 60px; }
-        .footer-brand { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 20px; display: block; }
-        .footer-nav { margin-bottom: 40px; }
-        .footer-nav a { color: #ccc; text-decoration: none; margin: 0 15px; transition: 0.3s; }
-        .footer-nav a:hover { color: var(--primary); }
-        .copyright { color: #555; font-size: 0.9rem; border-top: 1px solid #222; padding-top: 30px; }
-
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .section-title { font-size: 1.4rem; } }
+        .card {
+            background: white;
+            max-width: 550px;
+            width: 100%;
+            border-radius: 60px 60px 80px 80px;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            padding: 30px 25px 40px;
+            transition: 0.2s;
+        }
+        h1 {
+            font-size: 2.1rem;
+            background: #f3b33d;
+            display: inline-block;
+            padding: 5px 25px;
+            border-radius: 60px;
+            color: #1e2f2a;
+            margin-bottom: 10px;
+        }
+        .badge {
+            background: #000;
+            color: gold;
+            padding: 6px 15px;
+            border-radius: 60px;
+            width: fit-content;
+            margin: 10px auto;
+            font-weight: bold;
+        }
+        .avatar {
+            font-size: 5rem;
+            margin: 15px 0;
+        }
+        input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1rem;
+            border: 3px solid #f3b33d;
+            border-radius: 70px;
+            text-align: right;
+            font-family: inherit;
+            outline: none;
+            margin: 20px 0 10px;
+        }
+        button {
+            background: #f3b33d;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 5px;
+            color: #2d2b1f;
+        }
+        button:hover {
+            background: #e09d1e;
+            transform: scale(0.97);
+        }
+        .answer-area {
+            background: #eef3ef;
+            border-radius: 45px;
+            margin-top: 30px;
+            padding: 18px;
+        }
+        .answer-label {
+            color: #b45f06;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .answer {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: #145c3b;
+            background: white;
+            padding: 18px 12px;
+            border-radius: 50px;
+            margin-top: 12px;
+            word-break: break-word;
+            letter-spacing: 1px;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #4f6f5e;
+        }
     </style>
 </head>
 <body>
+<div class="card">
+    <div class="avatar">🧃😎</div>
+    <h1>عمر سلهب</h1>
+    <div class="badge">تاسع - إجابات رسمية</div>
+    <p style="margin: 15px 0 5px;">اسأل أي سؤال .. الجواب واحد فقط</p>
 
-    <header>
-        <img src="https://i.postimg.cc/SKYvRztj/Logo.png" alt="فود">
-    </header>
+    <input type="text" id="questionInput" placeholder="مثال: شو رح يصير بعد ١٠٠ سنة؟ أو ليش السماء زرقاء؟" autocomplete="off">
+    <button id="askBtn">اسأل عمر سلهب 🔥</button>
 
-    <div class="container">
-        
-        <h2 class="section-title">مطاعم سلمية</h2>
-        <p class="subtitle">تصفح منيو أفضل المطاعم واطلب الآن</p>
-        <div class="grid" id="restaurants-list">
-            </div>
-
-        <section class="how-to">
-            <h2>كيفية الطلب</h2>
-            <div class="steps">
-                <div class="step-item"><span class="step-icon">📱</span><h3>اختر مطعمك</h3><p>تصفح قائمة مطاعم سلمية واختر ما تشتهيه</p></div>
-                <div class="step-item"><span class="step-icon">🛒</span><h3>اطلب وجبتك</h3><p>أضف الوجبات التي تحبها إلى سلة طلباتك</p></div>
-                <div class="step-item"><span class="step-icon">🚚</span><h3>استلم طلبك</h3><p>فريقنا سيصل إليك بطعام ساخن</p></div>
-            </div>
-        </section>
-
+    <div class="answer-area">
+        <div class="answer-label">📢 جواب عمر سلهب (تاسع) لأي سؤال:</div>
+        <div class="answer" id="answerBox">عمر سلهب تاسع</div>
     </div>
+    <footer>⚠️ مهما كان سؤالك .. الجواب ثابت وواضح</footer>
+</div>
 
-    <div id="menu-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeMenu()">&times;</span>
-            <h3 id="modal-title" class="modal-title">المنيو</h3>
-            <ul id="menu-list" class="menu-list">
-                </ul>
-        </div>
-    </div>
+<script>
+    const inputField = document.getElementById('questionInput');
+    const askButton = document.getElementById('askBtn');
+    const answerBox = document.getElementById('answerBox');
 
-    <footer>
-        <span class="footer-brand">فود - Food</span>
-        <nav class="footer-nav">
-            <a href="#">الرئيسية</a><a href="#">المطاعم</a><a href="#">العروض</a>
-        </nav>
-        <p class="copyright">جميع الحقوق محفوظة © 2026 - منصة فود سلمية</p>
-    </footer>
-
-    <script>
-        // بيانات المطاعم وقوائم الطعام (المنيو والأسعار)
-        const restaurants = [
-            { 
-                id: 1, name: "مطعم ليالينا", desc: "أشهر مطعم للوجبات الغربية، برغر، بيتزا، وسناك", img: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=500",
-                menu: [
-                    { name: "برغر لحم كلاسيك", price: "35,000 ل.س" },
-                    { name: "بيتزا مارغريتا (وسط)", price: "40,000 ل.س" },
-                    { name: "وجبة كريسبي (5 قطع)", price: "50,000 ل.س" },
-                    { name: "ساندويش فاهيتا", price: "30,000 ل.س" }
-                ]
-            },
-            { 
-                id: 2, name: "مشاوي أبو عمار", desc: "مشاوي مشكلة، كباب، شقف، وشاورما على الفحم", img: "https://images.unsplash.com/photo-1544124499-58912cbddaad?w=500",
-                menu: [
-                    { name: "كيلو كباب لحم", price: "180,000 ل.س" },
-                    { name: "ساندويش شاورما سوبر", price: "32,000 ل.س" },
-                    { name: "كيلو شيش طاووق", price: "160,000 ل.س" },
-                    { name: "وجبة شاورما عربي", price: "38,000 ل.س" }
-                ]
-            },
-            { 
-                id: 3, name: "فروج المدينة", desc: "أفضل فروج بروستد ومشوي على السيخ في المدينة", img: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500",
-                menu: [
-                    { name: "فروج بروستد كامل", price: "75,000 ل.س" },
-                    { name: "فروج مشوي على السيخ", price: "70,000 ل.س" },
-                    { name: "نصف فروج بروستد", price: "40,000 ل.س" }
-                ]
-            }
-        ];
-
-        function loadRestaurants() {
-            const rList = document.getElementById('restaurants-list');
-            restaurants.forEach(res => {
-                rList.innerHTML += `
-                    <div class="card">
-                        <div class="card-image-box"><img src="${res.img}" class="card-img"></div>
-                        <div class="card-body">
-                            <h3 class="card-title">${res.name}</h3>
-                            <p class="card-text">${res.desc}</p>
-                        </div>
-                        <div class="card-footer">
-                            <button class="order-btn" onclick="openMenu(${res.id})">مشاهدة المنيو</button>
-                        </div>
-                    </div>
-                `;
-            });
+    function answerAlwaysOmar() {
+        let userQuestion = inputField.value.trim();
+        if (userQuestion === "") {
+            answerBox.innerText = "عمر سلهب تاسع (اكتب سؤالاً أولاً)";
+        } else {
+            answerBox.innerText = "عمر سلهب تاسع";
         }
+        // effect
+        answerBox.style.transform = "scale(1.02)";
+        setTimeout(() => { answerBox.style.transform = "scale(1)"; }, 120);
+    }
 
-        // دالة لفتح المنيو وعرض خط الطلبات والأسعار
-        function openMenu(restaurantId) {
-            const restaurant = restaurants.find(r => r.id === restaurantId);
-            if (!restaurant) return;
-
-            document.getElementById('modal-title').innerText = `منيو ${restaurant.name}`;
-            const menuList = document.getElementById('menu-list');
-            menuList.innerHTML = ''; // تفريغ القائمة القديمة
-
-            restaurant.menu.forEach(item => {
-                menuList.innerHTML += `
-                    <li class="menu-item">
-                        <span class="menu-item-name">${item.name}</span>
-                        <span class="menu-item-price">${item.price}</span>
-                    </li>
-                `;
-            });
-
-            document.getElementById('menu-modal').style.display = 'flex';
+    askButton.addEventListener('click', answerAlwaysOmar);
+    inputField.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            answerAlwaysOmar();
         }
+    });
 
-        function closeMenu() {
-            document.getElementById('menu-modal').style.display = 'none';
-        }
-
-        // إغلاق المنيو عند الضغط خارج النافذة
-        window.onclick = function(event) {
-            const modal = document.getElementById('menu-modal');
-            if (event.target == modal) {
-                closeMenu();
-            }
-        }
-
-        window.onload = loadRestaurants;
-    </script>
+    // لما يفتح الصفحة يكون الجواب جاهز
+    answerBox.innerText = "عمر سلهب تاسع";
+</script>
 </body>
 </html>
