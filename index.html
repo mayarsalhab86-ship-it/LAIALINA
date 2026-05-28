@@ -1,141 +1,162 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مسابقة شاي ليالينا</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مسابقة شاي ليالينا</title>
 
-    <style>
-        :root {
-            --primary: #0b4028;   /* أخضر ليالينا */
-            --gold: #d4af37;      /* الذهبي */
-            --bg: rgba(0,0,0,0.6); /* خلفية شفافة فوق الفيديو */
-            --text: #fff;
-        }
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            color: var(--text);
-            text-align: center;
-        }
+  <style>
+    :root {
+      --primary: #0b4028;
+      --gold: #d4af37;
+      --bg: rgba(0,0,0,0.6);
+      --text: #fff;
+    }
 
-        /* الفيديو كخلفية */
-        .video-bg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      color: var(--text);
+      text-align: center;
+    }
 
-        .video-bg iframe {
-            width: 100%; height: 100%;
-            object-fit: cover;
-        }
+    .video-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
 
-        .overlay {
-            background: var(--bg);
-            min-height: 100vh;
-            padding: 30px;
-        }
+    .video-bg iframe {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
 
-        h1 {
-            color: var(--gold);
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
+    .overlay {
+      background: var(--bg);
+      min-height: 100vh;
+      padding: 30px;
+    }
 
-        .question {
-            background: rgba(255,255,255,0.1);
-            border: 2px solid var(--gold);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px auto;
-            max-width: 500px;
-            text-align: right;
-        }
+    h1 {
+      color: var(--gold);
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
 
-        .question h3 {
-            color: var(--gold);
-            margin-bottom: 10px;
-        }
+    .slider {
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative;
+    }
 
-        .options label {
-            display: block;
-            margin: 8px 0;
-            cursor: pointer;
-        }
+    .slide {
+      display: none;
+      background: rgba(255,255,255,0.1);
+      border: 2px solid var(--gold);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: right;
+    }
 
-        .comments {
-            margin-top: 40px;
-            text-align: right;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+    .slide.active {
+      display: block;
+    }
 
-        .comment {
-            background: rgba(255,255,255,0.1);
-            border-left: 4px solid var(--primary);
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 6px;
-        }
+    .options label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+    }
 
-        .comment strong {
-            color: var(--gold);
-        }
-    </style>
+    .nav-btn {
+      background: var(--gold);
+      color: var(--primary);
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .note {
+      margin-top: 30px;
+      font-size: 18px;
+      color: var(--gold);
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- خلفية الفيديو -->
-    <div class="video-bg">
-        <iframe src="https://www.youtube.com/embed/6llOhuAtdMI?autoplay=1&mute=1&loop=1&playlist=6llOhuAtdMI" 
-                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <div class="video-bg">
+    <iframe src="https://www.youtube.com/embed/6llOhuAtdMI?autoplay=1&mute=1&loop=1&playlist=6llOhuAtdMI" 
+            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+
+  <div class="overlay">
+    <h1>🌿 مسابقة شاي ليالينا 🌿</h1>
+
+    <div class="slider">
+      <div class="slide active">
+        <h3>1️⃣ هل تؤمن بأن هذه المسابقة حقيقية؟</h3>
+        <div class="options">
+          <label><input type="radio" name="q1"> نعم</label>
+          <label><input type="radio" name="q1"> لا</label>
+        </div>
+      </div>
+
+      <div class="slide">
+        <h3>2️⃣ ما رأيك بشاي ليالينا؟</h3>
+        <div class="options">
+          <label><input type="radio" name="q2"> جيدة</label>
+          <label><input type="radio" name="q2"> سيئة</label>
+        </div>
+      </div>
+
+      <div class="slide">
+        <h3>3️⃣ منذ متى تشرب شاي ليالينا؟</h3>
+        <div class="options">
+          <label><input type="radio" name="q3"> منذ سنوات</label>
+          <label><input type="radio" name="q3"> حديثاً</label>
+          <label><input type="radio" name="q3"> أول مرة</label>
+        </div>
+      </div>
+
+      <button class="nav-btn" onclick="prevSlide()">⬅ السابق</button>
+      <button class="nav-btn" onclick="nextSlide()">التالي ➡</button>
     </div>
 
-    <div class="overlay">
-        <h1>🌿 مسابقة شاي ليالينا 🌿</h1>
-
-        <!-- السؤال الأول -->
-        <div class="question">
-            <h3>1️⃣ هل تفضل شاي ليالينا ظروف أم فرط؟</h3>
-            <div class="options">
-                <label><input type="radio" name="q1"> ظروف</label>
-                <label><input type="radio" name="q1"> فرط</label>
-            </div>
-        </div>
-
-        <!-- السؤال الثاني -->
-        <div class="question">
-            <h3>2️⃣ من أي حارة في سلمية؟</h3>
-            <div class="options">
-                <label><input type="radio" name="q2"> المساكن الغربية</label>
-                <label><input type="radio" name="q2"> القراجة</label>
-                <label><input type="radio" name="q2"> الحارة الشرقية</label>
-            </div>
-        </div>
-
-        <!-- السؤال الثالث -->
-        <div class="question">
-            <h3>3️⃣ هل تؤمن أن هذه المسابقة حقيقية؟</h3>
-            <div class="options">
-                <label><input type="radio" name="q3"> نعم</label>
-                <label><input type="radio" name="q3"> لا</label>
-            </div>
-        </div>
-
-        <!-- التعليقات الوهمية -->
-        <div class="comments">
-            <h2>💬 تعليقات المشاركين</h2>
-            <div class="comment"><strong>أبو علي صيانة:</strong> نعم حقيقي 👍</div>
-            <div class="comment"><strong>أم محمد من الحارة الشرقية:</strong> المسابقة رائعة، تقييم 5 نجوم ⭐⭐⭐⭐⭐</div>
-            <div class="comment"><strong>أبو حسن القراجة:</strong> شاي ليالينا أفضل شاي جربته 🌿</div>
-            <div class="comment"><strong>أمينة المساكن الغربية:</strong> مشاركة ممتعة، شكراً ليالينا 💛</div>
-        </div>
+    <div class="note">
+      🎁 الجائزة: 1000 ل.س جديدة  
+      📢 يجب مشاركة رابط المسابقة مع 5 أشخاص للدخول بالسحب
     </div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+  </script>
 
 </body>
 </html>
