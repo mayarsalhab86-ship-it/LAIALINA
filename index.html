@@ -3,130 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شاي ليالينا – النكهة الأصيلة</title>
+    <title>مسابقة شاي ليالينا</title>
 
     <style>
         :root {
             --primary: #0b4028;   /* أخضر ليالينا */
             --gold: #d4af37;      /* الذهبي */
-            --bg: #f4fcf7;
-            --text: #333;
+            --bg: rgba(0,0,0,0.6); /* خلفية شفافة فوق الفيديو */
+            --text: #fff;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: var(--bg);
             margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .card {
-            background: #fff;
-            width: 100%;
-            max-width: 480px;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--primary);
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            color: var(--text);
             text-align: center;
         }
 
-        .product-img {
-            width: 200px;
-            display: block;
-            margin: 0 auto 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        /* الفيديو كخلفية */
+        .video-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-bg iframe {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 30px;
         }
 
         h1 {
-            color: var(--primary);
-            font-size: 24px;
-            margin-bottom: 10px;
+            color: var(--gold);
+            font-size: 28px;
+            margin-bottom: 20px;
         }
 
-        p {
-            color: #555;
-            line-height: 1.6;
-            font-size: 15px;
-        }
-
-        .btn {
-            background: var(--primary);
-            color: white;
-            padding: 14px;
-            width: 100%;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: #08351f;
-        }
-
-        .feature-box {
-            background: #f9f9f9;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 10px 0;
-            border-right: 4px solid var(--primary);
+        .question {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 500px;
             text-align: right;
         }
 
-        .feature-title {
-            color: var(--primary);
-            font-weight: bold;
-            font-size: 16px;
+        .question h3 {
+            color: var(--gold);
+            margin-bottom: 10px;
         }
 
-        .gold-line {
-            width: 80px;
-            height: 4px;
-            background: var(--gold);
-            margin: 10px auto 20px;
-            border-radius: 2px;
+        .options label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+        }
+
+        .comments {
+            margin-top: 40px;
+            text-align: right;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .comment {
+            background: rgba(255,255,255,0.1);
+            border-left: 4px solid var(--primary);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+        }
+
+        .comment strong {
+            color: var(--gold);
         }
     </style>
 </head>
-
 <body>
 
-<div class="card">
-
-    <img class="product-img" src="https://i.ibb.co/S7C1TfP0/1000361515.png" alt="شاي ليالينا">
-
-    <h1>شاي ليالينا</h1>
-    <div class="gold-line"></div>
-
-    <p>
-        استمتع بمذاق الشاي الفاخر مع <strong>شاي ليالينا</strong>، النكهة الأصيلة التي تجمع بين الجودة والرائحة الزكية.
-        كل رشفة تمنحك لحظة هدوء لا تُنسى.
-    </p>
-
-    <div class="feature-box">
-        <div class="feature-title">✔ نكهة قوية ومتوازنة</div>
-        مناسب لكل الأوقات، صباحاً ومساءً.
+    <!-- خلفية الفيديو -->
+    <div class="video-bg">
+        <iframe src="https://www.youtube.com/embed/6llOhuAtdMI?autoplay=1&mute=1&loop=1&playlist=6llOhuAtdMI" 
+                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 
-    <div class="feature-box">
-        <div class="feature-title">✔ أوراق شاي مختارة بعناية</div>
-        جودة عالية وطعم ثابت في كل كوب.
+    <div class="overlay">
+        <h1>🌿 مسابقة شاي ليالينا 🌿</h1>
+
+        <!-- السؤال الأول -->
+        <div class="question">
+            <h3>1️⃣ هل تفضل شاي ليالينا ظروف أم فرط؟</h3>
+            <div class="options">
+                <label><input type="radio" name="q1"> ظروف</label>
+                <label><input type="radio" name="q1"> فرط</label>
+            </div>
+        </div>
+
+        <!-- السؤال الثاني -->
+        <div class="question">
+            <h3>2️⃣ من أي حارة في سلمية؟</h3>
+            <div class="options">
+                <label><input type="radio" name="q2"> المساكن الغربية</label>
+                <label><input type="radio" name="q2"> القراجة</label>
+                <label><input type="radio" name="q2"> الحارة الشرقية</label>
+            </div>
+        </div>
+
+        <!-- السؤال الثالث -->
+        <div class="question">
+            <h3>3️⃣ هل تؤمن أن هذه المسابقة حقيقية؟</h3>
+            <div class="options">
+                <label><input type="radio" name="q3"> نعم</label>
+                <label><input type="radio" name="q3"> لا</label>
+            </div>
+        </div>
+
+        <!-- التعليقات الوهمية -->
+        <div class="comments">
+            <h2>💬 تعليقات المشاركين</h2>
+            <div class="comment"><strong>أبو علي صيانة:</strong> نعم حقيقي 👍</div>
+            <div class="comment"><strong>أم محمد من الحارة الشرقية:</strong> المسابقة رائعة، تقييم 5 نجوم ⭐⭐⭐⭐⭐</div>
+            <div class="comment"><strong>أبو حسن القراجة:</strong> شاي ليالينا أفضل شاي جربته 🌿</div>
+            <div class="comment"><strong>أمينة المساكن الغربية:</strong> مشاركة ممتعة، شكراً ليالينا 💛</div>
+        </div>
     </div>
-
-    <div class="feature-box">
-        <div class="feature-title">✔ متوفر ظروف وفرط</div>
-        اختر الطريقة التي تناسب ذوقك.
-    </div>
-
-    <button class="btn">اكتشف المزيد عن شاي ليالينا</button>
-
-</div>
 
 </body>
 </html>
