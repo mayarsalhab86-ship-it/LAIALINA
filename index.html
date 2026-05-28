@@ -35,9 +35,9 @@
             border-top: 8px solid var(--primary-color);
         }
 
-        /* تنسيق صورة منتج شاي ليالينا */
+        /* تنسيق صورة منتج شاي ليالينا لتعمل بشكل ممتاز */
         .product-img {
-            max-width: 180px;
+            max-width: 200px;
             height: auto;
             margin: 0 auto 15px auto;
             display: block;
@@ -139,4 +139,84 @@
 <body>
 
 <div class="card">
-    <img class="product-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACt36r_AAAAAXNSR0IArs4c6QAAIABREFUeF7svQecZVWVPv6effK7V6pUdY7dkXPSgW46NE03gIDIoAiIiooBRccxrBlHB8eZccwZf9fRMRccw6CgZAc6NA0N3Z27K9etm_Pue_Ofb617b9UdqqurmwZ01Y8G6lbde84+e-3WW996qyAc-DvwO_A_uAOioA9
+    <img class="product-img" src="https://i.ibb.co/S7C1TfP0/1000361515.png" alt="شاي ليالينا">
+    
+    <h1>مسابقة شاي ليالينا الكبرى 🍃</h1>
+    <p class="subtitle">أجب عن الأسئلة واشترك لتربح حارة القدامسة وما فيها!</p>
+
+    <div id="step1" class="step active">
+        <h3>السؤال 1: هل تشرب شاي ليالينا ظروف أم فرط؟</h3>
+        <button class="btn-option" onclick="nextStep(2)">ظروف</button>
+        <button class="btn-option" onclick="nextStep(2)">فرط</button>
+    </div>
+
+    <div id="step2" class="step">
+        <h3>السؤال 2: من أين أنت من سلمية؟</h3>
+        <button class="btn-option" onclick="nextStep(3)">القدامسة</button>
+        <button class="btn-option" onclick="nextStep(3)">المساكن الغربية</button>
+        <button class="btn-option" onclick="nextStep(3)">الحارة الشرقية</button>
+        <button class="btn-option" onclick="nextStep(3)">القراجة</button>
+    </div>
+
+    <div id="step3" class="step">
+        <h3>السؤال 3: هل لك علاقة بـ وشاح الدالي؟</h3>
+        <button class="btn-option" onclick="nextStep(4)">نعم</button>
+        <button class="btn-option" onclick="nextStep(4)">نعم</button>
+    </div>
+
+    <div id="step4" class="step">
+        <h3 style="color: #c0392b;">🎉 تهانينا! إجاباتك تؤهلك للفوز!</h3>
+        <p>لقد تأهلت لربح <strong>حارة القدامسة وما فيها</strong>. لتوثيق الجائزة، يجب عليك مشاركة رابط المسابقة مع 5 أشخاص عبر واتساب.</p>
+        
+        <div class="counter-box">
+            المشاركات المتبقية: <span id="share-count">5</span> / 5
+        </div>
+
+        <div class="progress-bar">
+            <div id="progress" class="progress"></div>
+        </div>
+
+        <button class="btn-share" onclick="shareToWhatsapp()">🔗 شارك الآن عبر واتساب</button>
+    </div>
+</div>
+
+<script>
+    let currentShare = 0;
+    const totalSharesNeeded = 5;
+
+    // دالة الانتقال بين الأسئلة
+    function nextStep(stepNumber) {
+        document.querySelectorAll('.step').forEach(step => {
+            step.classList.remove('active');
+        });
+        document.getElementById('step' + stepNumber).classList.add('active');
+    }
+
+    // دالة المشاركة والعداد
+    function shareToWhatsapp() {
+        const siteUrl = window.location.href;
+        const text = encodeURIComponent("🔥 شارك في مسابقة شاي ليالينا الكبرى واربح حارة القدامسة وما فيها! أدخل وأجب عن الأسئلة من هنا: \n" + siteUrl);
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${text}`;
+
+        window.open(whatsappUrl, '_blank');
+
+        if (currentShare < totalSharesNeeded) {
+            currentShare++;
+            
+            const remaining = totalSharesNeeded - currentShare;
+            document.getElementById('share-count').innerText = remaining;
+            
+            const progressPercent = (currentShare / totalSharesNeeded) * 100;
+            document.getElementById('progress').style.width = progressPercent + '%';
+
+            if (currentShare === totalSharesNeeded) {
+                setTimeout(() => {
+                    alert("🎉 مبروك! لقد أتممت الشروط بنجاح، تم تسجيل اسمك لربح حارة القدامسة وما فيها!");
+                }, 1000);
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
