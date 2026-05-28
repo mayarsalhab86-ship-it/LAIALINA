@@ -3,220 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مسابقة شاي ليالينا الكبرى</title>
+    <title>شاي ليالينا – النكهة الأصيلة</title>
+
     <style>
         :root {
-            --primary-color: #0b4028; /* الأخضر الداكن لشاي ليالينا */
-            --accent-color: #d4af37;  /* الذهبي */
-            --text-color: #333;
-            --bg-color: #f4fcf7;
+            --primary: #0b4028;   /* أخضر ليالينا */
+            --gold: #d4af37;      /* الذهبي */
+            --bg: #f4fcf7;
+            --text: #333;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg);
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
         }
 
         .card {
-            background: #ffffff;
+            background: #fff;
+            width: 100%;
+            max-width: 480px;
+            padding: 25px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            padding: 25px;
-            width: 100%;
-            max-width: 450px;
+            border-top: 8px solid var(--primary);
             text-align: center;
-            border-top: 8px solid var(--primary-color);
         }
 
-        /* تنسيق صورة منتج شاي ليالينا لتعمل بشكل ممتاز */
         .product-img {
-            max-width: 200px;
-            height: auto;
-            margin: 0 auto 15px auto;
+            width: 200px;
             display: block;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin: 0 auto 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         h1 {
-            color: var(--primary-color);
-            font-size: 22px;
-            margin: 10px 0 5px 0;
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 10px;
         }
 
-        p.subtitle {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-        .step {
-            display: none;
-        }
-
-        .step.active {
-            display: block;
-        }
-
-        h3 {
-            font-size: 17px;
-            color: #222;
-            margin-bottom: 20px;
-        }
-
-        .btn-option {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            background: #f9f9f9;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+        p {
+            color: #555;
+            line-height: 1.6;
             font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: right;
-            font-weight: bold;
         }
 
-        .btn-option:hover {
-            background: #e8f5e9;
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .btn-share {
-            background-color: #25D366; /* لون الواتساب */
+        .btn {
+            background: var(--primary);
             color: white;
+            padding: 14px;
+            width: 100%;
             border: none;
-            padding: 15px 30px;
-            font-size: 17px;
-            font-weight: bold;
             border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
-            width: 100%;
             margin-top: 20px;
-            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
-            transition: background 0.3s;
+            transition: 0.3s;
         }
 
-        .btn-share:hover {
-            background-color: #20ba5a;
+        .btn:hover {
+            background: #08351f;
         }
 
-        .progress-bar {
-            background: #eee;
-            border-radius: 10px;
-            height: 10px;
-            width: 100%;
-            margin-top: 20px;
-            overflow: hidden;
+        .feature-box {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-right: 4px solid var(--primary);
+            text-align: right;
         }
 
-        .progress {
-            background: var(--accent-color);
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        .counter-box {
-            font-size: 18px;
-            margin: 15px 0;
+        .feature-title {
+            color: var(--primary);
             font-weight: bold;
-            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        .gold-line {
+            width: 80px;
+            height: 4px;
+            background: var(--gold);
+            margin: 10px auto 20px;
+            border-radius: 2px;
         }
     </style>
 </head>
+
 <body>
 
 <div class="card">
+
     <img class="product-img" src="https://i.ibb.co/S7C1TfP0/1000361515.png" alt="شاي ليالينا">
-    
-    <h1>مسابقة شاي ليالينا الكبرى 🍃</h1>
-    <p class="subtitle">أجب عن الأسئلة واشترك لتربح حارة القدامسة وما فيها!</p>
 
-    <div id="step1" class="step active">
-        <h3>السؤال 1: هل تشرب شاي ليالينا ظروف أم فرط؟</h3>
-        <button class="btn-option" onclick="nextStep(2)">ظروف</button>
-        <button class="btn-option" onclick="nextStep(2)">فرط</button>
+    <h1>شاي ليالينا</h1>
+    <div class="gold-line"></div>
+
+    <p>
+        استمتع بمذاق الشاي الفاخر مع <strong>شاي ليالينا</strong>، النكهة الأصيلة التي تجمع بين الجودة والرائحة الزكية.
+        كل رشفة تمنحك لحظة هدوء لا تُنسى.
+    </p>
+
+    <div class="feature-box">
+        <div class="feature-title">✔ نكهة قوية ومتوازنة</div>
+        مناسب لكل الأوقات، صباحاً ومساءً.
     </div>
 
-    <div id="step2" class="step">
-        <h3>السؤال 2: من أين أنت من سلمية؟</h3>
-        <button class="btn-option" onclick="nextStep(3)">القدامسة</button>
-        <button class="btn-option" onclick="nextStep(3)">المساكن الغربية</button>
-        <button class="btn-option" onclick="nextStep(3)">الحارة الشرقية</button>
-        <button class="btn-option" onclick="nextStep(3)">القراجة</button>
+    <div class="feature-box">
+        <div class="feature-title">✔ أوراق شاي مختارة بعناية</div>
+        جودة عالية وطعم ثابت في كل كوب.
     </div>
 
-    <div id="step3" class="step">
-        <h3>السؤال 3: هل لك علاقة بـ وشاح الدالي؟</h3>
-        <button class="btn-option" onclick="nextStep(4)">نعم</button>
-        <button class="btn-option" onclick="nextStep(4)">نعم</button>
+    <div class="feature-box">
+        <div class="feature-title">✔ متوفر ظروف وفرط</div>
+        اختر الطريقة التي تناسب ذوقك.
     </div>
 
-    <div id="step4" class="step">
-        <h3 style="color: #c0392b;">🎉 تهانينا! إجاباتك تؤهلك للفوز!</h3>
-        <p>لقد تأهلت لربح <strong>حارة القدامسة وما فيها</strong>. لتوثيق الجائزة، يجب عليك مشاركة رابط المسابقة مع 5 أشخاص عبر واتساب.</p>
-        
-        <div class="counter-box">
-            المشاركات المتبقية: <span id="share-count">5</span> / 5
-        </div>
+    <button class="btn">اكتشف المزيد عن شاي ليالينا</button>
 
-        <div class="progress-bar">
-            <div id="progress" class="progress"></div>
-        </div>
-
-        <button class="btn-share" onclick="shareToWhatsapp()">🔗 شارك الآن عبر واتساب</button>
-    </div>
 </div>
-
-<script>
-    let currentShare = 0;
-    const totalSharesNeeded = 5;
-
-    // دالة الانتقال بين الأسئلة
-    function nextStep(stepNumber) {
-        document.querySelectorAll('.step').forEach(step => {
-            step.classList.remove('active');
-        });
-        document.getElementById('step' + stepNumber).classList.add('active');
-    }
-
-    // دالة المشاركة والعداد
-    function shareToWhatsapp() {
-        const siteUrl = window.location.href;
-        const text = encodeURIComponent("🔥 شارك في مسابقة شاي ليالينا الكبرى واربح حارة القدامسة وما فيها! أدخل وأجب عن الأسئلة من هنا: \n" + siteUrl);
-        const whatsappUrl = `https://api.whatsapp.com/send?text=${text}`;
-
-        window.open(whatsappUrl, '_blank');
-
-        if (currentShare < totalSharesNeeded) {
-            currentShare++;
-            
-            const remaining = totalSharesNeeded - currentShare;
-            document.getElementById('share-count').innerText = remaining;
-            
-            const progressPercent = (currentShare / totalSharesNeeded) * 100;
-            document.getElementById('progress').style.width = progressPercent + '%';
-
-            if (currentShare === totalSharesNeeded) {
-                setTimeout(() => {
-                    alert("🎉 مبروك! لقد أتممت الشروط بنجاح، تم تسجيل اسمك لربح حارة القدامسة وما فيها!");
-                }, 1000);
-            }
-        }
-    }
-</script>
 
 </body>
 </html>
